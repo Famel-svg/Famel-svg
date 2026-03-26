@@ -1,83 +1,85 @@
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=170&section=header&" alt="banner" />
-</p>
-
-<h1 align="center">Olá, eu sou o Rafael 👋</h1>
+# Olá, eu sou o Rafael Andrade Tanimoto! 👋
 
 <p align="center">
-  Desenvolvedor apaixonado por aprendizado contínuo, tecnologia e desafios. <br>
-  Foco em projetos web, mobile e fintechs! 🚀
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=36BCF7&center=true&vCenter=true&width=435&lines=Backend+Developer;Java+%26+Spring+Boot+Enthusiast;Design+Background;Continuous+Learner" alt="Typing SVG" />
 </p>
 
 ---
 
-## 🚀 Sobre Mim
+### 🚀 Sobre Mim
 
-- 🎓 Estudante e entusiasta de tecnologia
-- 💻 Experiência com Java, HTML, CSS, JavaScript, Bootstrap, JSP, Servlets e Android
-- 📊 Amante de projetos que envolvem controle financeiro, segurança e interfaces interativas
-- 🔍 Sempre buscando aprender mais e contribuir com a comunidade
+Sou um desenvolvedor focado em **Backend**, atualmente cursando o 2º semestre de **Análise e Desenvolvimento de Sistemas na FIAP**. Minha trajetória é única: estudei **Design Digital** por 2 anos na Anhembi Morumbi, o que me deu uma base sólida em UX/UI e ferramentas visuais, que hoje aplico para criar soluções técnicas robustas e bem estruturadas.
+
+- 🎓 **Educação:** ADS na FIAP (Cursando) | Design Digital (2 anos concluídos).
+- 🌍 **Idiomas:** Português (Nativo) | Inglês (Fluente).
+- 💡 **Interesses:** Arquitetura de Software, Fintechs, Segurança e Inovação.
+- 🌱 **Foco Atual:** Aprofundando em Microsserviços com Spring Boot e Kotlin.
 
 ---
 
-## 🛠️ Tecnologias & Ferramentas
+### 🛠️ Tecnologias & Ferramentas
 
 <div align="center">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" title="Java" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" title="HTML" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" title="CSS" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" title="JavaScript" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" title="Bootstrap" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" title="Android" width="40" height="40"/>
+  
+  **Linguagens**
+  
+  ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+  ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
+  ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+  ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+
+  **Backend & Frameworks**
+  
+  ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+  ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
+  ![Java EE](https://img.shields.io/badge/Java_EE-007396?style=for-the-badge&logo=java&logoColor=white)
+  ![MVC](https://img.shields.io/badge/MVC-Architecture-blue?style=for-the-badge)
+
+  **Frontend & Design**
+  
+  ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+  ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+  ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+  ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+  ![Adobe Photoshop](https://img.shields.io/badge/adobe%20photoshop-%2331A8FF.svg?style=for-the-badge&logo=adobe%20photoshop&logoColor=white)
+  ![Adobe Illustrator](https://img.shields.io/badge/adobe%20illustrator-%23FF9A00.svg?style=for-the-badge&logo=adobe%20illustrator&logoColor=white)
+
 </div>
 
 ---
 
-## 📚 Repositórios em Destaque
+### 📚 Repositórios em Destaque
 
-- [**Sistema_De_Controle_Financeiro**](https://github.com/Famel-svg/Sistema_De_Controle_Financeiro)  
-  Aplicação web para gestão financeira pessoal, com autenticação, CRUD de receitas/despesas e dashboard interativo.  
-  <sub><b>Java, Servlets, JSP, Bootstrap, Chart.js</b></sub>
-
-- [**Java-Fintech**](https://github.com/Famel-svg/Java-Fintech)  
-  Mini projeto focado em classes e objetos Java.  
-  <sub><b>Java</b></sub>
-
-- [**Fiap-Fintech**](https://github.com/Famel-svg/Fiap-Fintech)  
-  Projeto front-end para fintech usando HTML e CSS.  
-  <sub><b>HTML, CSS</b></sub>
-
-- [**LetsSignGS**](https://github.com/Famel-svg/LetsSignGS)  
-  Projeto web responsivo com HTML, CSS e JavaScript.  
-  <sub><b>HTML, CSS, JavaScript</b></sub>
-
-- [**Rota_Segura_Mobile-Android-**](https://github.com/Famel-svg/Rota_Segura_Mobile-Android-)  
-  Projeto mobile Android focado em segurança.  
-  <sub><b>Android</b></sub>
+| Projeto | Descrição | Tech Stack |
+| :--- | :--- | :--- |
+| [**Sistema de Controle Financeiro**](https://github.com/Famel-svg/Sistema_De_Controle_Financeiro) | Gestão financeira com Auth, CRUD e Dashboards interativos. | `Java` `Servlets` `JSP` `Bootstrap` `Chart.js` |
+| [**WTC_Chat**](https://github.com/Famel-svg/WTC_Chat) | Aplicação de chat moderna desenvolvida em Kotlin. | `Kotlin` `Android` |
+| [**Chess Game**](https://github.com/Famel-svg/Chess_Game_JAVA) | Implementação completa da lógica de um jogo de xadrez. | `Java` |
+| [**Simple Store**](https://github.com/Famel-svg/springboot_simple_store) | Backend de e-commerce simplificado com Spring Boot. | `Java` `Spring Boot` `Hibernate` |
+| [**Sistema de Diversidades**](https://github.com/Famel-svg/Sistema_De_Diversidades) | Projeto focado em inclusão e gestão de dados. | `Java` `Spring Boot` |
 
 ---
 
-## 📈 Estatísticas
+### 📈 Estatísticas do GitHub
 
 <div align="center">
-  <img height="170px" src="https://github-readme-stats.vercel.app/api?username=Famel-svg&show_icons=true&theme=tokyonight" />
-  <img height="170px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Famel-svg&layout=compact&theme=tokyonight" />
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=Famel-svg&show_icons=true&theme=radical&include_all_commits=true&count_private=true" />
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Famel-svg&layout=compact&theme=radical" />
 </div>
 
 ---
 
-## 🤝 Conecte-se comigo
+### 🤝 Conecte-se Comigo
 
-<p align="center">
-  <a href="www.linkedin.com/in/rafaeltanimoto">
-    <img src="https://img.shields.io/badge/LinkedIn-blue?logo=linkedin&logoColor=white" />
+<div align="center">
+  <a href="https://www.linkedin.com/in/rafaeltanimoto/" target="_blank">
+    <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
-  <!-- Adicione outros links relevantes, como e-mail, portfólio, etc. -->
-</p>
-
----
+  <a href="mailto:rafaelandradetanimoto@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
+  </a>
+</div>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=footer"/>
-
+  <i>"Transformando ideias em código e design em experiência."</i>
 </p>
