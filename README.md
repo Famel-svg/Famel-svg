@@ -2,11 +2,6 @@
   <img src="./assets/profile-terminal.svg" alt="Rafael Andrade Tanimoto — backend Java, Spring Boot e desenvolvimento Android" width="100%" />
 </p>
 
-<p align="center">
-  <a href="https://github.com/Famel-svg"><img src="https://img.shields.io/badge/GitHub-Famel--svg-181717?style=for-the-badge&logo=github" alt="GitHub Famel-svg" /></a>
-  <a href="https://www.linkedin.com/in/rafaeltanimoto/"><img src="https://img.shields.io/badge/LinkedIn-Conectar-0A66C2?style=for-the-badge&logo=linkedin" alt="LinkedIn" /></a>
-</p>
-
 ## Olá, eu sou Rafael 👋
 
 Desenvolvedor com foco em **Java e Spring Boot**. Também trabalho com **Kotlin/Android** e ferramentas desktop. Minha base em **Design Digital** reforça meu interesse por interfaces claras e experiências simples.
@@ -52,4 +47,7 @@ Desenvolvedor com foco em **Java e Spring Boot**. Também trabalho com **Kotlin/
 
 ## Contato
 
-[LinkedIn](https://www.linkedin.com/in/rafaeltanimoto/) · [Email](mailto:rafaelandradetanimoto@gmail.com) · [Repositórios](https://github.com/Famel-svg?tab=repositories)
+<p align="center">
+  <a href="https://www.linkedin.com/in/rafaeltanimoto/"><img src="https://img.shields.io/badge/LinkedIn-Conectar-0A66C2?style=for-the-badge&logo=linkedin" alt="LinkedIn" /></a>
+  <a href="mailto:rafaelandradetanimoto@gmail.com"><img src="https://img.shields.io/badge/Email-Contato-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+</p>
