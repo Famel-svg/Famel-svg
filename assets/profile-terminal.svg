@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="250" viewBox="0 0 960 250" role="img" aria-labelledby="title description">
+  <title id="title">Rafael Andrade Tanimoto — perfil de desenvolvedor</title>
+  <desc id="description">Cartão em estilo terminal com foco em backend Java, Spring Boot e aplicações Android.</desc>
+  <rect x="1" y="1" width="958" height="248" rx="18" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
+  <path d="M1 56h958" stroke="#30363d" stroke-width="2"/>
+  <circle cx="30" cy="29" r="7" fill="#ff7b72"/>
+  <circle cx="54" cy="29" r="7" fill="#d29922"/>
+  <circle cx="78" cy="29" r="7" fill="#3fb950"/>
+  <text x="110" y="35" fill="#8b949e" font-family="Consolas,monospace" font-size="17">rafael@github: ~</text>
+  <text x="64" y="112" fill="#7ee787" font-family="Consolas,monospace" font-size="18">$ whoami</text>
+  <text x="64" y="157" fill="#f0f6fc" font-family="Consolas,monospace" font-size="31" font-weight="700">Rafael Andrade Tanimoto</text>
+  <text x="64" y="196" fill="#58a6ff" font-family="Consolas,monospace" font-size="19" opacity="0">Backend Java · Spring Boot · Android
+    <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.35s" fill="freeze"/>
+  </text>
+  <text x="64" y="226" fill="#8b949e" font-family="Consolas,monospace" font-size="15" opacity="0">Construindo software útil, uma entrega por vez.
+    <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.8s" fill="freeze"/>
+  </text>
+</svg>
