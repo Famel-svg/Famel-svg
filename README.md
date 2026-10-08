@@ -52,16 +52,17 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
 
 <p align="right"><a href="https://github.com/Famel-svg?tab=repositories">Explorar todos os repositórios →</a></p>
 
-## Stack
+<h2 align="center">Stack</h2>
 
-| Área | Tecnologias |
-| :--- | :--- |
-| Backend | Java · Spring Boot · RabbitMQ |
-| Android e mobile | Kotlin · Android · Expo · React Native · TypeScript · SQLite |
-| Desktop e integração | Python · PySide6 · MCP |
-| Ambiente de desenvolvimento | Docker · Git · GitHub |
+<table align="center" width="100%">
+  <tr><th align="center">Área</th><th align="center">Tecnologias</th></tr>
+  <tr><td align="center">Backend</td><td align="center">Java · Spring Boot · RabbitMQ</td></tr>
+  <tr><td align="center">Android e mobile</td><td align="center">Kotlin · Android · Expo · React Native · TypeScript · SQLite</td></tr>
+  <tr><td align="center">Desktop e integração</td><td align="center">Python · PySide6 · MCP</td></tr>
+  <tr><td align="center">Ambiente de desenvolvimento</td><td align="center">Docker · Git · GitHub</td></tr>
+</table>
 
-<p>
+<p align="center">
   <img src="https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white" alt="Java" />
   <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white" alt="Spring Boot" />
   <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white" alt="Kotlin" />
