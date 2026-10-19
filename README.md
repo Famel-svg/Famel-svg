@@ -3,7 +3,7 @@
 </p>
 
 <p align="center"><strong>Desenvolvedor backend Java/Spring Boot e Android</strong> — APIs assíncronas, apps offline-first e ferramentas desktop.<br />
-<sub>🇺🇸 Backend (Java/Spring Boot) &amp; Android developer · Brazil · Open to internship/junior roles</sub></p>
+<sub>🇺🇸 Backend (Java/Spring Boot) &amp; Android developer · Brazil · Systems Analysis &amp; Development graduate (FIAP) · Open to junior roles</sub></p>
 
 <p align="center">
   <a href="#sobre-mim">Sobre</a> ·
@@ -21,7 +21,7 @@ Desenvolvo **APIs com Java e Spring Boot**, aplicações **Android** e ferrament
 
 Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e cuidado com a experiência de quem usa.
 
-🎓 Análise e Desenvolvimento de Sistemas — **FIAP** · 📍 **Brasil**
+🎓 Formado em Análise e Desenvolvimento de Sistemas — **FIAP** · 📍 **Brasil**
 
 - **Backend:** processamento assíncrono, rastreabilidade e tratamento de falhas.
 - **Mobile:** dados locais e experiências que funcionam sem depender de uma conta.
@@ -31,7 +31,7 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
 
 - 🔭 **Trabalhando em:** SafePix Async — observabilidade e testes de integração.
 - 🌱 **Estudando:** Kotlin + Jetpack Compose · Spring Security · Testcontainers.
-- 🤝 **Aberto a:** estágio ou júnior em backend Java ou Android (remoto/híbrido).
+- 🤝 **Aberto a:** vagas júnior em backend Java ou Android (remoto/híbrido).
 - 💬 **Pergunte-me sobre:** RabbitMQ, idempotência e apps Android offline-first.
 
 ## Projetos em destaque
