@@ -3,7 +3,7 @@
 </p>
 
 <p align="center"><strong>Desenvolvedor backend Java/Spring Boot e Android</strong> — APIs assíncronas, apps offline-first e ferramentas desktop.<br />
-<sub>🇺🇸 Backend (Java/Spring Boot) &amp; Android developer · Brazil · Systems Analysis &amp; Development graduate (FIAP) · Open to junior roles</sub></p>
+<sub>Backend (Java/Spring Boot) &amp; Android developer · Brazil · Systems Analysis &amp; Development graduate (FIAP) · Open to junior roles</sub></p>
 
 <p align="center">
   <a href="#sobre-mim">Sobre</a> ·
@@ -15,13 +15,13 @@
 
 ## Sobre mim
 
-Olá, eu sou **Rafael Andrade Tanimoto** 👋
+Olá, eu sou **Rafael Andrade Tanimoto**
 
 Desenvolvo **APIs com Java e Spring Boot**, aplicações **Android** e ferramentas **desktop**. Gosto de conectar o que acontece nos bastidores — filas, dados e integrações — a interfaces fáceis de usar.
 
 Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e cuidado com a experiência de quem usa.
 
-🎓 Formado em Análise e Desenvolvimento de Sistemas — **FIAP** · 📍 **Brasil**
+Formado em Análise e Desenvolvimento de Sistemas — **FIAP** · **Brasil**
 
 - **Backend:** processamento assíncrono, rastreabilidade e tratamento de falhas.
 - **Mobile:** dados locais e experiências que funcionam sem depender de uma conta.
@@ -29,10 +29,10 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
 
 ## Atualmente
 
-- 🔭 **Trabalhando em:** SafePix Async — observabilidade e testes de integração.
-- 🌱 **Estudando:** Kotlin + Jetpack Compose · Spring Security · Testcontainers.
-- 🤝 **Aberto a:** vagas júnior em backend Java ou Android (remoto/híbrido).
-- 💬 **Pergunte-me sobre:** RabbitMQ, idempotência e apps Android offline-first.
+- **Trabalhando em:** SafePix Async — observabilidade e testes de integração.
+- **Estudando:** Kotlin + Jetpack Compose · Spring Security · Testcontainers.
+- **Aberto a:** vagas júnior em backend Java ou Android (remoto/híbrido).
+- **Pergunte-me sobre:** RabbitMQ, idempotência e apps Android offline-first.
 
 ## Projetos em destaque
 
@@ -41,14 +41,14 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
     <td width="50%">
       <h3><a href="https://github.com/Famel-svg/SafePix_Async">SafePix Async</a></h3>
       <p>API que recebe solicitações Pix por HTTP e as processa em segundo plano com RabbitMQ. Explora idempotência, rastreabilidade e tratamento de falhas com DLQ.</p>
-      <p>✅ <strong>Destaque:</strong> solicitações Pix processadas em segundo plano, com falhas isoladas em DLQ.</p>
+      <p><strong>Destaque:</strong> solicitações Pix processadas em segundo plano, com falhas isoladas em DLQ.</p>
       <sub>Java 21 · Spring Boot · RabbitMQ · Docker</sub>
       <p><a href="https://github.com/Famel-svg/SafePix_Async#arquitetura">Ver arquitetura →</a></p>
     </td>
     <td width="50%">
       <h3><a href="https://github.com/Famel-svg/repforge">RepForge</a></h3>
       <p>Aplicativo Android para montar fichas de treino, registrar cargas e acompanhar a evolução. Dados no aparelho, com exportação e importação em JSON.</p>
-      <p>✅ <strong>Destaque:</strong> funciona com dados no aparelho, sem depender de conta, e permite backup em JSON.</p>
+      <p><strong>Destaque:</strong> funciona com dados no aparelho, sem depender de conta, e permite backup em JSON.</p>
       <sub>Expo · React Native · TypeScript · SQLite</sub>
       <p><a href="https://github.com/Famel-svg/repforge#screenshots">Ver telas →</a></p>
     </td>
@@ -57,7 +57,7 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
     <td colspan="2">
       <h3><a href="https://github.com/Famel-svg/apk-preview-desktop">APK Preview Desktop</a></h3>
       <p>Ferramenta Windows para instalar, executar e inspecionar APKs no Android Emulator oficial. A interface desktop e as ferramentas MCP controlam a mesma sessão.</p>
-      <p>✅ <strong>Destaque:</strong> interface desktop e ferramentas MCP operam sobre a mesma sessão do emulador.</p>
+      <p><strong>Destaque:</strong> interface desktop e ferramentas MCP operam sobre a mesma sessão do emulador.</p>
       <sub>Python · PySide6 · Android Emulator · MCP</sub>
       <p><a href="https://github.com/Famel-svg/apk-preview-desktop#recursos">Explorar recursos →</a></p>
     </td>
