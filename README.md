@@ -41,12 +41,14 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
     <td width="50%">
       <h3><a href="https://github.com/Famel-svg/SafePix_Async">SafePix Async</a></h3>
       <p>API que recebe solicitações Pix por HTTP e as processa em segundo plano com RabbitMQ. Explora idempotência, rastreabilidade e tratamento de falhas com DLQ.</p>
+      <p>✅ <strong>Destaque:</strong> solicitações Pix processadas em segundo plano, com falhas isoladas em DLQ.</p>
       <sub>Java 21 · Spring Boot · RabbitMQ · Docker</sub>
       <p><a href="https://github.com/Famel-svg/SafePix_Async#arquitetura">Ver arquitetura →</a></p>
     </td>
     <td width="50%">
       <h3><a href="https://github.com/Famel-svg/repforge">RepForge</a></h3>
       <p>Aplicativo Android para montar fichas de treino, registrar cargas e acompanhar a evolução. Dados no aparelho, com exportação e importação em JSON.</p>
+      <p>✅ <strong>Destaque:</strong> funciona com dados no aparelho, sem depender de conta, e permite backup em JSON.</p>
       <sub>Expo · React Native · TypeScript · SQLite</sub>
       <p><a href="https://github.com/Famel-svg/repforge#screenshots">Ver telas →</a></p>
     </td>
@@ -55,6 +57,7 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
     <td colspan="2">
       <h3><a href="https://github.com/Famel-svg/apk-preview-desktop">APK Preview Desktop</a></h3>
       <p>Ferramenta Windows para instalar, executar e inspecionar APKs no Android Emulator oficial. A interface desktop e as ferramentas MCP controlam a mesma sessão.</p>
+      <p>✅ <strong>Destaque:</strong> interface desktop e ferramentas MCP operam sobre a mesma sessão do emulador.</p>
       <sub>Python · PySide6 · Android Emulator · MCP</sub>
       <p><a href="https://github.com/Famel-svg/apk-preview-desktop#recursos">Explorar recursos →</a></p>
     </td>
@@ -72,17 +75,6 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
   <tr><td align="center">Desktop e integração</td><td align="center">Python · PySide6 · MCP</td></tr>
   <tr><td align="center">Ambiente de desenvolvimento</td><td align="center">Docker · Git · GitHub</td></tr>
 </table>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white" alt="Java" />
-  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white" alt="Spring Boot" />
-  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white" alt="Kotlin" />
-  <img src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" />
-  <img src="https://img.shields.io/badge/RabbitMQ-FF6600?style=flat-square&logo=rabbitmq&logoColor=white" alt="RabbitMQ" />
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker" />
-</p>
 
 <!-- Referências de composição: anuraghazra/anuraghazra e o artigo de Avi Vashishta
 https://www.avivashishta.com/blog/build-animated-github-profile-readme
