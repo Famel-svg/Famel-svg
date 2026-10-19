@@ -3,7 +3,7 @@
 </p>
 
 <p align="center"><strong>Desenvolvedor backend Java/Spring Boot e Android</strong> — APIs assíncronas, apps offline-first e ferramentas desktop.<br />
-<sub>🇺🇸 Java/Spring Boot backend &amp; Android developer from Brazil — open to internship/junior roles.</sub></p>
+<sub>🇺🇸 Backend (Java/Spring Boot) &amp; Android developer · Brazil · Open to internship/junior roles</sub></p>
 
 <p align="center">
   <a href="#sobre-mim">Sobre</a> ·
@@ -29,10 +29,10 @@ Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e
 
 ## Atualmente
 
-- 🔭 **Trabalhando em:** evolução do SafePix Async (observabilidade e testes de integração).
-- 🌱 **Estudando:** Kotlin + Jetpack Compose, Spring Security e testes com Testcontainers.
-- 🤝 **Aberto a:** estágio ou vaga júnior em backend Java ou Android (remoto ou híbrido).
-- 💬 **Pergunte-me sobre:** mensageria com RabbitMQ, idempotência e apps Android offline-first.
+- 🔭 **Trabalhando em:** SafePix Async — observabilidade e testes de integração.
+- 🌱 **Estudando:** Kotlin + Jetpack Compose · Spring Security · Testcontainers.
+- 🤝 **Aberto a:** estágio ou júnior em backend Java ou Android (remoto/híbrido).
+- 💬 **Pergunte-me sobre:** RabbitMQ, idempotência e apps Android offline-first.
 
 ## Projetos em destaque
 
@@ -93,7 +93,7 @@ O cabeçalho é um SVG local; a apresentação principal também está disponív
 
 ## Contato
 
-<p align="center">Vamos conversar sobre backend, Android ou uma oportunidade? Respondo por LinkedIn ou email.</p>
+<p align="center">Backend, Android ou uma oportunidade? Fale comigo pelo LinkedIn ou email.</p>
 
 <p align="center">
   <a href="https://www.linkedin.com/in/rafaeltanimoto/"><img src="https://img.shields.io/badge/LinkedIn-Conectar-0A66C2?style=for-the-badge&logo=linkedin" alt="LinkedIn" /></a>
