@@ -1,101 +1,97 @@
-<p align="center">
-  <img src="./assets/profile-terminal-v2.svg" alt="Rafael Andrade Tanimoto — backend Java, Spring Boot e desenvolvimento Android" width="100%" />
-</p>
-
-<p align="center"><strong>Desenvolvedor backend Java/Spring Boot e Android</strong> — APIs assíncronas, apps offline-first e ferramentas desktop.<br />
-<sub>Backend (Java/Spring Boot) &amp; Android developer · Brazil · Systems Analysis &amp; Development graduate (FIAP) · Open to junior roles</sub></p>
-
-<p align="center">
-  <a href="#sobre-mim">Sobre</a> ·
-  <a href="#atualmente">Atualmente</a> ·
-  <a href="#projetos-em-destaque">Projetos</a> ·
-  <a href="#stack">Stack</a> ·
-  <a href="#contato">Contato</a>
-</p>
-
-## Sobre mim
-
-Olá, eu sou **Rafael Andrade Tanimoto**
-
-Desenvolvo **APIs com Java e Spring Boot**, aplicações **Android** e ferramentas **desktop**. Gosto de conectar o que acontece nos bastidores — filas, dados e integrações — a interfaces fáceis de usar.
-
-Minha base em **Design Digital** acompanha esse trabalho: clareza na interface e cuidado com a experiência de quem usa.
-
-Formado em Análise e Desenvolvimento de Sistemas — **FIAP** · **Brasil**
-
-- **Backend:** processamento assíncrono, rastreabilidade e tratamento de falhas.
-- **Mobile:** dados locais e experiências que funcionam sem depender de uma conta.
-- **Ferramentas:** automação e integração entre aplicações desktop e Android.
-
-## Atualmente
-
-- **Trabalhando em:** SafePix Async — observabilidade e testes de integração.
-- **Estudando:** Kotlin + Jetpack Compose · Spring Security · Testcontainers.
-- **Aberto a:** vagas júnior em backend Java ou Android (remoto/híbrido).
-- **Pergunte-me sobre:** RabbitMQ, idempotência e apps Android offline-first.
-
-## Projetos em destaque
-
-<table>
+<table width="100%">
   <tr>
-    <td width="50%">
-      <h3><a href="https://github.com/Famel-svg/SafePix_Async">SafePix Async</a></h3>
-      <p>API que recebe solicitações Pix por HTTP e as processa em segundo plano com RabbitMQ. Explora idempotência, rastreabilidade e tratamento de falhas com DLQ.</p>
-      <p><strong>Destaque:</strong> solicitações Pix processadas em segundo plano, com falhas isoladas em DLQ.</p>
-      <sub>Java 21 · Spring Boot · RabbitMQ · Docker</sub>
-      <p><a href="https://github.com/Famel-svg/SafePix_Async#arquitetura">Ver arquitetura →</a></p>
+    <td width="65%" align="center">
+      <sub>RECRUITER SIGNAL BRIEF · famel-svg</sub>
+      <h1>Rafael Andrade Tanimoto</h1>
+      <h3>Backend or systems engineer</h3>
+      <p>● Building and sharing work in public</p>
+      <a href="https://github.com/Famel-svg">GitHub</a>
     </td>
-    <td width="50%">
-      <h3><a href="https://github.com/Famel-svg/repforge">RepForge</a></h3>
-      <p>Aplicativo Android para montar fichas de treino, registrar cargas e acompanhar a evolução. Dados no aparelho, com exportação e importação em JSON.</p>
-      <p><strong>Destaque:</strong> funciona com dados no aparelho, sem depender de conta, e permite backup em JSON.</p>
-      <sub>Expo · React Native · TypeScript · SQLite</sub>
-      <p><a href="https://github.com/Famel-svg/repforge#screenshots">Ver telas →</a></p>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2">
-      <h3><a href="https://github.com/Famel-svg/apk-preview-desktop">APK Preview Desktop</a></h3>
-      <p>Ferramenta Windows para instalar, executar e inspecionar APKs no Android Emulator oficial. A interface desktop e as ferramentas MCP controlam a mesma sessão.</p>
-      <p><strong>Destaque:</strong> interface desktop e ferramentas MCP operam sobre a mesma sessão do emulador.</p>
-      <sub>Python · PySide6 · Android Emulator · MCP</sub>
-      <p><a href="https://github.com/Famel-svg/apk-preview-desktop#recursos">Explorar recursos →</a></p>
+    <td width="35%" align="center">
+      <img src="https://github.com/Famel-svg.png" alt="Rafael Andrade Tanimoto" width="200" />
     </td>
   </tr>
 </table>
 
-<p align="right"><a href="https://github.com/Famel-svg?tab=repositories">Explorar todos os repositórios →</a></p>
+## What teams can evaluate quickly
 
-<h2 align="center">Stack</h2>
-
-<table align="center" width="100%">
-  <tr><th align="center">Área</th><th align="center">Tecnologias</th></tr>
-  <tr><td align="center">Backend</td><td align="center">Java · Spring Boot · RabbitMQ</td></tr>
-  <tr><td align="center">Android e mobile</td><td align="center">Kotlin · Android · Expo · React Native · TypeScript · SQLite</td></tr>
-  <tr><td align="center">Desktop e integração</td><td align="center">Python · PySide6 · MCP</td></tr>
-  <tr><td align="center">Ambiente de desenvolvimento</td><td align="center">Docker · Git · GitHub</td></tr>
+<table width="100%">
+  <tr>
+    <td width="33%"><strong>Role fit</strong><br /><sub>Backend or systems engineer · Kotlin · Java · Python</sub></td>
+    <td width="33%"><strong>Public proof</strong><br /><sub>Public repositories · open-source projects</sub></td>
+    <td width="33%"><strong>Momentum</strong><br /><sub>Consistent contributions throughout the year</sub></td>
+  </tr>
 </table>
 
-<!-- Referências de composição: anuraghazra/anuraghazra e o artigo de Avi Vashishta
-https://www.avivashishta.com/blog/build-animated-github-profile-readme
-O cabeçalho é um SVG local; a apresentação principal também está disponível em texto. -->
-
-## Contribuições
+## Proof at a glance
 
 <p align="center">
-  <img src="./assets/contributions.svg" alt="Calendário de contribuições de Famel-svg, atualizado diariamente pelo GitHub Actions" width="100%" />
+  <img src="https://github-readme-stats.vercel.app/api?username=Famel-svg&theme=github_dark&show_icons=true&hide_border=true&count_private=false" alt="GitHub stats" />
 </p>
 
-<p align="center"><sub>Dados do calendário público do GitHub · Atualização diária</sub><br />
-  <a href="https://github.com/Famel-svg/Famel-svg/actions/workflows/update-contributions.yml">Acompanhar atualização</a> ·
-  <a href="https://github.com/Famel-svg?tab=overview">Ver atividade no GitHub</a>
-</p>
+## Selected work
 
-## Contato
+<table width="100%">
+  <tr>
+    <td colspan="3">
+      <h3><a href="https://github.com/Famel-svg/repforge">repforge</a></h3>
+      <p>App Android nativo de treino de musculação: fichas, plano semanal, evolução. Offline, sem conta. Kotlin + Compose.</p>
+      <sub>Kotlin</sub> · <a href="https://github.com/Famel-svg/repforge">Read the repository →</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" valign="top">
+      <h4><a href="https://github.com/Famel-svg/laya-local-dashboard">laya-local-dashboard</a></h4>
+      <p>Painel desktop nativo (Python + PySide6) para monitorar um servidor Laya local: decisões, latência, erros de payload, VRAM e uso de tokens.</p>
+      <sub>Python</sub>
+    </td>
+    <td width="33%" valign="top">
+      <h4><a href="https://github.com/Famel-svg/Brave_CLI">Brave_CLI</a></h4>
+      <p>Local Brave browser control via Playwright and Chrome DevTools Protocol.</p>
+      <sub>Rust</sub>
+    </td>
+    <td width="33%" valign="top">
+      <h4><a href="https://github.com/Famel-svg/apk-preview-desktop">apk-preview-desktop</a></h4>
+      <p>Desktop Windows para visualizar, navegar e inspecionar APKs via Android Emulator e MCP.</p>
+      <sub>Python</sub>
+    </td>
+  </tr>
+</table>
 
-<p align="center">Backend, Android ou uma oportunidade? Fale comigo pelo LinkedIn ou email.</p>
+## Technical toolkit
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/rafaeltanimoto/"><img src="https://img.shields.io/badge/LinkedIn-Conectar-0A66C2?style=for-the-badge&logo=linkedin" alt="LinkedIn" /></a>
-  <a href="mailto:rafaelandradetanimoto@gmail.com"><img src="https://img.shields.io/badge/Email-Contato-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Famel-svg&theme=github_dark&layout=compact&hide_border=true" alt="Language stack" />
 </p>
+
+<table align="center">
+  <tr>
+    <td align="center"><strong>Kotlin</strong></td>
+    <td align="center"><strong>Java</strong></td>
+    <td align="center"><strong>Python</strong></td>
+    <td align="center"><strong>Rust</strong></td>
+    <td align="center"><strong>JavaScript</strong></td>
+  </tr>
+</table>
+
+## Consistency signal
+
+<p align="center">
+  <img src="./assets/contributions.svg" alt="Contribution activity of Famel-svg" width="100%" />
+</p>
+
+---
+
+<table width="100%">
+  <tr>
+    <td width="65%">
+      <h2>Let's talk about the next build</h2>
+      <p>Open to thoughtful teams, ambitious products, and useful engineering work.</p>
+    </td>
+    <td width="35%" align="center">
+      <a href="https://github.com/Famel-svg">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/rafaeltanimoto/">LinkedIn</a> ·
+      <a href="mailto:rafaelandradetanimoto@gmail.com">Email</a>
+    </td>
+  </tr>
+</table>
