@@ -127,22 +127,22 @@ def city_card(user):
         f'<rect y="{ground - 160}" width="{W}" height="200" fill="url(#glow)"/>',
         # ciclo dia/noite de 30s: céu claro aparece, sol cruza, noite volta
         '<linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82c4"/><stop offset="1" stop-color="#f2b880"/></linearGradient>',
-        f'<rect width="{W}" height="{H}" fill="url(#day)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.3;0.4;0.7;0.8;1" dur="30s" repeatCount="indefinite"/></rect>',
-        '<circle r="22" fill="#ffd166"><animateTransform attributeName="transform" type="translate" values="-60 220;-60 220;120 80;840 80;1020 220;1020 220" keyTimes="0;0.3;0.4;0.7;0.8;1" dur="30s" repeatCount="indefinite"/></circle>',
-        '<g opacity="1"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0;0.3;0.4;0.7;0.8;1" dur="30s" repeatCount="indefinite"/>',
+        f'<rect width="{W}" height="{H}" fill="url(#day)" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/></rect>',
+        '<circle r="22" fill="#ffd166"><animateTransform attributeName="transform" type="translate" values="-60 220;120 80;840 80;1020 220;1020 220" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/></circle>',
     ]
-    for _ in range(70):  # estrelas piscando
-        x, y, r, d = rnd() * W, rnd() * 170, 0.5 + rnd() * 1.1, 2 + rnd() * 4
-        out.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="#f0f6fc"><animate attributeName="opacity" values="0.2;1;0.2" dur="{d:.1f}s" begin="{rnd() * 3:.1f}s" repeatCount="indefinite"/></circle>')
-    out.append('<circle cx="560" cy="62" r="26" fill="#f0f6fc" opacity="0.9"/><circle cx="572" cy="54" r="24" fill="#05070d" opacity="0.85"/>')
     # avião com luzes piscando
-    out.append('<g><animateTransform attributeName="transform" type="translate" values="1000 70; -80 50" dur="15s" repeatCount="indefinite"/>'
+    out.append('<g><animateTransform attributeName="transform" type="translate" values="1000 70;1000 70;-80 50;-80 50" keyTimes="0;0.1;0.36;1" dur="60s" repeatCount="indefinite"/>'
                '<path d="M0 0 L22 0 L26 -2 L22 -4 L4 -4 Z M10 -3 L16 -11 L19 -11 L15 -3 Z M10 -1 L16 5 L19 5 L15 -1 Z" fill="#8b949e"/>'
                '<circle cx="0" cy="-2" r="1.6" fill="#ff7b72"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></circle>'
                '<circle cx="26" cy="-2" r="1.6" fill="#f0f6fc"><animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite"/></circle></g>')
+    out.append('<g opacity="1"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.5;0.58;0.92;1" dur="60s" repeatCount="indefinite"/>')  # grupo noturno
+    for _ in range(70):  # estrelas piscando
+        x, y, r, d = rnd() * W, rnd() * 170, 0.5 + rnd() * 1.1, 2 + rnd() * 4
+        out.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="#f0f6fc"><animate attributeName="opacity" values="0.2;1;0.2" dur="{d:.1f}s" begin="{rnd() * 3:.1f}s" repeatCount="indefinite"/></circle>')
+    out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 220;-60 220;120 80;840 80;1020 220" keyTimes="0;0.5;0.58;0.92;1" dur="60s" repeatCount="indefinite"/><circle r="26" fill="#f0f6fc" opacity="0.9"/><circle cx="12" cy="-8" r="24" fill="#05070d" opacity="0.85"/></g>')
     # óvni: entra, para sobre a cidade com feixe de luz e sai
-    out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 110;420 110;440 104;460 110;1020 90;1020 90" keyTimes="0;0.06;0.13;0.2;0.28;1" dur="30s" repeatCount="indefinite"/>'
-               '<polygon points="-6,6 6,6 22,90 -22,90" fill="#7ee787" opacity="0"><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.06;0.08;0.18;0.2;1" dur="30s" repeatCount="indefinite"/></polygon>'
+    out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 110;-60 110;420 110;440 104;460 110;1020 90;1020 90" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" dur="60s" repeatCount="indefinite"/>'
+               '<polygon points="-6,6 6,6 22,90 -22,90" fill="#7ee787" opacity="0"><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" dur="60s" repeatCount="indefinite"/></polygon>'
                '<ellipse cx="0" cy="0" rx="9" ry="7" fill="#58a6ff" opacity="0.7"/><ellipse cx="0" cy="4" rx="22" ry="5" fill="#8b949e"/>'
                '<circle cx="-12" cy="5" r="1.5" fill="#7ee787"><animate attributeName="fill" values="#7ee787;#d29922;#ff7b72;#7ee787" dur="1.2s" repeatCount="indefinite"/></circle>'
                '<circle cx="0" cy="6" r="1.5" fill="#d29922"><animate attributeName="fill" values="#d29922;#ff7b72;#7ee787;#d29922" dur="1.2s" repeatCount="indefinite"/></circle>'
