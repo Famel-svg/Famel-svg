@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="340" viewBox="0 0 960 340" role="img" aria-labelledby="title description">
+<title id="title">Rafael Andrade Tanimoto — Backend, Android e ferramentas desktop</title>
+<desc id="description">Terminal com foco em Java, Spring Boot, Android e Python. Animação breve de entrada, com conteúdo estático legível.</desc>
+<defs><clipPath id="reveal"><rect width="960" height="340"><animate attributeName="width" from="0" to="960" dur="1.4s" fill="freeze"/></rect></clipPath></defs>
+<rect x="1" y="1" width="958" height="338" rx="18" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
+<path d="M1 54h958" stroke="#30363d"/>
+<circle cx="30" cy="28" r="6" fill="#ff7b72"/><circle cx="52" cy="28" r="6" fill="#d29922"/><circle cx="74" cy="28" r="6" fill="#3fb950"/>
+<g font-family="Consolas, 'Liberation Mono', monospace">
+<text x="108" y="34" fill="#8b949e" font-size="16">rafael@github ~ /profile</text>
+<text x="62" y="100" fill="#7ee787" font-size="18">$ whoami</text>
+<g clip-path="url(#reveal)">
+<text x="62" y="148" fill="#f0f6fc" font-size="34" font-weight="700">Rafael Andrade Tanimoto</text>
+<text x="62" y="184" fill="#58a6ff" font-size="18">APIs, aplicativos e ferramentas que resolvem problemas.</text>
+<text x="62" y="235" fill="#7ee787" font-size="17">$ cat stack.txt</text>
+<text x="62" y="269" fill="#8b949e" font-size="16">foco</text>
+<text x="190" y="269" fill="#e6edf3" font-size="18">Java / Spring Boot / RabbitMQ</text>
+<text x="62" y="302" fill="#8b949e" font-size="16">também</text>
+<text x="190" y="302" fill="#e6edf3" font-size="18">Android / React Native / Python</text>
+</g>
+<text x="840" y="34" fill="#7ee787" font-size="14">Famel-svg</text>
+</g></svg>

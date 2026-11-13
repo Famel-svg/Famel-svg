@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/profile-terminal.svg" alt="Rafael Andrade Tanimoto — backend Java, Spring Boot e desenvolvimento Android" width="100%" />
+  <img src="https://www.gitskins.com/api/section/hero?username=famel-svg&theme=aurora&avatar=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F191300619%3Fu%3D979e43dbdb234b68d5bb32d1aaa34093ded305ae%26v%3D4" alt="famel-svg hero visual" />
 </p>
 
 <p align="center">
