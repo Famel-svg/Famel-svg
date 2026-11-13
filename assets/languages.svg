@@ -4,22 +4,22 @@
   <text x="80" y="29" fill="#8b949e" font-family="Consolas,monospace" font-size="14">linguagens</text>
   <path d="M1 46h468" stroke="#30363d" stroke-width="2"/>
   <text x="28" y="78" fill="#7ee787" font-family="Consolas,monospace" font-size="15">$ linguist --top 6</text>
-  <rect x="28.0" y="94" width="218.0" height="10" fill="#A97BFF"/>
-  <rect x="246.0" y="94" width="112.1" height="10" fill="#b07219"/>
-  <rect x="358.2" y="94" width="47.8" height="10" fill="#3572A5"/>
-  <rect x="406.0" y="94" width="13.2" height="10" fill="#f1e05a"/>
-  <rect x="419.2" y="94" width="12.3" height="10" fill="#dea584"/>
+  <rect x="28.0" y="94" width="216.8" height="10" fill="#A97BFF"/>
+  <rect x="244.8" y="94" width="111.5" height="10" fill="#b07219"/>
+  <rect x="356.4" y="94" width="49.8" height="10" fill="#3572A5"/>
+  <rect x="406.2" y="94" width="13.1" height="10" fill="#f1e05a"/>
+  <rect x="419.3" y="94" width="12.2" height="10" fill="#dea584"/>
   <rect x="431.5" y="94" width="10.5" height="10" fill="#3178c6"/>
   <circle cx="34" cy="129" r="5" fill="#A97BFF"/>
-  <text x="48" y="134" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Kotlin <tspan fill="#8b949e">52.7%</tspan></text>
+  <text x="48" y="134" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Kotlin <tspan fill="#8b949e">52.4%</tspan></text>
   <circle cx="248" cy="129" r="5" fill="#b07219"/>
-  <text x="262" y="134" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Java <tspan fill="#8b949e">27.1%</tspan></text>
+  <text x="262" y="134" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Java <tspan fill="#8b949e">26.9%</tspan></text>
   <circle cx="34" cy="157" r="5" fill="#3572A5"/>
-  <text x="48" y="162" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Python <tspan fill="#8b949e">11.6%</tspan></text>
+  <text x="48" y="162" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Python <tspan fill="#8b949e">12.0%</tspan></text>
   <circle cx="248" cy="157" r="5" fill="#f1e05a"/>
   <text x="262" y="162" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">JavaScript <tspan fill="#8b949e">3.2%</tspan></text>
   <circle cx="34" cy="185" r="5" fill="#dea584"/>
-  <text x="48" y="190" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Rust <tspan fill="#8b949e">3.0%</tspan></text>
+  <text x="48" y="190" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Rust <tspan fill="#8b949e">2.9%</tspan></text>
   <circle cx="248" cy="185" r="5" fill="#3178c6"/>
   <text x="262" y="190" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">TypeScript <tspan fill="#8b949e">2.5%</tspan></text>
 </svg>

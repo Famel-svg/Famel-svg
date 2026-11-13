@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="340" viewBox="0 0 960 340" role="img" aria-label="Cidade de contribuições: 745 no último ano">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="340" viewBox="0 0 960 340" role="img" aria-label="Cidade de contribuições: 750 no último ano">
 <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.7" stop-color="#0d1530"/><stop offset="1" stop-color="#1b1f4a"/></linearGradient>
 <radialGradient id="moonglow"><stop offset="0.45" stop-color="#f0f6fc" stop-opacity="0.35"/><stop offset="1" stop-color="#f0f6fc" stop-opacity="0"/></radialGradient><radialGradient id="glow" cx="0.5" cy="1" r="0.6"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.25"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient>
 <clipPath id="frame"><rect x="1" y="1" width="958" height="338" rx="18"/></clipPath></defs>
@@ -395,20 +395,20 @@
 <g><rect x="911.2" y="292.0" width="14" height="8.0" fill="#161b22" stroke="#30363d" stroke-width="0.6"><animate attributeName="height" from="0" to="8.0" dur="1.2s" begin="1.53s" fill="freeze"/><animate attributeName="y" from="300" to="292.0" dur="1.2s" begin="1.53s" fill="freeze"/></rect>
 <polygon points="925.2,292.0 928.8,295.0 928.8,300 925.2,300" fill="#0b0f1c" opacity="0"><animate attributeName="opacity" to="1" dur="0.3s" begin="2.63s" fill="freeze"/></polygon>
 </g>
-<g><rect x="928.8" y="173.2" width="14" height="126.8" fill="#1f2a44" stroke="#30363d" stroke-width="0.6"><animate attributeName="height" from="0" to="126.8" dur="1.2s" begin="1.56s" fill="freeze"/><animate attributeName="y" from="300" to="173.2" dur="1.2s" begin="1.56s" fill="freeze"/></rect>
-<polygon points="942.8,173.2 946.4,176.2 946.4,300 942.8,300" fill="#0b0f1c" opacity="0"><animate attributeName="opacity" to="1" dur="0.3s" begin="2.66s" fill="freeze"/></polygon>
-<rect x="931.8" y="179" width="2.6" height="3.4" fill="#58a6ff" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="7.8s" begin="2.76s" repeatCount="indefinite"/></rect>
-<rect x="937.3" y="179" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="6.6s" begin="2.76s" repeatCount="indefinite"/></rect>
-<rect x="937.3" y="215" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="7.1s" begin="2.76s" repeatCount="indefinite"/></rect>
-<rect x="931.8" y="242" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="5.1s" begin="2.76s" repeatCount="indefinite"/></rect>
-<rect x="931.8" y="269" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="5.0s" begin="2.76s" repeatCount="indefinite"/></rect>
-<rect x="937.3" y="278" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="6.7s" begin="2.76s" repeatCount="indefinite"/></rect>
-<rect x="937.3" y="287" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="8.5s" begin="2.76s" repeatCount="indefinite"/></rect>
+<g><rect x="928.8" y="168.3" width="14" height="131.7" fill="#22305a" stroke="#30363d" stroke-width="0.6"><animate attributeName="height" from="0" to="131.7" dur="1.2s" begin="1.56s" fill="freeze"/><animate attributeName="y" from="300" to="168.3" dur="1.2s" begin="1.56s" fill="freeze"/></rect>
+<polygon points="942.8,168.3 946.4,171.3 946.4,300 942.8,300" fill="#0b0f1c" opacity="0"><animate attributeName="opacity" to="1" dur="0.3s" begin="2.66s" fill="freeze"/></polygon>
+<rect x="931.8" y="174" width="2.6" height="3.4" fill="#58a6ff" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="7.8s" begin="2.76s" repeatCount="indefinite"/></rect>
+<rect x="937.3" y="174" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="6.6s" begin="2.76s" repeatCount="indefinite"/></rect>
+<rect x="937.3" y="210" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="7.1s" begin="2.76s" repeatCount="indefinite"/></rect>
+<rect x="931.8" y="237" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="5.1s" begin="2.76s" repeatCount="indefinite"/></rect>
+<rect x="931.8" y="264" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="5.0s" begin="2.76s" repeatCount="indefinite"/></rect>
+<rect x="937.3" y="273" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="6.7s" begin="2.76s" repeatCount="indefinite"/></rect>
+<rect x="937.3" y="282" width="2.6" height="3.4" fill="#d29922" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="8.5s" begin="2.76s" repeatCount="indefinite"/></rect>
 </g>
 <rect y="300" width="960" height="40" fill="#0a0d16"/>
 <line x1="0" y1="300" x2="960" y2="300" stroke="#58a6ff" stroke-opacity="0.5"/>
 <text x="28" y="40" fill="#7ee787" font-family="Consolas,monospace" font-size="16">$ ./cidade --ano</text>
-<text x="28" y="328" fill="#8b949e" font-family="Consolas,monospace" font-size="13">cada prédio é uma semana · 745 contribuições no último ano</text>
+<text x="28" y="328" fill="#8b949e" font-family="Consolas,monospace" font-size="13">cada prédio é uma semana · 750 contribuições no último ano</text>
 </g>
 <rect x="1" y="1" width="958" height="338" rx="18" fill="none" stroke="#30363d" stroke-width="2"/>
 </svg>
