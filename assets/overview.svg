@@ -5,9 +5,9 @@
   <path d="M1 46h468" stroke="#30363d" stroke-width="2"/>
   <text x="28" y="78" fill="#7ee787" font-family="Consolas,monospace" font-size="15">$ git stats --author rafael</text>
   <text x="28" y="112" fill="#8b949e" font-family="Consolas,monospace" font-size="15">Contribuições no último ano</text>
-  <text x="440" y="112" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">744</text>
+  <text x="440" y="112" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">745</text>
   <text x="28" y="140" fill="#8b949e" font-family="Consolas,monospace" font-size="15">Commits no último ano</text>
-  <text x="440" y="140" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">629</text>
+  <text x="440" y="140" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">630</text>
   <text x="28" y="168" fill="#8b949e" font-family="Consolas,monospace" font-size="15">Repositórios públicos</text>
   <text x="440" y="168" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">25</text>
   <text x="28" y="196" fill="#8b949e" font-family="Consolas,monospace" font-size="15">Pull requests</text>

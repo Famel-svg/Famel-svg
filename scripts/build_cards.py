@@ -120,7 +120,7 @@ def city_card(user):
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Cidade de contribuições: {cal["totalContributions"]} no último ano">',
         '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.7" stop-color="#0d1530"/><stop offset="1" stop-color="#1b1f4a"/></linearGradient>',
-        '<radialGradient id="glow" cx="0.5" cy="1" r="0.6"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.25"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient>',
+        '<radialGradient id="moonglow"><stop offset="0.45" stop-color="#f0f6fc" stop-opacity="0.35"/><stop offset="1" stop-color="#f0f6fc" stop-opacity="0"/></radialGradient><radialGradient id="glow" cx="0.5" cy="1" r="0.6"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.25"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient>',
         '<clipPath id="frame"><rect x="1" y="1" width="958" height="338" rx="18"/></clipPath></defs>',
         '<g clip-path="url(#frame)">',
         f'<rect width="{W}" height="{H}" fill="url(#sky)"/>',
@@ -129,6 +129,13 @@ def city_card(user):
         '<linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82c4"/><stop offset="1" stop-color="#f2b880"/></linearGradient>',
         f'<rect width="{W}" height="{H}" fill="url(#day)" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/></rect>',
         '<circle r="22" fill="#ffd166"><animateTransform attributeName="transform" type="translate" values="-60 220;120 80;840 80;1020 220;1020 220" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/></circle>',
+        '<g fill="#ffffff" opacity="0"><animate attributeName="opacity" values="0;0.9;0.9;0;0" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/>',
+        '<g transform="translate(240 70) scale(1)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-260 0;0 0" dur="90s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
+        '<g transform="translate(520 120) scale(0.8)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-325 0;0 0" dur="120s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
+        '<g transform="translate(760 60) scale(1.2)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-216 0;0 0" dur="100s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
+        '<g transform="translate(900 140) scale(0.7)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-371 0;0 0" dur="140s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
+        '<g transform="translate(120 150) scale(0.9)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-288 0;0 0" dur="110s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
+        '</g>',
     ]
     # avião com luzes piscando
     out.append('<g><animateTransform attributeName="transform" type="translate" values="1000 70;1000 70;-80 50;-80 50" keyTimes="0;0.1;0.36;1" dur="60s" repeatCount="indefinite"/>'
@@ -139,7 +146,7 @@ def city_card(user):
     for _ in range(70):  # estrelas piscando
         x, y, r, d = rnd() * W, rnd() * 170, 0.5 + rnd() * 1.1, 2 + rnd() * 4
         out.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="#f0f6fc"><animate attributeName="opacity" values="0.2;1;0.2" dur="{d:.1f}s" begin="{rnd() * 3:.1f}s" repeatCount="indefinite"/></circle>')
-    out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 220;-60 220;120 80;840 80;1020 220" keyTimes="0;0.5;0.58;0.92;1" dur="60s" repeatCount="indefinite"/><circle r="26" fill="#f0f6fc" opacity="0.9"/><circle cx="12" cy="-8" r="24" fill="#05070d" opacity="0.85"/></g>')
+    out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 220;-60 220;120 80;840 80;1020 220" keyTimes="0;0.5;0.58;0.92;1" dur="60s" repeatCount="indefinite"/><circle r="44" fill="url(#moonglow)"/><circle r="22" fill="#e8e4d4"/><circle cx="-7" cy="-6" r="5" fill="#cfc9b4"/><circle cx="8" cy="4" r="3.5" fill="#cfc9b4"/><circle cx="-3" cy="10" r="2.5" fill="#cfc9b4"/><circle cx="10" cy="-9" r="2" fill="#cfc9b4"/></g>')
     # óvni: entra, para sobre a cidade com feixe de luz e sai
     out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 110;-60 110;420 110;440 104;460 110;1020 90;1020 90" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" dur="60s" repeatCount="indefinite"/>'
                '<polygon points="-6,6 6,6 22,90 -22,90" fill="#7ee787" opacity="0"><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" dur="60s" repeatCount="indefinite"/></polygon>'
