@@ -13,6 +13,10 @@
   <a href="mailto:rafaelandradetanimoto@gmail.com"><img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
 </p>
 
+<p align="center">
+  <img src="./assets/city.svg" alt="Cidade animada das minhas contribuições no GitHub" width="100%" />
+</p>
+
 ## Sobre
 
 Sou Rafael, de São Paulo. Sou formado em Análise e Desenvolvimento de Sistemas pela FIAP e trabalho principalmente com backend em Java e Spring Boot. Gosto de resolver problemas que aparecem quando o sistema sai do tutorial: requisições duplicadas, duas pessoas reservando o mesmo item ao mesmo tempo, saber quem alterou um registro e quando.
