@@ -26,8 +26,7 @@ Também faço apps Android em Kotlin com Compose, quase sempre offline e sem exi
 Procuro vaga júnior em backend Java ou Android.
 
 <p align="center">
-  <img src="./assets/stats.svg" alt="Estatísticas do GitHub" width="49%" />
-  <img src="./assets/languages.svg" alt="Linguagens mais usadas" width="49%" />
+  <img src="./assets/overview.svg" alt="Estatísticas do GitHub e linguagens mais usadas" width="100%" />
 </p>
 
 ## Projetos

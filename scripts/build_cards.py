@@ -168,7 +168,13 @@ def main():
         raise SystemExit("Defina GITHUB_TOKEN ou GH_TOKEN.")
     user = fetch(token)
     OUT.mkdir(exist_ok=True)
-    for name, svg in (("stats.svg", stats_card(user)), ("languages.svg", langs_card(user)), ("city.svg", city_card(user))):
+    stats, langs = stats_card(user), langs_card(user)
+    # cartões lado a lado num único SVG: o GitHub empilha duas <img> em telas estreitas
+    pair = (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="252" viewBox="0 0 960 252" role="img" aria-label="Estatísticas e linguagens">'
+        + stats.replace("<svg ", '<svg x="0" ', 1) + langs.replace("<svg ", '<svg x="490" ', 1) + "</svg>"
+    )
+    for name, svg in (("stats.svg", stats), ("languages.svg", langs), ("overview.svg", pair), ("city.svg", city_card(user))):
         ElementTree.fromstring(svg)  # self-check: SVG bem formado
         (OUT / name).write_text(svg, encoding="utf-8")
         print(f"wrote assets/{name}")
