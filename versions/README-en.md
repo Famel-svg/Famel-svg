@@ -15,7 +15,7 @@
 
 ## About
 
-I'm Rafael, a Systems Analysis and Development student at FIAP. I mostly work on backend with Java and Spring Boot, and I like the problems that show up after the tutorial ends: duplicate requests, two users booking the same item at once, knowing who changed a record and when.
+I'm Rafael, a Systems Analysis and Development graduate from FIAP. I mostly work on backend with Java and Spring Boot, and I like the problems that show up after the tutorial ends: duplicate requests, two users booking the same item at once, knowing who changed a record and when.
 
 I also build Android apps in Kotlin and Compose, usually offline and without sign-up. My background is in Digital Design, so I care about how things are used, not only how they work.
 
@@ -39,7 +39,7 @@ Looking for an internship or junior role in Java backend or Android.
 
 ## Education
 
-- Systems Analysis and Development — FIAP, 2024 to present
+- Systems Analysis and Development (technologist degree) — FIAP, 2026
 - Digital Design — Anhembi Morumbi, 2022–2023 (not completed)
 
 ## Contact

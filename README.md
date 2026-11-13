@@ -15,7 +15,7 @@
 
 ## Sobre
 
-Sou Rafael, de São Paulo. Estudo Análise e Desenvolvimento de Sistemas na FIAP e trabalho principalmente com backend em Java e Spring Boot. Gosto de resolver problemas que aparecem quando o sistema sai do tutorial: requisições duplicadas, duas pessoas reservando o mesmo item ao mesmo tempo, saber quem alterou um registro e quando.
+Sou Rafael, de São Paulo. Sou formado em Análise e Desenvolvimento de Sistemas pela FIAP e trabalho principalmente com backend em Java e Spring Boot. Gosto de resolver problemas que aparecem quando o sistema sai do tutorial: requisições duplicadas, duas pessoas reservando o mesmo item ao mesmo tempo, saber quem alterou um registro e quando.
 
 Também faço apps Android em Kotlin com Compose, quase sempre offline e sem exigir conta. Antes da FIAP estudei Design Digital na Anhembi Morumbi, então presto atenção em como as coisas são usadas, não só em como funcionam.
 
@@ -50,7 +50,7 @@ Procuro vaga de estágio ou júnior em backend Java ou Android.
 
 ## Formação
 
-- Análise e Desenvolvimento de Sistemas — FIAP, 2024 até hoje
+- Tecnólogo em Análise e Desenvolvimento de Sistemas — FIAP, concluído em 2026
 - Design Digital — Anhembi Morumbi, 2022–2023 (não concluído)
 - Qualificações profissionais FIAP: Análise de Sistemas e Prototipação Web; Desenvolvimento e Design Web 2.0 (2024)
 
