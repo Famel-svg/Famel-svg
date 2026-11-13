@@ -19,7 +19,7 @@ I'm Rafael, a Systems Analysis and Development graduate from FIAP. I mostly work
 
 I also build Android apps in Kotlin and Compose, usually offline and without sign-up. My background is in Digital Design, so I care about how things are used, not only how they work.
 
-Looking for an internship or junior role in Java backend or Android.
+Looking for a junior role in Java backend or Android.
 
 ## Projects
 

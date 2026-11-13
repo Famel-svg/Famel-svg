@@ -19,7 +19,7 @@ Sou Rafael, de São Paulo. Sou formado em Análise e Desenvolvimento de Sistemas
 
 Também faço apps Android em Kotlin com Compose, quase sempre offline e sem exigir conta. Antes da FIAP estudei Design Digital na Anhembi Morumbi, então presto atenção em como as coisas são usadas, não só em como funcionam.
 
-Procuro vaga de estágio ou júnior em backend Java ou Android.
+Procuro vaga júnior em backend Java ou Android.
 
 ## Projetos
 
