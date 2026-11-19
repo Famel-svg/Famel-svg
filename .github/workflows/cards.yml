@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - scripts/build_cards.py
+      - scripts/festive.py
 
 permissions:
   contents: write

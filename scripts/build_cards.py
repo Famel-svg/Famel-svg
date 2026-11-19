@@ -11,6 +11,8 @@ from html import escape
 from pathlib import Path
 from xml.etree import ElementTree
 
+from festive import LAYERS as FESTIVE, festive_event
+
 USER = os.environ.get("GH_USER", "Famel-svg")
 OUT = Path(__file__).resolve().parent.parent / "assets"
 FONT = "Consolas,monospace"
@@ -117,12 +119,15 @@ def langs_card(user, top=6):
 
 
 EVENTS = ["chuva", "abducao", "tempestade", "fogos", "neblina", "balao"]
-# um evento por dia, sorteado ao acaso (semente = data, então o dia todo mostra o mesmo); CITY_EVENT força um evento para testar
-EVENT = os.environ.get("CITY_EVENT") or random.Random(date.today().toordinal()).choice(EVENTS)
+# um evento por dia: data festiva tem prioridade; senão sorteio (semente = data, então o dia todo mostra o mesmo); CITY_EVENT força um evento para testar
+EVENT = (os.environ.get("CITY_EVENT") or festive_event(date.today())
+         or random.Random(date.today().toordinal()).choice(EVENTS))
 
 
 def event_layer(event, W, H, loop, rnd, road):
     """Camada do evento do dia, desenhada por cima da cidade."""
+    if event in FESTIVE:
+        return FESTIVE[event](W, H, loop, rnd, road)
     if event in ("chuva", "tempestade"):
         drops = []
         for _ in range(140):
@@ -350,7 +355,7 @@ def city_card(user, layout="day"):
     lights = "".join(
         f'<circle cx="{cx}" cy="5.5" r="1.6"><animate attributeName="fill" values="{v}" dur="1.2s" repeatCount="indefinite"/></circle>'
         for cx, v in ((-14, "#7ee787;#d29922;#ff7b72;#7ee787"), (0, "#d29922;#ff7b72;#7ee787;#d29922"), (14, "#ff7b72;#7ee787;#d29922;#ff7b72")))
-    if EVENT != "abducao":  # na abdução o óvni do evento substitui o de passagem
+    if EVENT != "abducao" and EVENT not in FESTIVE:  # abdução tem o próprio óvni; datas festivas ficam sem, para não poluir
         out.append(f'<g><animateTransform attributeName="transform" type="translate" values="1030 110;1030 110;500 120;480 113;460 120;-60 80;-60 80" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" {loop}/>'
                    f'<polygon points="-7,6 7,6 40,190 -40,190" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" {loop}/></polygon>'
                    '<ellipse cx="0" cy="-1" rx="9" ry="8" fill="#9ecbff" opacity="0.75"/><ellipse cx="0" cy="4" rx="24" ry="6" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="24" ry="3" fill="#c9d1d9"/>'
