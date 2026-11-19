@@ -114,7 +114,7 @@ def langs_card(user, top=6):
     return frame(470, max(height, 112 + 5 * 28), "linguagens", "\n".join(body))
 
 
-def city_card(user):
+def city_card(user, layout="day"):
     """Cidade isométrica: cada quarteirão é uma semana, cada lote um dia; prédio cresce com as contribuições.
 
     Céu com ciclo de dia e noite de 60s: sol retrô, nuvens e avião de dia; lua, estrelas e óvni à noite.
@@ -122,23 +122,51 @@ def city_card(user):
     cal = user["contributionsCollection"]["contributionCalendar"]
     days = [[d["contributionCount"] for d in w["contributionDays"]] for w in cal["weeks"]]
     W, H = 960, 560
-    peak = max((n for wk in days for n in wk), default=0) or 1
-    BX = 12  # quarteirões por linha; cada quarteirão tem 3x3 lotes e uma rua de 1 lote
-    BY = -(-len(days) // BX)
-    cols, rows = BX * 4, BY * 4
-    # vista frontal inclinada: semanas correm na horizontal, profundidade desce para a esquerda
-    rx, ry = 4.0, 12.5
-    sx = (920 - rows * rx) / cols
-    ox, oy = 20 + rows * rx, 240.0
-    # 7 dias ocupam o quarteirão 3x3; os 2 cantos da frente viram praça
-    SPOTS = [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (1, 2)]
-    lots_xy = {}
-    for k, wk in enumerate(days):
-        bc, br = (k % BX) * 4, (k // BX) * 4
-        for d, n in enumerate(wk):
-            lots_xy[bc + SPOTS[d][0], br + SPOTS[d][1]] = n
-        for dc, dr in ((0, 2), (2, 2)):
-            lots_xy[bc + dc, br + dr] = 0
+    lots_xy, labels = {}, {}
+    if layout == "day":
+        BX = 12  # quarteirões por linha; cada quarteirão tem 3x3 lotes e uma rua de 1 lote
+        cols, rows = BX * 4, -(-len(days) // BX) * 4
+        street_r, street_c = list(range(3, rows - 1, 4)), list(range(3, cols - 1, 4))
+        rx, ry, oy, hmax = 4.0, 12.5, 240.0, 60
+        # 7 dias ocupam o quarteirão 3x3; os 2 cantos da frente viram praça
+        SPOTS = [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (1, 2)]
+        for k, wk in enumerate(days):
+            bc, br = (k % BX) * 4, (k // BX) * 4
+            for d, n in enumerate(wk):
+                lots_xy[bc + SPOTS[d][0], br + SPOTS[d][1]] = n
+            for dc, dr in ((0, 2), (2, 2)):
+                lots_xy[bc + dc, br + dr] = 0
+        tagline = "cada quarteirão é uma semana, cada lote um dia"
+    elif layout == "week":
+        # um prédio por semana, em duas avenidas
+        half = -(-len(days) // 2)
+        cols, rows = half, 3
+        street_r, street_c = [1], []
+        rx, ry, oy, hmax = 10.0, 20.0, 448.0, 270
+        for k, wk in enumerate(days):
+            lots_xy[k % half, 0 if k < half else 2] = sum(wk)
+        tagline = "cada prédio é uma semana"
+    else:
+        # um prédio por mês, com o nome embaixo
+        months = {}
+        for wk in cal["weeks"]:
+            for d in wk["contributionDays"]:
+                key = d["date"][:7]
+                months[key] = months.get(key, 0) + d["contributionCount"]
+        keys = sorted(months)[-12:]
+        cols, rows = len(keys), 1
+        street_r, street_c = [], []
+        rx, ry, oy, hmax = 10.0, 28.0, 400.0, 250
+        NOMES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
+        for c, key in enumerate(keys):
+            lots_xy[c, 0] = months[key]
+            labels[c] = (NOMES[int(key[5:]) - 1], months[key])
+        tagline = "cada prédio é um mês"
+    peak = max(lots_xy.values(), default=0) or 1
+    # vista frontal inclinada: o tempo corre na horizontal, a profundidade desce para a esquerda
+    # plataforma passa das bordas: os cantos inclinados ficam fora do quadro e ela acompanha o chão
+    ox = 12 + rows * rx * 0.5
+    sx = (W - ox + rows * rx + 12) / cols
     seed = 7
 
     def rnd():
@@ -239,13 +267,16 @@ def city_card(user):
     # plataforma em losango com espessura
     N, E, S, Wc = P(-0.5, -0.5), P(cols - 0.5, -0.5), P(cols - 0.5, rows - 0.5), P(-0.5, rows - 0.5)
     slab = 10
+    # calçada da frente: preenche até o rodapé para não sobrar céu embaixo da cidade
+    out.append(f'<rect x="0" y="{N[1]:.1f}" width="{W}" height="{H - N[1]:.1f}" fill="#0a1226"/>')
+    out.append(f'<line x1="0" y1="{S[1] + slab:.1f}" x2="{W}" y2="{S[1] + slab:.1f}" stroke="{BLUE}" stroke-opacity="0.35"/>')
     out.append(poly([Wc, S, (S[0], S[1] + slab), (Wc[0], Wc[1] + slab)], "#0a1226"))
-    out.append(poly([N, Wc, (Wc[0], Wc[1] + slab), (N[0], N[1] + slab)], "#070d1c"))
+    out.append(poly([S, E, (E[0], E[1] + slab), (S[0], S[1] + slab)], "#070d1c"))
     out.append(poly([N, E, S, Wc], "#0f1d3d", f' stroke="{BLUE}" stroke-opacity="0.7" stroke-width="1.2"'))
     # ruas tracejadas entre as fileiras
     out.append(f'<g stroke="{BLUE}" stroke-opacity="0.35" stroke-width="0.8" stroke-dasharray="3 3">'
-               + "".join(f'<line x1="{P(-0.5, k + 0.5)[0]:.1f}" y1="{P(-0.5, k + 0.5)[1]:.1f}" x2="{P(cols - 0.5, k + 0.5)[0]:.1f}" y2="{P(cols - 0.5, k + 0.5)[1]:.1f}"/>' for k in range(3, rows - 1, 4))
-               + "".join(f'<line x1="{P(k + 0.5, -0.5)[0]:.1f}" y1="{P(k + 0.5, -0.5)[1]:.1f}" x2="{P(k + 0.5, rows - 0.5)[0]:.1f}" y2="{P(k + 0.5, rows - 0.5)[1]:.1f}"/>' for k in range(3, cols - 1, 4))
+               + "".join(f'<line x1="{P(-0.5, k + 0.5)[0]:.1f}" y1="{P(-0.5, k + 0.5)[1]:.1f}" x2="{P(cols - 0.5, k + 0.5)[0]:.1f}" y2="{P(cols - 0.5, k + 0.5)[1]:.1f}"/>' for k in street_r)
+               + "".join(f'<line x1="{P(k + 0.5, -0.5)[0]:.1f}" y1="{P(k + 0.5, -0.5)[1]:.1f}" x2="{P(k + 0.5, rows - 0.5)[0]:.1f}" y2="{P(k + 0.5, rows - 0.5)[1]:.1f}"/>' for k in street_c)
                + "</g>")
 
     # lotes e árvores nos dias sem contribuição
@@ -261,7 +292,7 @@ def city_card(user):
     out.append("".join(lots))
 
     # carros andando nas ruas, com farol de dia e de noite
-    roads = [(P(-0.5, k + 0.5), P(cols - 0.5, k + 0.5)) for k in range(3, rows - 1, 4)] + [(P(k + 0.5, -0.5), P(k + 0.5, rows - 0.5)) for k in range(3, cols - 1, 4)]
+    roads = [(P(-0.5, k + 0.5), P(cols - 0.5, k + 0.5)) for k in street_r] + [(P(k + 0.5, -0.5), P(k + 0.5, rows - 0.5)) for k in street_c]
     for j, (a, b) in enumerate(roads):
         rev, dur, begin = j % 2 == 1, 14 + (j * 3) % 9, (j * 5) % 13
         if rev:
@@ -269,44 +300,63 @@ def city_card(user):
         color = "#ffd27a" if not rev else "#ff7b72"
         out.append(f'<circle r="1.8" fill="{color}"><animateMotion path="M{a[0]:.1f},{a[1]:.1f} L{b[0]:.1f},{b[1]:.1f}" dur="{dur}s" begin="-{begin}s" repeatCount="indefinite"/></circle>')
 
-    # prédios: de trás para frente para a sobreposição ficar certa
-    windows = []
-    cells = sorted(((c, r, n) for (c, r), n in lots_xy.items()), key=lambda t: (t[1], -t[0]))
+    # prédios: de trás para frente para a sobreposição ficar certa; janelas dentro de cada prédio
+    TONES = [("#3a5aa0", "#24376a", "#16213f", "#6f95e6"), ("#3b4f86", "#22305c", "#141c38", "#6a84c8"), ("#2f5f8f", "#1f3d63", "#13253d", "#5fa0d6")]
+    dim = f'<animate attributeName="opacity" values="0.12;0.12;1;1;0.12" keyTimes="0;0.5;0.58;0.92;1" {loop}/>'
+    cells = sorted(((c, r, n) for (c, r), n in lots_xy.items()), key=lambda t: (t[1], t[0]))
     for c, r, n in cells:
         if not n:
             out.append(trees.get((c, r), ""))
             continue
-        h = 6 + 58 * (n / peak) ** 0.55
-        i = 0.16
+        h = 8 + hmax * (n / peak) ** 0.55
+        i = 0.09
         n_, e_, s_, w_ = P(c + i, r + i), P(c + 1 - i, r + i), P(c + 1 - i, r + 1 - i), P(c + i, r + 1 - i)
         up = lambda p, z=h: (p[0], p[1] - z)
         delay = 0.4 + c * 0.03
-        hot = n >= peak * 0.4
-        body = (poly([w_, s_, up(s_), up(w_)], "#2a3d6e" if hot else "#223258")
-                + poly([n_, w_, up(w_), up(n_)], "#16203d" if hot else "#121a33")
-                + poly([up(n_), up(e_), up(s_), up(w_)], "#5b82d6" if hot else "#3d5894", f' stroke="{BLUE}" stroke-opacity="0.45" stroke-width="0.6"'))
+        top, front, side, rim = TONES[int(rnd() * len(TONES))]
+        if n >= peak * 0.4:
+            top, rim = "#5b82d6", "#9ecbff"
+        # sombra no chão, para a direita
+        # fundo deslocado para a direita: as faces visíveis são a fachada (w->s) e a lateral direita (s->e)
+        body = poly([w_, s_, up(s_), up(w_)], front)
+        body += poly([s_, e_, up(e_), up(s_)], side)
+        body += poly([up(n_), up(e_), up(s_), up(w_)], top, f' stroke="{rim}" stroke-opacity="0.8" stroke-width="0.7"')
+        mid = up(P(c + 0.5, r + 0.5))
         if n == peak:
-            tx, ty = up(P(c + 0.5, r + 0.5))
-            body += (f'<line x1="{tx:.1f}" y1="{ty:.1f}" x2="{tx:.1f}" y2="{ty - 12:.1f}" stroke="#8b949e" stroke-width="1"/>'
-                     f'<circle cx="{tx:.1f}" cy="{ty - 13:.1f}" r="2" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1.4s" repeatCount="indefinite"/></circle>')
-        out.append(f'<g opacity="0"><animate attributeName="opacity" to="1" dur="0.5s" begin="{delay:.2f}s" fill="freeze"/>{body}</g>')
-        # janelas nas duas faces visíveis
-        for z in range(4, int(h) - 3, 5):
-            for a, b in ((w_, s_), (n_, w_)):
-                for t in (0.22, 0.58):
-                    if rnd() < 0.55:
+            body += (f'<line x1="{mid[0]:.1f}" y1="{mid[1]:.1f}" x2="{mid[0]:.1f}" y2="{mid[1] - 14:.1f}" stroke="#8b949e" stroke-width="1"/>'
+                     f'<circle cx="{mid[0]:.1f}" cy="{mid[1] - 15:.1f}" r="2" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1.4s" repeatCount="indefinite"/></circle>')
+        elif h > 30:
+            k = 0.3  # casinha de máquinas no telhado
+            a1, b1, c1, d1 = P(c + k, r + k, h), P(c + 1 - k, r + k, h), P(c + 1 - k, r + 1 - k, h), P(c + k, r + 1 - k, h)
+            hb = 3.5
+            body += poly([d1, c1, (c1[0], c1[1] - hb), (d1[0], d1[1] - hb)], front) + poly([(a1[0], a1[1] - hb), (b1[0], b1[1] - hb), (c1[0], c1[1] - hb), (d1[0], d1[1] - hb)], top)
+        # janelas: 3 colunas na frente, 1 na lateral
+        wins = []
+        for z in range(6, int(h) - 5, 9):
+            for a, b, ts, tw in ((w_, s_, (0.18, 0.6), 0.2), (s_, e_, (0.35,), 0.3)):
+                for t in ts:
+                    if rnd() < 0.3:
                         p1 = (a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t - z)
-                        p2 = (a[0] + (b[0] - a[0]) * (t + 0.22), a[1] + (b[1] - a[1]) * (t + 0.22) - z)
-                        color = "#ffcf6e" if rnd() < 0.82 else "#9ecbff"
-                        windows.append(poly([p1, p2, (p2[0], p2[1] - 2.2), (p1[0], p1[1] - 2.2)], color))
-    out.append(f'<g opacity="0.15"><animate attributeName="opacity" values="0.15;0.15;1;1;0.15" keyTimes="0;0.5;0.58;0.92;1" {loop}/>{"".join(windows)}</g>')
+                        p2 = (a[0] + (b[0] - a[0]) * (t + tw), a[1] + (b[1] - a[1]) * (t + tw) - z)
+                        color = "#ffcf6e" if rnd() < 0.8 else "#9ecbff"
+                        wins.append(poly([p1, p2, (p2[0], p2[1] - 3), (p1[0], p1[1] - 3)], color))
+        if wins:
+            body += f'<g opacity="0.12">{dim}{"".join(wins)}</g>'
+        out.append(f'<g opacity="0"><animate attributeName="opacity" to="1" dur="0.5s" begin="{delay:.2f}s" fill="freeze"/>{body}</g>')
+
+    # rótulos do layout por mês: nome na frente da plataforma e total acima do prédio
+    for c, (name, v) in labels.items():
+        fx, fy = P(c + 0.5, rows - 0.5)
+        tx, ty = P(c + 0.5, 0.5, 8 + hmax * (v / peak) ** 0.55)
+        out.append(f'<text x="{fx:.1f}" y="{fy + slab + 16:.1f}" text-anchor="middle" font-family="{FONT}" font-size="13" font-weight="700" fill="{INK}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.8" stroke-width="3">{name}</text>')
+        out.append(f'<text x="{tx:.1f}" y="{ty - 22:.1f}" text-anchor="middle" font-family="{FONT}" font-size="12" font-weight="700" fill="{INK}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.8" stroke-width="3">{v}</text>')
 
     halo = 'paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4"'
     out += [
         f'<rect y="{H - 36}" width="{W}" height="36" fill="#05070d" opacity="0.85"/>',
         f'<line x1="0" y1="{H - 36}" x2="{W}" y2="{H - 36}" stroke="url(#line)" stroke-opacity="0.6"/>',
         f'<text x="32" y="42" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2" fill="{BLUE}" {halo}>CONTRIBUTION.CITY'
-        f'<tspan dx="14" font-weight="400" letter-spacing="0" font-size="13" fill="{SOFT}">&gt; cada quarteirão é uma semana, cada lote um dia</tspan></text>',
+        f'<tspan dx="14" font-weight="400" letter-spacing="0" font-size="13" fill="{SOFT}">&gt; {tagline}</tspan></text>',
         f'<text x="{W - 32}" y="42" text-anchor="end" font-family="{FONT}" font-size="14" font-weight="700" fill="{INK}" {halo}>{cal["totalContributions"]} contribuições no último ano</text>',
         f'<text x="32" y="{H - 14}" font-family="{FONT}" font-size="12" fill="{SOFT}" fill-opacity="0.8">dados do GitHub, atualizados todo dia por um GitHub Action</text>',
         "</g>",
@@ -328,7 +378,7 @@ def main():
         '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="252" viewBox="0 0 960 252" role="img" aria-label="Estatísticas e linguagens">'
         + stats.replace("<svg ", '<svg x="0" ', 1) + langs.replace("<svg ", '<svg x="490" ', 1) + "</svg>"
     )
-    for name, svg in (("stats.svg", stats), ("languages.svg", langs), ("overview.svg", pair), ("city.svg", city_card(user))):
+    for name, svg in (("stats.svg", stats), ("languages.svg", langs), ("overview.svg", pair), ("city.svg", city_card(user, "week"))):
         ElementTree.fromstring(svg)  # self-check: SVG bem formado
         (OUT / name).write_text(svg, encoding="utf-8")
         print(f"wrote assets/{name}")
