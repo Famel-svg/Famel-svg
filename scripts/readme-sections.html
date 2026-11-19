@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: transparent; font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #e6edf3; }
+  .sec { width: 860px; background: #0d1117; border: 1px solid #30363d; border-radius: 14px; padding: 30px 34px; }
+  .kicker { font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: #58a6ff; letter-spacing: .08em; margin: 0 0 6px; }
+  h2 { font-size: 24px; font-weight: 700; margin: 0 0 16px; color: #e6f1ff; }
+  p { font-size: 15px; line-height: 1.6; margin: 0 0 12px; color: #c9d1d9; }
+  b { color: #e6f1ff; }
+  .muted { color: #8b949e; font-size: 13px; }
+  .case { width: 860px; background: #0d1117; border: 1px solid #30363d; border-radius: 14px; padding: 24px 30px; }
+  .case .title { font-size: 19px; font-weight: 700; color: #58a6ff; margin: 0 0 2px; }
+  .case .sub { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #8b949e; margin: 0 0 14px; }
+  .case p { margin-bottom: 8px; }
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #3fb950; border: 1px solid #238636; border-radius: 999px; padding: 2px 10px; margin-bottom: 12px; }
+  ul { margin: 0; padding-left: 18px; }
+  li { font-size: 14px; line-height: 1.6; color: #c9d1d9; margin-bottom: 6px; }
+  li b { color: #58a6ff; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
+  th { color: #8b949e; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+  td.area { color: #3fb950; font-family: 'JetBrains Mono', monospace; font-size: 12px; white-space: nowrap; }
+  td.proj { color: #58a6ff; font-weight: 600; white-space: nowrap; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; width: 180px; border-radius: 8px; font-size: 15px; font-weight: 700; color: #fff; }
+  .btn-li { background: #0a66c2; }
+  .btn-mail { background: #ea4335; }
+  .btn-pt, .btn-en { display: inline-flex; align-items: center; justify-content: center; height: 30px; width: 110px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+  .btn-pt { background: #1f6feb; color: #fff; }
+  .btn-en { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+  .lang { display: inline-block; padding: 0; }
+</style>
+</head>
+<body>
+
+<div class="sec" data-shot="about">
+  <div class="kicker">01 / SOBRE</div>
+  <h2>Quem sou</h2>
+  <p>Sou Rafael, de São Paulo, formado em Análise e Desenvolvimento de Sistemas pela FIAP e Assistente de TI na Núcleo Engenharia desde junho de 2026. Trabalho principalmente com <b>backend em Java e Spring Boot</b> e gosto dos problemas que aparecem quando o sistema sai do tutorial: requisições duplicadas, duas pessoas reservando o mesmo item ao mesmo tempo, saber quem alterou um registro e quando.</p>
+  <p>Também faço apps Android em Kotlin com Compose, quase sempre offline e sem exigir conta. Antes da FIAP estudei Design Digital na Anhembi Morumbi, então presto atenção em como as coisas são usadas, não só em como funcionam.</p>
+  <p style="margin-top:14px;">Procuro vaga <b>júnior em backend Java ou Android</b>, remota ou híbrida.</p>
+</div>
+
+<div class="case" data-shot="case-1">
+  <div class="tag">ESTUDO DE CASO 1</div>
+  <div class="title">Pagamento que não duplica</div>
+  <div class="sub">SafePix Async · Spring Boot · RabbitMQ</div>
+  <p><b>Problema:</b> uma API de Pix não pode travar esperando o processamento, nem cobrar duas vezes quando o cliente repete a requisição.</p>
+  <p><b>Decisão:</b> responder na hora e processar em segundo plano pela fila, com chave de idempotência e fila de mensagens mortas para o que falhar.</p>
+  <p><b>Resultado:</b> requisição repetida não gera nova transação, e falhas ficam visíveis no Prometheus e no Grafana.</p>
+</div>
+
+<div class="case" data-shot="case-2">
+  <div class="tag">ESTUDO DE CASO 2</div>
+  <div class="title">Quem mexeu nisso?</div>
+  <div class="sub">Auditoria PIX · Hibernate Envers · AOP</div>
+  <p><b>Problema:</b> rastrear cada transação como pede a Resolução BCB nº 1/2020: quem fez, quando, o que mudou e de onde.</p>
+  <p><b>Decisão:</b> histórico de versões com Envers e captura de origem com AOP, sem espalhar código de auditoria pelas regras de negócio.</p>
+  <p><b>Resultado:</b> trilha completa por transação e cobertura de testes acima de 80% no JaCoCo.</p>
+</div>
+
+<div class="case" data-shot="case-3">
+  <div class="tag">ESTUDO DE CASO 3</div>
+  <div class="title">O último item do estoque</div>
+  <div class="sub">Estoque Reserva · Java 21 · PostgreSQL</div>
+  <p><b>Problema:</b> dois clientes tentando reservar a última unidade no mesmo instante.</p>
+  <p><b>Decisão:</b> lock otimista com <b>@Version</b>: cada baixa de estoque vira um UPDATE condicionado à versão lida, e quem chega depois recebe 409 Conflict.</p>
+  <p><b>Resultado:</b> teste com Testcontainers coloca 50 threads disputando 1 unidade, e exatamente uma vence.</p>
+</div>
+
+<div class="sec" data-shot="projects">
+  <div class="kicker">03 / OUTROS PROJETOS</div>
+  <h2>Todos os projetos</h2>
+  <ul style="margin-bottom:18px;">
+    <li><b>WTC CRM Chat</b> — CRM com chat em tempo real feito para o World Trade Center São Paulo em projeto da FIAP. API Spring Boot com JWT e WebSocket/STOMP, app Android em Compose, Firestore e push via FCM.</li>
+    <li><b>Fluxo</b> — controle financeiro que lê notificações do banco e sugere os lançamentos. Kotlin e Compose.</li>
+    <li><b>RepForge</b> — app de treino com fichas, plano semanal e histórico. Kotlin, Compose e Room.</li>
+  </ul>
+  <table>
+    <tr><th>Área</th><th>Projeto</th><th>Entrega</th></tr>
+    <tr><td class="area">Backend</td><td class="proj">SafePix Async</td><td>Pix assíncrono com RabbitMQ, idempotência, DLQ e métricas</td></tr>
+    <tr><td class="area">Backend</td><td class="proj">Auditoria PIX</td><td>Rastreabilidade com Envers e AOP</td></tr>
+    <tr><td class="area">Backend</td><td class="proj">Estoque Reserva</td><td>Reserva sem overbooking</td></tr>
+    <tr><td class="area">Backend</td><td class="proj">Reserva de Salas</td><td>Reservas sem sobreposição de horário</td></tr>
+    <tr><td class="area">Backend</td><td class="proj">Biblioteca Empréstimos</td><td>Regras testadas com Testcontainers, Flyway e CI</td></tr>
+    <tr><td class="area">Backend</td><td class="proj">Auth RBAC Starter</td><td>Login JWT e permissões por papel</td></tr>
+    <tr><td class="area">Backend</td><td class="proj">Controle Financeiro</td><td>Receitas, gastos e resumo de saldo com Spring Security</td></tr>
+    <tr><td class="area">Backend</td><td class="proj">Simple Store</td><td>Loja REST com JPA, Docker Compose e CI</td></tr>
+    <tr><td class="area">Full stack</td><td class="proj">WTC CRM Chat</td><td>CRM e chat em tempo real, API e app Android</td></tr>
+    <tr><td class="area">Android</td><td class="proj">Fluxo</td><td>Finanças offline a partir de notificações</td></tr>
+    <tr><td class="area">Android</td><td class="proj">RepForge</td><td>Treino offline-first</td></tr>
+    <tr><td class="area">Desktop</td><td class="proj">APK Preview Desktop</td><td>Emulador Android com ferramentas MCP</td></tr>
+    <tr><td class="area">CLI</td><td class="proj">Brave CLI</td><td>Controle do navegador via CDP, em Rust</td></tr>
+    <tr><td class="area">Dados</td><td class="proj">Combustíveis SQL Analytics</td><td>Preços da ANP no RJ em SQL e Python</td></tr>
+    <tr><td class="area">Dados</td><td class="proj">Painel Power BI</td><td>Modelo estrela e painel sobre os mesmos dados</td></tr>
+  </table>
+</div>
+
+<div class="sec" data-shot="education">
+  <div class="kicker">05 / FORMAÇÃO</div>
+  <h2>Formação</h2>
+  <ul>
+    <li><b>Tecnólogo em Análise e Desenvolvimento de Sistemas</b> — FIAP, concluído em 2026</li>
+    <li><b>Design Digital</b> — Anhembi Morumbi, 2022–2023 (não concluído)</li>
+    <li><b>Qualificações profissionais FIAP:</b> Análise de Sistemas e Prototipação Web; Desenvolvimento e Design Web 2.0 (2024)</li>
+  </ul>
+</div>
+
+<div class="sec" data-shot="contact">
+  <div class="kicker">06 / CONTATO</div>
+  <h2>Vamos conversar</h2>
+  <p>Se tiver uma vaga ou quiser conversar sobre algum projeto, me chame no LinkedIn ou mande um email.</p>
+</div>
+
+<div class="lang" data-shot="btn-pt"><div class="btn-pt">Português</div></div>
+<div class="lang" data-shot="btn-en"><div class="btn-en">English</div></div>
+<div class="lang" data-shot="btn-linkedin"><div class="btn btn-li">in&nbsp; LinkedIn</div></div>
+<div class="lang" data-shot="btn-email"><div class="btn btn-mail">✉&nbsp; Email</div></div>
+
+</body>
+</html>
