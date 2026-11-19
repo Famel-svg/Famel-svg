@@ -1,7 +1,7 @@
 <p align="center"><b>Português</b> | <a href="versions/README-en.md">English</a></p>
 
 <p align="center">
-  <img src="./assets/profile-terminal.svg" alt="Rafael Andrade Tanimoto — backend Java, Spring Boot e desenvolvimento Android" width="100%" />
+  <img src="./assets/hero-pt.svg" alt="Rafael Tanimoto — backend Java, Spring Boot e Android" width="100%" />
 </p>
 
 <p align="center">
@@ -103,11 +103,9 @@ Procuro vaga **júnior em backend Java ou Android**, remota ou híbrida.
 
 </details>
 
-## 04 / Ferramentas
+## 04 / Stack
 
-<p>
-  <img src="https://skillicons.dev/icons?i=java,spring,postgres,rabbitmq,docker,githubactions,kotlin,androidstudio,python,ts,rust&perline=11" alt="Java, Spring, PostgreSQL, RabbitMQ, Docker, GitHub Actions, Kotlin, Android Studio, Python, TypeScript, Rust" />
-</p>
+<p align="center"><img src="./assets/stack-pt.svg" alt="Stack: Java 21, Kotlin, SQL, Python, Spring Boot, Spring Security, JPA, PostgreSQL, Flyway, RabbitMQ, JUnit 5, Testcontainers, Docker, GitHub Actions, Jetpack Compose, Prometheus, Grafana" width="100%" /></p>
 
 ## 05 / Formação
 
