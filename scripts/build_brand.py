@@ -117,7 +117,8 @@ def main():
             ElementTree.fromstring(svg)  # self-check: SVG bem formado
             (OUT / name).write_text(svg, encoding="utf-8")
             print(f"wrote assets/{name}")
-            print(f"wrote {write_panel(OUT / name).name}")
+            if write_panel(OUT / name):
+                print(f"wrote panel for {name}")
 
 
 if __name__ == "__main__":

@@ -2,16 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<!-- Fonte das imagens PNG do README. Cada [data-shot] vira assets/readme/<nome>.png.
+<!-- Fonte das imagens do README. Cada [data-shot] vira assets/readme/src/<nome>.png (fundo transparente);
+     scripts/build_readme.py embrulha cada PNG num SVG com o fundo animado.
      Geometria: faixa de 860 px, cartão de 812 px (margem 24), 16 px de respiro embaixo.
      Mesma geometria de scripts/panel.py, para tudo encaixar num fundo contínuo. -->
 <style>
   :root { --panel: #05070d; --card: #0d1117; --line: #30363d; --blue: #58a6ff; --green: #3fb950; --ink: #e6f1ff; --text: #c9d1d9; --muted: #8b949e; }
   * { box-sizing: border-box; }
-  body { margin: 0; padding: 20px; background: #fff; font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: var(--text); }
-  [data-shot] { position: relative; background: var(--panel); overflow: hidden; margin-bottom: 30px; }
-  [data-shot] > * { position: relative; z-index: 1; }
-  .star { position: absolute; border-radius: 50%; z-index: 0; }
+  body { margin: 0; padding: 20px; background: transparent; font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: var(--text); }
+  [data-shot] { position: relative; background: transparent; overflow: hidden; margin-bottom: 30px; }
   .slice { width: 860px; padding: 0 24px 16px; }
   .half { width: 430px; padding-bottom: 16px; display: flex; }
   .half.pp { padding-bottom: 8px; }
@@ -31,7 +30,7 @@
   .top { padding-top: 24px; }
   .top.l { border-top-left-radius: 20px; } .top.r { border-top-right-radius: 20px; }
   .end { padding-bottom: 24px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
-  .card { background: linear-gradient(135deg, #05070d 0%, #0d1a33 55%, #05070d 100%); border: 1.5px solid rgba(88,166,255,.5); border-radius: 18px; padding: 28px 32px; }
+  .card { background: linear-gradient(135deg, rgba(5,7,13,.9) 0%, rgba(13,26,51,.9) 55%, rgba(5,7,13,.9) 100%); border: 1.5px solid rgba(88,166,255,.5); border-radius: 18px; padding: 28px 32px; }
   .kicker { font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: var(--blue); letter-spacing: .08em; margin: 0 0 6px; }
   h2 { font-size: 24px; font-weight: 700; margin: 0 0 16px; color: var(--ink); }
   p { font-size: 15px; line-height: 1.6; margin: 0 0 12px; color: var(--text); }
@@ -44,7 +43,7 @@
   ul { margin: 0; padding-left: 18px; }
   li { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 6px; }
   li:last-child { margin-bottom: 0; }
-  .pbtn { width: 398px; height: 50px; display: flex; flex-direction: column; justify-content: center; padding: 0 14px; background: linear-gradient(135deg, #05070d 0%, #0d1a33 70%); border: 1.5px solid rgba(88,166,255,.5); border-left: 4px solid var(--blue); border-radius: 10px; }
+  .pbtn { width: 398px; height: 50px; display: flex; flex-direction: column; justify-content: center; padding: 0 14px; background: linear-gradient(135deg, rgba(5,7,13,.92) 0%, rgba(13,26,51,.92) 70%); border: 1.5px solid rgba(88,166,255,.5); border-left: 4px solid var(--blue); border-radius: 10px; }
   .pbtn.ghost { visibility: hidden; }
   .pn { font-size: 14px; font-weight: 700; color: var(--blue); white-space: nowrap; }
   .pa { display: inline; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--green); margin-left: 8px; font-weight: 400; }
