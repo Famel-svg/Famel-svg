@@ -4,6 +4,7 @@ Substitui o github-readme-stats público. Uso: GITHUB_TOKEN=... python scripts/b
 """
 import json
 import os
+import random
 import urllib.request
 from datetime import date
 from html import escape
@@ -116,8 +117,8 @@ def langs_card(user, top=6):
 
 
 EVENTS = ["chuva", "abducao", "tempestade", "fogos", "neblina", "balao"]
-# um evento por dia, sorteado pela data; CITY_EVENT força um evento para testar
-EVENT = os.environ.get("CITY_EVENT") or EVENTS[date.today().toordinal() % len(EVENTS)]
+# um evento por dia, sorteado ao acaso (semente = data, então o dia todo mostra o mesmo); CITY_EVENT força um evento para testar
+EVENT = os.environ.get("CITY_EVENT") or random.Random(date.today().toordinal()).choice(EVENTS)
 
 
 def event_layer(event, W, H, loop, rnd, road):
