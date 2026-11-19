@@ -1,9 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="470" height="252" viewBox="0 0 470 252" role="img" aria-label="linguagens">
-  <rect x="1" y="1" width="468" height="250" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="2"/>
-  <circle cx="24" cy="24" r="5" fill="#ff7b72"/><circle cx="42" cy="24" r="5" fill="#d29922"/><circle cx="60" cy="24" r="5" fill="#3fb950"/>
-  <text x="80" y="29" fill="#8b949e" font-family="Consolas,monospace" font-size="14">linguagens</text>
-  <path d="M1 46h468" stroke="#30363d" stroke-width="2"/>
-  <text x="28" y="78" fill="#7ee787" font-family="Consolas,monospace" font-size="15">$ linguist --top 6</text>
+  <defs>
+    <linearGradient id="linguagens-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.55" stop-color="#0d1a33"/><stop offset="1" stop-color="#05070d"/></linearGradient>
+    <radialGradient id="linguagens-o1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.45"/><stop offset="0.6" stop-color="#58a6ff" stop-opacity="0.1"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="linguagens-o2"><stop offset="0" stop-color="#3fb950" stop-opacity="0.35"/><stop offset="0.6" stop-color="#3fb950" stop-opacity="0.08"/><stop offset="1" stop-color="#3fb950" stop-opacity="0"/></radialGradient>
+    <linearGradient id="linguagens-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#3fb950"/></linearGradient>
+    <clipPath id="linguagens-clip"><rect x="1" y="1" width="468" height="250" rx="18"/></clipPath>
+  </defs>
+  <g clip-path="url(#linguagens-clip)"><rect width="470" height="252" fill="url(#linguagens-bg)"/>
+    <circle cx="60" cy="10" r="227" fill="url(#linguagens-o1)"/><circle cx="430" cy="242" r="202" fill="url(#linguagens-o2)"/></g>
+  <rect x="1" y="1" width="468" height="250" rx="18" fill="none" stroke="#58a6ff" stroke-opacity="0.5" stroke-width="1.5"/>
+  <text x="28" y="34" fill="#9ecbff" font-family="Consolas,monospace" font-size="14">linguagens</text>
+  <line x1="28" y1="48" x2="442" y2="48" stroke="url(#linguagens-line)" stroke-opacity="0.7"/>
+  <text x="28" y="78" fill="#58a6ff" font-family="Consolas,monospace" font-size="15">$ linguist --top 6</text>
   <rect x="28.0" y="94" width="228.4" height="10" fill="#A97BFF"/>
   <rect x="256.4" y="94" width="105.0" height="10" fill="#b07219"/>
   <rect x="361.4" y="94" width="46.9" height="10" fill="#3572A5"/>
@@ -11,15 +19,15 @@
   <rect x="420.6" y="94" width="11.5" height="10" fill="#dea584"/>
   <rect x="432.1" y="94" width="9.9" height="10" fill="#3178c6"/>
   <circle cx="34" cy="129" r="5" fill="#A97BFF"/>
-  <text x="48" y="134" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Kotlin <tspan fill="#8b949e">55.2%</tspan></text>
+  <text x="48" y="134" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15">Kotlin <tspan fill="#9ecbff">55.2%</tspan></text>
   <circle cx="248" cy="129" r="5" fill="#b07219"/>
-  <text x="262" y="134" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Java <tspan fill="#8b949e">25.4%</tspan></text>
+  <text x="262" y="134" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15">Java <tspan fill="#9ecbff">25.4%</tspan></text>
   <circle cx="34" cy="157" r="5" fill="#3572A5"/>
-  <text x="48" y="162" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Python <tspan fill="#8b949e">11.3%</tspan></text>
+  <text x="48" y="162" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15">Python <tspan fill="#9ecbff">11.3%</tspan></text>
   <circle cx="248" cy="157" r="5" fill="#f1e05a"/>
-  <text x="262" y="162" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">JavaScript <tspan fill="#8b949e">3.0%</tspan></text>
+  <text x="262" y="162" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15">JavaScript <tspan fill="#9ecbff">3.0%</tspan></text>
   <circle cx="34" cy="185" r="5" fill="#dea584"/>
-  <text x="48" y="190" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">Rust <tspan fill="#8b949e">2.8%</tspan></text>
+  <text x="48" y="190" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15">Rust <tspan fill="#9ecbff">2.8%</tspan></text>
   <circle cx="248" cy="185" r="5" fill="#3178c6"/>
-  <text x="262" y="190" fill="#f0f6fc" font-family="Consolas,monospace" font-size="15">TypeScript <tspan fill="#8b949e">2.4%</tspan></text>
+  <text x="262" y="190" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15">TypeScript <tspan fill="#9ecbff">2.4%</tspan></text>
 </svg>

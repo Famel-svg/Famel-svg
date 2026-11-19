@@ -13,6 +13,8 @@ USER = os.environ.get("GH_USER", "Famel-svg")
 OUT = Path(__file__).resolve().parent.parent / "assets"
 FONT = "Consolas,monospace"
 BG, BORDER, MUTED, TEXT, GREEN, BLUE = "#0d1117", "#30363d", "#8b949e", "#f0f6fc", "#7ee787", "#58a6ff"
+SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+SOFT, INK, A2 = "#9ecbff", "#e6f1ff", "#3fb950"  # mesmas cores de build_brand.py
 IGNORED_LANGS = {"HTML", "CSS", "Jupyter Notebook", "Wolfram Language", "Batchfile", "Shell", "PowerShell"}
 
 QUERY = """
@@ -49,11 +51,21 @@ def fetch(token):
 
 
 def frame(width, height, title, body):
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{escape(title)}">
-  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="{BG}" stroke="{BORDER}" stroke-width="2"/>
-  <circle cx="24" cy="24" r="5" fill="#ff7b72"/><circle cx="42" cy="24" r="5" fill="#d29922"/><circle cx="60" cy="24" r="5" fill="#3fb950"/>
-  <text x="80" y="29" fill="{MUTED}" font-family="{FONT}" font-size="14">{escape(title)}</text>
-  <path d="M1 46h{width - 2}" stroke="{BORDER}" stroke-width="2"/>
+    """Mesmo visual do hero e do stack: fundo em degradê, dois brilhos e borda azul."""
+    k = escape(title)  # prefixo dos ids: overview.svg junta dois cartões no mesmo documento
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{k}">
+  <defs>
+    <linearGradient id="{k}-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.55" stop-color="#0d1a33"/><stop offset="1" stop-color="#05070d"/></linearGradient>
+    <radialGradient id="{k}-o1"><stop offset="0" stop-color="{BLUE}" stop-opacity="0.45"/><stop offset="0.6" stop-color="{BLUE}" stop-opacity="0.1"/><stop offset="1" stop-color="{BLUE}" stop-opacity="0"/></radialGradient>
+    <radialGradient id="{k}-o2"><stop offset="0" stop-color="{A2}" stop-opacity="0.35"/><stop offset="0.6" stop-color="{A2}" stop-opacity="0.08"/><stop offset="1" stop-color="{A2}" stop-opacity="0"/></radialGradient>
+    <linearGradient id="{k}-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{BLUE}"/><stop offset="1" stop-color="{A2}"/></linearGradient>
+    <clipPath id="{k}-clip"><rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="18"/></clipPath>
+  </defs>
+  <g clip-path="url(#{k}-clip)"><rect width="{width}" height="{height}" fill="url(#{k}-bg)"/>
+    <circle cx="60" cy="10" r="{height * 0.9:.0f}" fill="url(#{k}-o1)"/><circle cx="{width - 40}" cy="{height - 10}" r="{height * 0.8:.0f}" fill="url(#{k}-o2)"/></g>
+  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="18" fill="none" stroke="{BLUE}" stroke-opacity="0.5" stroke-width="1.5"/>
+  <text x="28" y="34" fill="{SOFT}" font-family="{FONT}" font-size="14">{k}</text>
+  <line x1="28" y1="48" x2="{width - 28}" y2="48" stroke="url(#{k}-line)" stroke-opacity="0.7"/>
 {body}
 </svg>
 """
@@ -68,11 +80,11 @@ def stats_card(user):
         ("Pull requests", user["pullRequests"]["totalCount"]),
         ("Estrelas recebidas", sum(r["stargazerCount"] for r in repos["nodes"])),
     ]
-    body = [f'  <text x="28" y="78" fill="{GREEN}" font-family="{FONT}" font-size="15">$ git stats --author rafael</text>']
+    body = [f'  <text x="28" y="78" fill="{BLUE}" font-family="{FONT}" font-size="15">$ git stats --author rafael</text>']
     for i, (label, value) in enumerate(rows):
         y = 112 + i * 28
-        body.append(f'  <text x="28" y="{y}" fill="{MUTED}" font-family="{FONT}" font-size="15">{escape(label)}</text>')
-        body.append(f'  <text x="440" y="{y}" fill="{TEXT}" font-family="{FONT}" font-size="15" font-weight="700" text-anchor="end">{value}</text>')
+        body.append(f'  <text x="28" y="{y}" fill="{SOFT}" font-family="{SANS}" font-size="15">{escape(label)}</text>')
+        body.append(f'  <text x="440" y="{y}" fill="{INK}" font-family="{FONT}" font-size="15" font-weight="700" text-anchor="end">{value}</text>')
     return frame(470, 112 + len(rows) * 28, "stats", "\n".join(body))
 
 
@@ -87,7 +99,7 @@ def langs_card(user, top=6):
             colors[name] = edge["node"]["color"] or BLUE
     ranked = sorted(totals.items(), key=lambda kv: kv[1], reverse=True)[:top]
     total = sum(size for _, size in ranked) or 1
-    body = [f'  <text x="28" y="78" fill="{GREEN}" font-family="{FONT}" font-size="15">$ linguist --top {top}</text>']
+    body = [f'  <text x="28" y="78" fill="{BLUE}" font-family="{FONT}" font-size="15">$ linguist --top {top}</text>']
     bar_x, bar_w, x = 28, 414, 28.0
     for name, size in ranked:
         w = bar_w * size / total
@@ -97,7 +109,7 @@ def langs_card(user, top=6):
         col, row = i % 2, i // 2
         cx, cy = 34 + col * 214, 134 + row * 28
         body.append(f'  <circle cx="{cx}" cy="{cy - 5}" r="5" fill="{colors[name]}"/>')
-        body.append(f'  <text x="{cx + 14}" y="{cy}" fill="{TEXT}" font-family="{FONT}" font-size="15">{escape(name)} <tspan fill="{MUTED}">{100 * size / total:.1f}%</tspan></text>')
+        body.append(f'  <text x="{cx + 14}" y="{cy}" fill="{INK}" font-family="{FONT}" font-size="15">{escape(name)} <tspan fill="{SOFT}">{100 * size / total:.1f}%</tspan></text>')
     height = 134 + ((len(ranked) + 1) // 2) * 28 - 6
     return frame(470, max(height, 112 + 5 * 28), "linguagens", "\n".join(body))
 
