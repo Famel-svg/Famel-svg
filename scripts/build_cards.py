@@ -11,7 +11,7 @@ from html import escape
 from pathlib import Path
 from xml.etree import ElementTree
 
-from festive import LAYERS as FESTIVE, festive_event
+from festive import GROUND, LAYERS as FESTIVE, _falling, festive_event
 
 USER = os.environ.get("GH_USER", "Famel-svg")
 OUT = Path(__file__).resolve().parent.parent / "assets"
@@ -118,7 +118,7 @@ def langs_card(user, top=6):
     return frame(470, max(height, 112 + 5 * 28), "linguagens", "\n".join(body))
 
 
-EVENTS = ["chuva", "abducao", "tempestade", "fogos", "neblina", "balao"]
+EVENTS = ["chuva", "abducao", "tempestade", "fogos", "neblina", "balao", "neve"]
 # um evento por dia: data festiva tem prioridade; senão sorteio (semente = data, então o dia todo mostra o mesmo); CITY_EVENT força um evento para testar
 EVENT = (os.environ.get("CITY_EVENT") or festive_event(date.today())
          or random.Random(date.today().toordinal()).choice(EVENTS))
@@ -212,6 +212,11 @@ def event_layer(event, W, H, loop, rnd, road):
         return ('<defs><radialGradient id="fog"><stop offset="0" stop-color="#dbe6f3" stop-opacity="0.75"/><stop offset="1" stop-color="#dbe6f3" stop-opacity="0"/></radialGradient>'
                 '<linearGradient id="fogfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d6e6" stop-opacity="0"/><stop offset="1" stop-color="#c9d6e6" stop-opacity="0.22"/></linearGradient></defs>'
                 f'<rect y="{road[1] - 200:.0f}" width="{W}" height="{H - road[1] + 200:.0f}" fill="url(#fogfade)"/>' + "".join(bands))
+    if event == "neve":
+        # céu acinzentado, flocos caindo devagar e calçada coberta de neve
+        flakes = _falling(W, H, rnd, 160, lambda r: f'<circle r="{1 + r() * 2:.1f}" fill="#ffffff" opacity="{0.6 + r() * 0.4:.2f}"/>', dur=(6, 11), sway=24)
+        return (f'<rect width="{W}" height="{H}" fill="#9aa8bb" opacity="0.22"/>'
+                f'<rect y="{GROUND - 8}" width="{W}" height="16" rx="6" fill="#eef4fb" opacity="0.85"/>' + flakes)
     if event == "balao":
         # de dia um balão de ar quente atravessa o céu devagar, balançando
         return ('<defs><clipPath id="env"><ellipse cx="0" cy="0" rx="22" ry="26"/></clipPath></defs>'
