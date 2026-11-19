@@ -115,13 +115,30 @@ def langs_card(user, top=6):
 
 
 def city_card(user):
-    """Cidade animada: um prédio por semana, altura pelas contribuições, ciclo de dia e noite de 60s."""
+    """Cidade isométrica: cada quarteirão é uma semana, cada lote um dia; prédio cresce com as contribuições.
+
+    Céu com ciclo de dia e noite de 60s: sol retrô, nuvens e avião de dia; lua, estrelas e óvni à noite.
+    """
     cal = user["contributionsCollection"]["contributionCalendar"]
-    weeks = [sum(d["contributionCount"] for d in w["contributionDays"]) for w in cal["weeks"]]
-    W, H, ground = 960, 340, 262
-    peak = max(weeks) or 1
-    bw, gap = 14, 3.6
-    x0 = (W - len(weeks) * (bw + gap)) / 2
+    days = [[d["contributionCount"] for d in w["contributionDays"]] for w in cal["weeks"]]
+    W, H = 960, 560
+    peak = max((n for wk in days for n in wk), default=0) or 1
+    BX = 12  # quarteirões por linha; cada quarteirão tem 3x3 lotes e uma rua de 1 lote
+    BY = -(-len(days) // BX)
+    cols, rows = BX * 4, BY * 4
+    # vista frontal inclinada: semanas correm na horizontal, profundidade desce para a esquerda
+    rx, ry = 4.0, 12.5
+    sx = (920 - rows * rx) / cols
+    ox, oy = 20 + rows * rx, 240.0
+    # 7 dias ocupam o quarteirão 3x3; os 2 cantos da frente viram praça
+    SPOTS = [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (1, 2)]
+    lots_xy = {}
+    for k, wk in enumerate(days):
+        bc, br = (k % BX) * 4, (k // BX) * 4
+        for d, n in enumerate(wk):
+            lots_xy[bc + SPOTS[d][0], br + SPOTS[d][1]] = n
+        for dc, dr in ((0, 2), (2, 2)):
+            lots_xy[bc + dc, br + dr] = 0
     seed = 7
 
     def rnd():
@@ -129,12 +146,18 @@ def city_card(user):
         seed = (seed * 1103515245 + 12345) % 2**31
         return seed / 2**31
 
+    def P(c, r, z=0.0):
+        return ox + c * sx - r * rx, oy + r * ry - z
+
+    def poly(pts, fill, extra=""):
+        return f'<polygon points="{" ".join(f"{x:.1f},{y:.1f}" for x, y in pts)}" fill="{fill}"{extra}/>'
+
     loop = 'dur="60s" repeatCount="indefinite"'
     # metade dia (0-0.5), metade noite (0.5-1); transições de 0.08
     day_on = f'values="0;1;1;0;0" keyTimes="0;0.08;0.42;0.5;1" {loop}'
     night_on = f'values="0;0;1;1;0" keyTimes="0;0.5;0.58;0.92;1" {loop}'
     dusk = f'values="0.8;0;0;0.8;0;0;0.8" keyTimes="0;0.08;0.42;0.5;0.58;0.92;1" {loop}'
-    arc = "-70 230;90 150;260 108;480 92;700 108;870 150;1030 230"
+    arc = "-70 230;90 150;260 110;480 95;700 110;870 150;1030 230"
 
     def arc_motion(start):
         # mesma trajetória para o sol (start=0) e para a lua (start=0.5)
@@ -151,9 +174,11 @@ def city_card(user):
                 f'<g fill="#b9c7da" transform="translate(4 6)" opacity="0.6">{body}</g><g fill="url(#cloud)">{body}</g></g></g>')
 
     out = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Cidade de contribuições: {cal["totalContributions"]} no último ano">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Cidade animada das contribuições no GitHub: {cal["totalContributions"]} no último ano">',
         "<defs>",
-        '<linearGradient id="night" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.55" stop-color="#0d1a33"/><stop offset="1" stop-color="#05070d"/></linearGradient><radialGradient id="o1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.45"/><stop offset="0.6" stop-color="#58a6ff" stop-opacity="0.1"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient><radialGradient id="o2"><stop offset="0" stop-color="#3fb950" stop-opacity="0.35"/><stop offset="0.6" stop-color="#3fb950" stop-opacity="0.08"/><stop offset="1" stop-color="#3fb950" stop-opacity="0"/></radialGradient><linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#3fb950"/></linearGradient>',
+        '<linearGradient id="night" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.55" stop-color="#0d1a33"/><stop offset="1" stop-color="#05070d"/></linearGradient>',
+        '<radialGradient id="o1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.45"/><stop offset="0.6" stop-color="#58a6ff" stop-opacity="0.1"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient>',
+        '<radialGradient id="o2"><stop offset="0" stop-color="#3fb950" stop-opacity="0.35"/><stop offset="0.6" stop-color="#3fb950" stop-opacity="0.08"/><stop offset="1" stop-color="#3fb950" stop-opacity="0"/></radialGradient>',
         '<linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7fd1"/><stop offset="0.65" stop-color="#8cc4ee"/><stop offset="1" stop-color="#f6d7a7"/></linearGradient>',
         '<linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0.35" stop-color="#ff8c42" stop-opacity="0"/><stop offset="1" stop-color="#ff6b3d" stop-opacity="0.85"/></linearGradient>',
         '<radialGradient id="sunhalo"><stop offset="0.3" stop-color="#ffe29a" stop-opacity="0.7"/><stop offset="1" stop-color="#ffe29a" stop-opacity="0"/></radialGradient>',
@@ -162,29 +187,26 @@ def city_card(user):
         '<radialGradient id="moonglow"><stop offset="0.4" stop-color="#dfe9ff" stop-opacity="0.4"/><stop offset="1" stop-color="#dfe9ff" stop-opacity="0"/></radialGradient>',
         '<radialGradient id="moon" cx="0.35" cy="0.35"><stop offset="0" stop-color="#fbfaf2"/><stop offset="1" stop-color="#cfcab6"/></radialGradient>',
         '<linearGradient id="cloud" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3ebf5"/></linearGradient>',
-        '<linearGradient id="bld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34466f"/><stop offset="1" stop-color="#141b30"/></linearGradient>',
-        '<linearGradient id="bldhot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f5a92"/><stop offset="1" stop-color="#18213d"/></linearGradient>',
-        '<linearGradient id="far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3557"/><stop offset="1" stop-color="#1a2240"/></linearGradient>',
         '<linearGradient id="trail" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0.8"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>',
-        '<radialGradient id="lamp"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.8"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>',
         '<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ee787" stop-opacity="0.5"/><stop offset="1" stop-color="#7ee787" stop-opacity="0"/></linearGradient>',
+        '<linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#3fb950"/></linearGradient>',
         f'<clipPath id="frame"><rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="18"/></clipPath>',
         "</defs>",
         '<g clip-path="url(#frame)">',
         f'<rect width="{W}" height="{H}" fill="url(#night)"/>',
-        f'<circle cx="100" cy="20" r="300" fill="url(#o1)"/><circle cx="{W - 70}" cy="{H - 10}" r="270" fill="url(#o2)"/>',
+        f'<circle cx="100" cy="20" r="340" fill="url(#o1)"/><circle cx="{W - 70}" cy="{H - 10}" r="320" fill="url(#o2)"/>',
         f'<rect width="{W}" height="{H}" fill="url(#day)" opacity="0"><animate attributeName="opacity" {day_on}/></rect>',
         f'<rect width="{W}" height="{H}" fill="url(#dusk)" opacity="0"><animate attributeName="opacity" {dusk}/></rect>',
     ]
 
     # noite: estrelas, estrela cadente, lua, óvni
     out.append(f'<g opacity="0"><animate attributeName="opacity" {night_on}/>')
-    for _ in range(90):
-        x, y, r, d = rnd() * W, 62 + rnd() * 140, 0.4 + rnd() * 1.2, 2 + rnd() * 4
+    for _ in range(110):
+        x, y, r, d = rnd() * W, 62 + rnd() * 300, 0.4 + rnd() * 1.2, 2 + rnd() * 4
         out.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="#f0f6fc"><animate attributeName="opacity" values="0.2;1;0.2" dur="{d:.1f}s" begin="{rnd() * 3:.1f}s" repeatCount="indefinite"/></circle>')
     out.append(f'<line x1="0" y1="0" x2="70" y2="22" stroke="url(#trail)" stroke-width="1.6" stroke-linecap="round" opacity="0">'
                f'<animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.7;0.71;0.73;1" {loop}/>'
-               f'<animateTransform attributeName="transform" type="translate" values="700 75;700 75;520 135;520 135" keyTimes="0;0.7;0.73;1" {loop}/></line>')
+               f'<animateTransform attributeName="transform" type="translate" values="760 80;760 80;580 140;580 140" keyTimes="0;0.7;0.73;1" {loop}/></line>')
     out.append(f'<g><animateTransform attributeName="transform" type="translate" {arc_motion(0.5)}/>'
                '<circle r="52" fill="url(#moonglow)"/><circle r="21" fill="url(#moon)"/>'
                '<circle cx="-7" cy="-5" r="4.5" fill="#c4bea8" opacity="0.7"/><circle cx="7" cy="5" r="3.2" fill="#c4bea8" opacity="0.7"/>'
@@ -192,20 +214,20 @@ def city_card(user):
     lights = "".join(
         f'<circle cx="{cx}" cy="5.5" r="1.6"><animate attributeName="fill" values="{v}" dur="1.2s" repeatCount="indefinite"/></circle>'
         for cx, v in ((-14, "#7ee787;#d29922;#ff7b72;#7ee787"), (0, "#d29922;#ff7b72;#7ee787;#d29922"), (14, "#ff7b72;#7ee787;#d29922;#ff7b72")))
-    out.append(f'<g><animateTransform attributeName="transform" type="translate" values="-60 105;-60 105;400 105;420 98;440 105;1030 85;1030 85" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" {loop}/>'
-               f'<polygon points="-7,6 7,6 30,150 -30,150" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" {loop}/></polygon>'
+    out.append(f'<g><animateTransform attributeName="transform" type="translate" values="1030 110;1030 110;500 120;480 113;460 120;-60 80;-60 80" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" {loop}/>'
+               f'<polygon points="-7,6 7,6 40,190 -40,190" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" {loop}/></polygon>'
                '<ellipse cx="0" cy="-1" rx="9" ry="8" fill="#9ecbff" opacity="0.75"/><ellipse cx="0" cy="4" rx="24" ry="6" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="24" ry="3" fill="#c9d1d9"/>'
                f'{lights}</g>')
     out.append("</g>")
 
-    # dia: sol com raios girando, nuvens, avião com rastro
+    # dia: sol retrô, nuvens, avião com rastro
     out.append(f'<g><animateTransform attributeName="transform" type="translate" {arc_motion(0)}/>'
                '<circle r="58" fill="url(#sunhalo)" opacity="0.8"/>'
                '<circle r="30" fill="url(#retro)" clip-path="url(#stripes)"/></g>')
     out.append(f'<g opacity="0"><animate attributeName="opacity" {day_on}/>')
-    for cx, cy, k, dur, begin in ((200, 100, 1.1, 150, 0), (520, 140, 0.8, 190, 40), (760, 95, 1.2, 170, 90), (380, 170, 0.6, 210, 120), (880, 150, 0.7, 230, 60)):
+    for cx, cy, k, dur, begin in ((180, 100, 1.0, 150, 0), (520, 150, 0.8, 190, 40), (780, 90, 1.1, 170, 90), (380, 190, 0.6, 210, 120), (900, 170, 0.7, 230, 60)):
         out.append(cloud(cx, cy, k, dur, begin))
-    out.append(f'<g><animateTransform attributeName="transform" type="translate" values="1040 84;1040 84;-120 70;-120 70" keyTimes="0;0.1;0.38;1" {loop}/>'
+    out.append(f'<g><animateTransform attributeName="transform" type="translate" values="1040 150;1040 150;-120 66;-120 66" keyTimes="0;0.1;0.38;1" {loop}/>'
                '<rect x="30" y="-2.2" width="110" height="2.4" rx="1.2" fill="url(#trail)"/>'
                '<path d="M0 0 Q2 -4 8 -4 L30 -4 Q34 -4 34 -1 Q34 2 30 2 L8 2 Q2 2 0 0 Z" fill="#eef2f7"/>'
                '<path d="M26 -4 L32 -12 L35 -12 L33 -4 Z" fill="#c9d1d9"/>'
@@ -214,67 +236,78 @@ def city_card(user):
                '<circle cx="34" cy="-11" r="1.4" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1s" repeatCount="indefinite"/></circle></g>')
     out.append("</g>")
 
-    # silhueta distante para dar profundidade
-    x, far = 0.0, []
-    while x < W:
-        w, h = 18 + rnd() * 30, 30 + rnd() * 70
-        far.append(f'<rect x="{x:.0f}" y="{ground - h:.0f}" width="{w:.0f}" height="{h:.0f}"/>')
-        x += w + 2
-    # quase some de dia para não pesar contra o céu claro
-    out.append(f'<g fill="url(#far)" opacity="0.7"><animate attributeName="opacity" values="0.7;0.12;0.12;0.7;0.7" keyTimes="0;0.08;0.42;0.5;1" {loop}/>{"".join(far)}</g>')
-
-    # prédios: um por semana, com sombra, borda iluminada e detalhes no topo
-    windows = []
-    for i, total in enumerate(weeks):
-        h = 10 + (ground - 92) * (total / peak) ** 0.6
-        x, y = x0 + i * (bw + gap), ground - h
-        delay = i * 0.03
-        grow = (f'<animate attributeName="height" from="0" to="{h:.1f}" dur="1.2s" begin="{delay:.2f}s" fill="freeze"/>'
-                f'<animate attributeName="y" from="{ground}" to="{y:.1f}" dur="1.2s" begin="{delay:.2f}s" fill="freeze"/>')
-        fill = "url(#bldhot)" if total >= peak * 0.4 else "url(#bld)"
-        out.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw}" height="{h:.1f}" fill="{fill}">{grow}</rect>')
-        out.append(f'<rect x="{x + bw - 3:.1f}" y="{y:.1f}" width="3" height="{h:.1f}" fill="#000" opacity="0.28">{grow}</rect>')
-        out.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="1.4" height="{h:.1f}" fill="#9ecbff" opacity="0.25">{grow}</rect>')
-        top = f'opacity="0"><animate attributeName="opacity" to="1" dur="0.4s" begin="{delay + 1.1:.2f}s" fill="freeze"/>'
-        mid = x + bw / 2
-        if total == peak:
-            out.append(f'<g {top}<line x1="{mid:.1f}" y1="{y:.1f}" x2="{mid:.1f}" y2="{y - 16:.1f}" stroke="#8b949e" stroke-width="1.2"/>'
-                       f'<circle cx="{mid:.1f}" cy="{y - 17:.1f}" r="2.4" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1.4s" repeatCount="indefinite"/></circle></g>')
-        elif total >= peak * 0.55:
-            out.append(f'<g {top}<rect x="{x - 1:.1f}" y="{y - 3:.1f}" width="{bw + 2}" height="3" fill="#2a3a60"/>'
-                       f'<line x1="{x + 4:.1f}" y1="{y - 3:.1f}" x2="{x + 4:.1f}" y2="{y - 10:.1f}" stroke="#8b949e"/></g>')
-        elif total >= peak * 0.25:
-            out.append(f'<g {top}<rect x="{x + 4:.1f}" y="{y - 6:.1f}" width="6" height="6" rx="1" fill="#3a4a72"/></g>')
-        for wy in range(int(y) + 6, ground - 8, 9):
-            for wx in (x + 3, x + 8.5):
-                if total and rnd() < 0.5:
-                    color = "#ffcf6e" if rnd() < 0.82 else "#9ecbff"
-                    flick = ""
-                    if rnd() < 0.15:
-                        flick = f'<animate attributeName="opacity" values="1;1;0.25;1" keyTimes="0;0.6;0.7;1" dur="{4 + rnd() * 6:.1f}s" repeatCount="indefinite"/>'
-                    windows.append(f'<rect x="{wx:.1f}" y="{wy}" width="2.6" height="3.4" fill="{color}">{flick}</rect>')
-    # janelas: reflexo fraco de dia, acesas à noite
-    out.append(f'<g opacity="0.15"><animate attributeName="opacity" values="0.15;0.15;1;1;0.15" keyTimes="0;0.5;0.58;0.92;1" {loop}/>{"".join(windows)}</g>')
-
-    # rua com postes que acendem à noite
-    out.append(f'<rect y="{ground}" width="{W}" height="{H - ground}" fill="#05070d"/>')
-    floor = H - 34  # a grade termina antes do rodapé
-    grid = [f'<line x1="0" y1="{ground + (floor - ground) * (k / 7) ** 1.8:.1f}" x2="{W}" y2="{ground + (floor - ground) * (k / 7) ** 1.8:.1f}"/>' for k in range(1, 8)]
-    grid += [f'<line x1="{W / 2 + dx * 0.12:.0f}" y1="{ground}" x2="{W / 2 + dx:.0f}" y2="{floor}"/>' for dx in range(-1600, 1601, 80)]
-    out.append(f'<g stroke="{BLUE}" stroke-opacity="0.28" stroke-width="0.8">{"".join(grid)}</g>')
-    out.append(f'<rect y="{floor}" width="{W}" height="{H - floor}" fill="#05070d"/>')
-    out.append(f'<line x1="0" y1="{ground}" x2="{W}" y2="{ground}" stroke="{BLUE}" stroke-width="3" stroke-opacity="0.25"/>')
-    out.append(f'<line x1="0" y1="{ground}" x2="{W}" y2="{ground}" stroke="url(#line)" stroke-width="1.2"/>')
-    posts = range(40, W, 120)
-    out.append("".join(f'<path d="M{lx} {ground} V{ground - 18} H{lx + 6}" fill="none" stroke="#4a5570" stroke-width="1.5"/>' for lx in posts))
-    out.append(f'<g opacity="0"><animate attributeName="opacity" {night_on}/>'
-               + "".join(f'<circle cx="{lx + 6}" cy="{ground - 16}" r="16" fill="url(#lamp)"/><circle cx="{lx + 6}" cy="{ground - 17}" r="1.8" fill="#ffd27a"/>' for lx in posts)
+    # plataforma em losango com espessura
+    N, E, S, Wc = P(-0.5, -0.5), P(cols - 0.5, -0.5), P(cols - 0.5, rows - 0.5), P(-0.5, rows - 0.5)
+    slab = 10
+    out.append(poly([Wc, S, (S[0], S[1] + slab), (Wc[0], Wc[1] + slab)], "#0a1226"))
+    out.append(poly([N, Wc, (Wc[0], Wc[1] + slab), (N[0], N[1] + slab)], "#070d1c"))
+    out.append(poly([N, E, S, Wc], "#0f1d3d", f' stroke="{BLUE}" stroke-opacity="0.7" stroke-width="1.2"'))
+    # ruas tracejadas entre as fileiras
+    out.append(f'<g stroke="{BLUE}" stroke-opacity="0.35" stroke-width="0.8" stroke-dasharray="3 3">'
+               + "".join(f'<line x1="{P(-0.5, k + 0.5)[0]:.1f}" y1="{P(-0.5, k + 0.5)[1]:.1f}" x2="{P(cols - 0.5, k + 0.5)[0]:.1f}" y2="{P(cols - 0.5, k + 0.5)[1]:.1f}"/>' for k in range(3, rows - 1, 4))
+               + "".join(f'<line x1="{P(k + 0.5, -0.5)[0]:.1f}" y1="{P(k + 0.5, -0.5)[1]:.1f}" x2="{P(k + 0.5, rows - 0.5)[0]:.1f}" y2="{P(k + 0.5, rows - 0.5)[1]:.1f}"/>' for k in range(3, cols - 1, 4))
                + "</g>")
 
+    # lotes e árvores nos dias sem contribuição
+    lots, trees = [], {}
+    for (c, r), n in lots_xy.items():
+        if True:
+            i = 0.12
+            lots.append(poly([P(c + i, r + i), P(c + 1 - i, r + i), P(c + 1 - i, r + 1 - i), P(c + i, r + 1 - i)], "#18284c"))
+            if n == 0 and rnd() < 0.55:
+                tx, ty = P(c + 0.5, r + 0.5)
+                trees[c, r] = (f'<line x1="{tx:.1f}" y1="{ty:.1f}" x2="{tx:.1f}" y2="{ty - 3:.1f}" stroke="#5a4632" stroke-width="1"/>'
+                             f'<circle cx="{tx:.1f}" cy="{ty - 5:.1f}" r="{2.6 + rnd():.1f}" fill="#2ea043"/><circle cx="{tx - 0.8:.1f}" cy="{ty - 5.8:.1f}" r="1.1" fill="#56d364" opacity="0.7"/>')
+    out.append("".join(lots))
+
+    # carros andando nas ruas, com farol de dia e de noite
+    roads = [(P(-0.5, k + 0.5), P(cols - 0.5, k + 0.5)) for k in range(3, rows - 1, 4)] + [(P(k + 0.5, -0.5), P(k + 0.5, rows - 0.5)) for k in range(3, cols - 1, 4)]
+    for j, (a, b) in enumerate(roads):
+        rev, dur, begin = j % 2 == 1, 14 + (j * 3) % 9, (j * 5) % 13
+        if rev:
+            a, b = b, a
+        color = "#ffd27a" if not rev else "#ff7b72"
+        out.append(f'<circle r="1.8" fill="{color}"><animateMotion path="M{a[0]:.1f},{a[1]:.1f} L{b[0]:.1f},{b[1]:.1f}" dur="{dur}s" begin="-{begin}s" repeatCount="indefinite"/></circle>')
+
+    # prédios: de trás para frente para a sobreposição ficar certa
+    windows = []
+    cells = sorted(((c, r, n) for (c, r), n in lots_xy.items()), key=lambda t: (t[1], -t[0]))
+    for c, r, n in cells:
+        if not n:
+            out.append(trees.get((c, r), ""))
+            continue
+        h = 6 + 58 * (n / peak) ** 0.55
+        i = 0.16
+        n_, e_, s_, w_ = P(c + i, r + i), P(c + 1 - i, r + i), P(c + 1 - i, r + 1 - i), P(c + i, r + 1 - i)
+        up = lambda p, z=h: (p[0], p[1] - z)
+        delay = 0.4 + c * 0.03
+        hot = n >= peak * 0.4
+        body = (poly([w_, s_, up(s_), up(w_)], "#2a3d6e" if hot else "#223258")
+                + poly([n_, w_, up(w_), up(n_)], "#16203d" if hot else "#121a33")
+                + poly([up(n_), up(e_), up(s_), up(w_)], "#5b82d6" if hot else "#3d5894", f' stroke="{BLUE}" stroke-opacity="0.45" stroke-width="0.6"'))
+        if n == peak:
+            tx, ty = up(P(c + 0.5, r + 0.5))
+            body += (f'<line x1="{tx:.1f}" y1="{ty:.1f}" x2="{tx:.1f}" y2="{ty - 12:.1f}" stroke="#8b949e" stroke-width="1"/>'
+                     f'<circle cx="{tx:.1f}" cy="{ty - 13:.1f}" r="2" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1.4s" repeatCount="indefinite"/></circle>')
+        out.append(f'<g opacity="0"><animate attributeName="opacity" to="1" dur="0.5s" begin="{delay:.2f}s" fill="freeze"/>{body}</g>')
+        # janelas nas duas faces visíveis
+        for z in range(4, int(h) - 3, 5):
+            for a, b in ((w_, s_), (n_, w_)):
+                for t in (0.22, 0.58):
+                    if rnd() < 0.55:
+                        p1 = (a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t - z)
+                        p2 = (a[0] + (b[0] - a[0]) * (t + 0.22), a[1] + (b[1] - a[1]) * (t + 0.22) - z)
+                        color = "#ffcf6e" if rnd() < 0.82 else "#9ecbff"
+                        windows.append(poly([p1, p2, (p2[0], p2[1] - 2.2), (p1[0], p1[1] - 2.2)], color))
+    out.append(f'<g opacity="0.15"><animate attributeName="opacity" values="0.15;0.15;1;1;0.15" keyTimes="0;0.5;0.58;0.92;1" {loop}/>{"".join(windows)}</g>')
+
+    halo = 'paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4"'
     out += [
-        f'<text x="32" y="42" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2" fill="{BLUE}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4">CONTRIBUTION.CITY'
-        f'<tspan dx="14" font-weight="400" letter-spacing="0" font-size="13" fill="{SOFT}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4">&gt; cada prédio é uma semana</tspan></text>',
-        f'<text x="{W - 32}" y="42" text-anchor="end" font-family="{FONT}" font-size="14" font-weight="700" fill="{INK}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4">{cal["totalContributions"]} contribuições no último ano</text>',
+        f'<rect y="{H - 36}" width="{W}" height="36" fill="#05070d" opacity="0.85"/>',
+        f'<line x1="0" y1="{H - 36}" x2="{W}" y2="{H - 36}" stroke="url(#line)" stroke-opacity="0.6"/>',
+        f'<text x="32" y="42" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2" fill="{BLUE}" {halo}>CONTRIBUTION.CITY'
+        f'<tspan dx="14" font-weight="400" letter-spacing="0" font-size="13" fill="{SOFT}">&gt; cada quarteirão é uma semana, cada lote um dia</tspan></text>',
+        f'<text x="{W - 32}" y="42" text-anchor="end" font-family="{FONT}" font-size="14" font-weight="700" fill="{INK}" {halo}>{cal["totalContributions"]} contribuições no último ano</text>',
         f'<text x="32" y="{H - 14}" font-family="{FONT}" font-size="12" fill="{SOFT}" fill-opacity="0.8">dados do GitHub, atualizados todo dia por um GitHub Action</text>',
         "</g>",
         f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="18" fill="none" stroke="{BLUE}" stroke-opacity="0.5" stroke-width="1.5"/>',
