@@ -157,7 +157,8 @@ def city_card(user):
         '<linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7fd1"/><stop offset="0.65" stop-color="#8cc4ee"/><stop offset="1" stop-color="#f6d7a7"/></linearGradient>',
         '<linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0.35" stop-color="#ff8c42" stop-opacity="0"/><stop offset="1" stop-color="#ff6b3d" stop-opacity="0.85"/></linearGradient>',
         '<radialGradient id="sunhalo"><stop offset="0.3" stop-color="#ffe29a" stop-opacity="0.7"/><stop offset="1" stop-color="#ffe29a" stop-opacity="0"/></radialGradient>',
-        '<radialGradient id="sun" cx="0.4" cy="0.4"><stop offset="0" stop-color="#fffbe6"/><stop offset="0.6" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a62a"/></radialGradient>',
+        '<linearGradient id="retro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#ff7a45"/></linearGradient>',
+        '<clipPath id="stripes"><rect x="-30" y="-30" width="60" height="31"/><rect x="-30" y="4" width="60" height="5"/><rect x="-30" y="12" width="60" height="4"/><rect x="-30" y="19" width="60" height="3"/><rect x="-30" y="25" width="60" height="5"/></clipPath>',
         '<radialGradient id="moonglow"><stop offset="0.4" stop-color="#dfe9ff" stop-opacity="0.4"/><stop offset="1" stop-color="#dfe9ff" stop-opacity="0"/></radialGradient>',
         '<radialGradient id="moon" cx="0.35" cy="0.35"><stop offset="0" stop-color="#fbfaf2"/><stop offset="1" stop-color="#cfcab6"/></radialGradient>',
         '<linearGradient id="cloud" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3ebf5"/></linearGradient>',
@@ -198,12 +199,9 @@ def city_card(user):
     out.append("</g>")
 
     # dia: sol com raios girando, nuvens, avião com rastro
-    rays = "".join(f'<line x1="0" y1="-30" x2="0" y2="-38" transform="rotate({a})"/>' for a in range(0, 360, 30))
     out.append(f'<g><animateTransform attributeName="transform" type="translate" {arc_motion(0)}/>'
-               '<circle r="60" fill="url(#sunhalo)"/>'
-               '<g stroke="#ffd166" stroke-width="2.4" stroke-linecap="round" opacity="0.8">'
-               f'<animateTransform attributeName="transform" type="rotate" values="0;360" dur="40s" repeatCount="indefinite"/>{rays}</g>'
-               '<circle r="22" fill="url(#sun)"/></g>')
+               '<circle r="58" fill="url(#sunhalo)" opacity="0.8"/>'
+               '<circle r="30" fill="url(#retro)" clip-path="url(#stripes)"/></g>')
     out.append(f'<g opacity="0"><animate attributeName="opacity" {day_on}/>')
     for cx, cy, k, dur, begin in ((200, 100, 1.1, 150, 0), (520, 140, 0.8, 190, 40), (760, 95, 1.2, 170, 90), (380, 170, 0.6, 210, 120), (880, 150, 0.7, 230, 60)):
         out.append(cloud(cx, cy, k, dur, begin))
