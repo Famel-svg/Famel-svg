@@ -175,9 +175,15 @@ def event_layer(event, W, H, loop, rnd, road):
             x, y = 100 + rnd() * (W - 200), 90 + rnd() * 110
             col = colors[k % len(colors)]
             rise = f'keyTimes="0;{t:.3f};{t + 0.02:.3f};1"'
-            out.append(f'<line x1="{x:.0f}" y1="0" x2="{x:.0f}" y2="10" stroke="{col}" stroke-width="1.5" stroke-linecap="round" opacity="0">'
-                       f'<animate attributeName="opacity" values="0;0;1;0" keyTimes="0;{t:.3f};{t + 0.019:.3f};{t + 0.02:.3f}" {loop}/>'
-                       f'<animateTransform attributeName="transform" type="translate" values="0 {H - 60};0 {H - 60};0 {y:.0f};0 {y:.0f}" {rise} {loop}/></line>')
+            # foguete: corpo, ponta, chama piscando e rastro de faíscas, subindo do chão até a explosão
+            out.append(f'<g opacity="0">'
+                       f'<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{t:.3f};{t + 0.001:.3f};{t + 0.019:.3f};{t + 0.02:.3f};1" {loop}/>'
+                       f'<animateTransform attributeName="transform" type="translate" values="{x:.0f} {H - 60};{x:.0f} {H - 60};{x:.0f} {y:.0f};{x:.0f} {y:.0f}" {rise} {loop}/>'
+                       '<line x1="0" y1="8" x2="0" y2="30" stroke="#ffd166" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>'
+                       '<circle cx="0" cy="12" r="2.6" fill="#ff9e3d"><animate attributeName="r" values="2.6;1.4;2.6" dur="0.12s" repeatCount="indefinite"/></circle>'
+                       '<circle cx="-1.5" cy="20" r="1" fill="#ffd166"/><circle cx="1.5" cy="26" r="0.8" fill="#ffd166"/>'
+                       f'<rect x="-2" y="-6" width="4" height="14" rx="1" fill="{col}"/>'
+                       '<path d="M-2 -6 L0 -11 L2 -6 Z" fill="#e6f1ff"/></g>')
             b = t + 0.02
             bt = f'keyTimes="0;{b:.3f};{b + 0.025:.3f};1"'
             sparks = []
