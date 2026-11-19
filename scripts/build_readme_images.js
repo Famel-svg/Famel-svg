@@ -17,9 +17,14 @@ const out = path.join(root, 'assets', 'readme');
   await page.goto('file://' + src, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
   // Altura inteira: borda fracionária deixa a última linha do PNG semitransparente (vira um fio claro no README).
-  await page.evaluate(() => document.querySelectorAll('[data-shot]').forEach(el => {
-    el.style.height = Math.ceil(el.getBoundingClientRect().height) + 'px';
-  }));
+  // Peças do mesmo data-group (colunas lado a lado) ficam com a mesma altura.
+  await page.evaluate(() => {
+    const els = [...document.querySelectorAll('[data-shot]')];
+    const h = el => Math.ceil(el.getBoundingClientRect().height);
+    const groups = {};
+    els.forEach(el => { if (el.dataset.group) groups[el.dataset.group] = Math.max(groups[el.dataset.group] || 0, h(el)); });
+    els.forEach(el => { el.style.height = (groups[el.dataset.group] || h(el)) + 'px'; });
+  });
   // Estrelas determinísticas (semente = nome da peça), só fora do conteúdo.
   await page.evaluate(() => {
     const colors = ['#9ecbff', '#e6f1ff', '#58a6ff', '#3fb950'];
