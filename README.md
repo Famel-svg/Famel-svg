@@ -43,8 +43,48 @@
 </p>
 
 <p align="center">
-  <img src="./assets/readme/projects.png" alt="03 / Outros projetos: lista de todos os projetos com área, nome e entrega" width="100%" />
+  <img src="./assets/readme/projects-title.png" alt="03 / Outros projetos: todos os projetos" width="100%" />
 </p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/SafePix_Async"><img src="./assets/readme/p-safepix.png" alt="SafePix Async" width="48%" /></a>
+  <a href="https://github.com/Famel-svg/Sistema_Auditoria_PIX"><img src="./assets/readme/p-auditoria.png" alt="Auditoria PIX" width="48%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/estoque-reserva"><img src="./assets/readme/p-estoque.png" alt="Estoque Reserva" width="48%" /></a>
+  <a href="https://github.com/Famel-svg/reserva-salas"><img src="./assets/readme/p-salas.png" alt="Reserva de Salas" width="48%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/biblioteca-emprestimos"><img src="./assets/readme/p-biblioteca.png" alt="Biblioteca Empréstimos" width="48%" /></a>
+  <a href="https://github.com/Famel-svg/auth-rbac-starter"><img src="./assets/readme/p-auth.png" alt="Auth RBAC Starter" width="48%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/Sistema_De_Controle_Financeiro"><img src="./assets/readme/p-financeiro.png" alt="Controle Financeiro" width="48%" /></a>
+  <a href="https://github.com/Famel-svg/springboot_simple_store"><img src="./assets/readme/p-store.png" alt="Simple Store" width="48%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/WTC_Chat"><img src="./assets/readme/p-wtc.png" alt="WTC CRM Chat" width="48%" /></a>
+  <a href="https://github.com/Famel-svg/fluxo-android"><img src="./assets/readme/p-fluxo.png" alt="Fluxo" width="48%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/repforge"><img src="./assets/readme/p-repforge.png" alt="RepForge" width="48%" /></a>
+  <a href="https://github.com/Famel-svg/apk-preview-desktop"><img src="./assets/readme/p-apk.png" alt="APK Preview Desktop" width="48%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/Brave_CLI"><img src="./assets/readme/p-brave.png" alt="Brave CLI" width="48%" /></a>
+  <a href="https://github.com/Famel-svg/combustiveis-sql-analytics"><img src="./assets/readme/p-combustiveis.png" alt="Combustíveis SQL Analytics" width="48%" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Famel-svg/painel-combustiveis-powerbi"><img src="./assets/readme/p-powerbi.png" alt="Painel Power BI" width="48%" /></a>
+</p>
+
 
 <p align="center">
   <img src="./assets/stack-pt.svg" alt="Stack: Java 21, Kotlin, SQL, Python, Spring Boot, Spring Security, JPA, PostgreSQL, Flyway, RabbitMQ, JUnit 5, Testcontainers, Docker, GitHub Actions, Jetpack Compose, Prometheus, Grafana" width="100%" />
