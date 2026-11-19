@@ -21,7 +21,7 @@
 
 ## 01 / Sobre
 
-Sou Rafael, de São Paulo, formado em Análise e Desenvolvimento de Sistemas pela FIAP. Trabalho principalmente com backend em Java e Spring Boot e gosto dos problemas que aparecem quando o sistema sai do tutorial: requisições duplicadas, duas pessoas reservando o mesmo item ao mesmo tempo, saber quem alterou um registro e quando.
+Sou Rafael, de São Paulo, formado em Análise e Desenvolvimento de Sistemas pela FIAP e Assistente de TI na Núcleo Engenharia desde junho de 2026. Trabalho principalmente com backend em Java e Spring Boot e gosto dos problemas que aparecem quando o sistema sai do tutorial: requisições duplicadas, duas pessoas reservando o mesmo item ao mesmo tempo, saber quem alterou um registro e quando.
 
 Também faço apps Android em Kotlin com Compose, quase sempre offline e sem exigir conta. Antes da FIAP estudei Design Digital na Anhembi Morumbi, então presto atenção em como as coisas são usadas, não só em como funcionam.
 

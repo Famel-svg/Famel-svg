@@ -15,7 +15,7 @@
 
 ## 01 / About
 
-I'm Rafael, from São Paulo, with a degree in Systems Analysis and Development from FIAP. I mostly work on backend with Java and Spring Boot, and I like the problems that show up after the tutorial ends: duplicate requests, two people booking the same item at once, knowing who changed a record and when.
+I'm Rafael, from São Paulo, with a degree in Systems Analysis and Development from FIAP, working as an IT Assistant at Núcleo Engenharia since June 2026. I mostly work on backend with Java and Spring Boot, and I like the problems that show up after the tutorial ends: duplicate requests, two people booking the same item at once, knowing who changed a record and when.
 
 I also build Android apps in Kotlin and Compose, usually offline and without sign-up. Before FIAP I studied Digital Design, so I care about how things are used, not only how they work. Fluent in English.
 
