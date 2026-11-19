@@ -5,6 +5,7 @@ Substitui o github-readme-stats público. Uso: GITHUB_TOKEN=... python scripts/b
 import json
 import os
 import urllib.request
+from datetime import date
 from html import escape
 from pathlib import Path
 from xml.etree import ElementTree
@@ -114,6 +115,105 @@ def langs_card(user, top=6):
     return frame(470, max(height, 112 + 5 * 28), "linguagens", "\n".join(body))
 
 
+EVENTS = ["chuva", "abducao", "tempestade", "fogos", "neblina", "balao"]
+# um evento por dia, sorteado pela data; CITY_EVENT força um evento para testar
+EVENT = os.environ.get("CITY_EVENT") or EVENTS[date.today().toordinal() % len(EVENTS)]
+
+
+def event_layer(event, W, H, loop, rnd, road):
+    """Camada do evento do dia, desenhada por cima da cidade."""
+    if event in ("chuva", "tempestade"):
+        drops = []
+        for _ in range(140):
+            x, y, d = rnd() * (W + 200) - 100, rnd() * H, 0.6 + rnd() * 0.5
+            drops.append(f'<line x1="{x:.0f}" y1="{y:.0f}" x2="{x - 5:.0f}" y2="{y + 14:.0f}">'
+                         f'<animateTransform attributeName="transform" type="translate" values="0 -{H};-{H * 0.36:.0f} 0" dur="{d:.2f}s" begin="-{rnd() * d:.2f}s" repeatCount="indefinite"/></line>')
+        rain = (f'<rect width="{W}" height="{H}" fill="#3d4a5c" opacity="{0.45 if event == "tempestade" else 0.32}"/>'
+                f'<g stroke="#b9d4f0" stroke-width="1.1" stroke-opacity="0.55" stroke-linecap="round">{"".join(drops)}</g>')
+        if event == "chuva":
+            return rain
+        # tempestade: raios em pontos e horários diferentes, com clarão na tela toda
+        bolts = []
+        for k, t in enumerate((0.12, 0.31, 0.47, 0.66, 0.83)):
+            x, y = 120 + rnd() * (W - 240), 60.0
+            pts = [(x, y)]
+            while y < 300:
+                y += 22 + rnd() * 18
+                x += (rnd() - 0.5) * 40
+                pts.append((x, y))
+            kt = f'keyTimes="0;{t:.3f};{t + 0.003:.3f};{t + 0.008:.3f};{t + 0.011:.3f};{t + 0.016:.3f};1"'
+            flash = f'values="0;0;1;0.2;1;0;0" {kt} {loop}'
+            line = " ".join(f"{px:.0f},{py:.0f}" for px, py in pts)
+            bolts.append(f'<rect width="{W}" height="{H}" fill="#e6f1ff" opacity="0"><animate attributeName="opacity" values="0;0;0.35;0.05;0.3;0;0" {kt} {loop}/></rect>'
+                         f'<g opacity="0"><animate attributeName="opacity" {flash}/>'
+                         f'<polyline points="{line}" fill="none" stroke="#9ecbff" stroke-width="5" stroke-opacity="0.4"/>'
+                         f'<polyline points="{line}" fill="none" stroke="#ffffff" stroke-width="1.8"/></g>')
+        return rain + "".join(bolts)
+    if event == "abducao":
+        # à noite o óvni chega, desce sobre a avenida, puxa um carro e vai embora
+        rx_, ry_ = road
+        hover = ry_ - 110
+        kt = 'keyTimes="0;0.6;0.64;0.68;0.8;0.84;0.88;1"'
+        ufo = (f'<g><animateTransform attributeName="transform" type="translate" values="-80 90;-80 90;{rx_:.0f} 90;{rx_:.0f} {hover:.0f};{rx_:.0f} {hover:.0f};{rx_:.0f} 70;1040 40;1040 40" {kt} {loop}/>'
+               f'<polygon points="-8,6 8,6 30,110 -30,110" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.69;0.79;0.8;1" {loop}/></polygon>'
+               '<ellipse cx="0" cy="-1" rx="10" ry="9" fill="#9ecbff" opacity="0.8"/><ellipse cx="0" cy="4" rx="28" ry="7" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="28" ry="3.5" fill="#c9d1d9"/>'
+               + "".join(f'<circle cx="{cx}" cy="6.5" r="1.8" fill="#7ee787"><animate attributeName="fill" values="#7ee787;#ff7b72;#d29922;#7ee787" dur="0.8s" begin="{k * 0.2}s" repeatCount="indefinite"/></circle>' for k, cx in enumerate((-16, 0, 16)))
+               + "</g>")
+        car = (f'<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.62;0.63;0.775;0.78;1" {loop}/>'
+               f'<animateTransform attributeName="transform" type="translate" values="-40 {ry_:.0f};-40 {ry_:.0f};{rx_:.0f} {ry_:.0f};{rx_:.0f} {ry_:.0f};{rx_:.0f} {hover + 8:.0f};{rx_:.0f} {hover + 8:.0f}" keyTimes="0;0.62;0.69;0.7;0.78;1" {loop}/>'
+               f'<g><animateTransform attributeName="transform" type="rotate" values="0;0;-25;20;-15;0" keyTimes="0;0.7;0.72;0.74;0.76;1" {loop}/>'
+               '<rect x="-9" y="-5" width="18" height="6" rx="2" fill="#ff7b72"/><rect x="-5" y="-8" width="10" height="4" rx="1.5" fill="#ffa198"/>'
+               '<circle cx="-5" cy="1.5" r="1.8" fill="#161b22"/><circle cx="5" cy="1.5" r="1.8" fill="#161b22"/></g></g>')
+        return car + ufo
+    if event == "fogos":
+        # à noite foguetes sobem e explodem em cores sobre os prédios
+        import math
+        out = []
+        colors = ["#ff7b72", "#7ee787", "#58a6ff", "#d29922", "#f778ba", "#ffd166"]
+        for k in range(12):
+            t = 0.58 + k * 0.026
+            x, y = 100 + rnd() * (W - 200), 90 + rnd() * 110
+            col = colors[k % len(colors)]
+            rise = f'keyTimes="0;{t:.3f};{t + 0.02:.3f};1"'
+            out.append(f'<line x1="{x:.0f}" y1="0" x2="{x:.0f}" y2="10" stroke="{col}" stroke-width="1.5" stroke-linecap="round" opacity="0">'
+                       f'<animate attributeName="opacity" values="0;0;1;0" keyTimes="0;{t:.3f};{t + 0.019:.3f};{t + 0.02:.3f}" {loop}/>'
+                       f'<animateTransform attributeName="transform" type="translate" values="0 {H - 60};0 {H - 60};0 {y:.0f};0 {y:.0f}" {rise} {loop}/></line>')
+            b = t + 0.02
+            bt = f'keyTimes="0;{b:.3f};{b + 0.025:.3f};1"'
+            sparks = []
+            for a in range(22):
+                ang = a / 22 * 2 * math.pi
+                dx, dy = math.cos(ang) * 80, math.sin(ang) * 80
+                sparks.append(f'<circle r="3" fill="{col}"><animateTransform attributeName="transform" type="translate" values="0 0;0 0;{dx:.1f} {dy + 6:.1f};{dx:.1f} {dy + 6:.1f}" {bt} {loop}/></circle>')
+            out.append(f'<g transform="translate({x:.0f} {y:.0f})" opacity="0">'
+                       f'<animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;{b:.3f};{b + 0.004:.3f};{b + 0.05:.3f};1" {loop}/>'
+                       f'<circle r="12" fill="{col}" opacity="0.45"/>{"".join(sparks)}</g>')
+        return "".join(out)
+    if event == "neblina":
+        # faixas translúcidas passando devagar entre os prédios, mais densas perto do chão
+        bands = []
+        for k in range(7):
+            y = road[1] - 170 + k * 30 + rnd() * 10
+            w, dur = 500 + rnd() * 400, 40 + rnd() * 40
+            bands.append(f'<ellipse cx="0" cy="{y:.0f}" rx="{w / 2:.0f}" ry="{14 + rnd() * 10:.0f}" fill="url(#fog)" opacity="{0.35 + k * 0.07:.2f}">'
+                         f'<animateTransform attributeName="transform" type="translate" values="{-w / 2:.0f} 0;{W + w / 2:.0f} 0" dur="{dur:.0f}s" begin="-{rnd() * dur:.0f}s" repeatCount="indefinite"/></ellipse>')
+        return ('<defs><radialGradient id="fog"><stop offset="0" stop-color="#dbe6f3" stop-opacity="0.75"/><stop offset="1" stop-color="#dbe6f3" stop-opacity="0"/></radialGradient>'
+                '<linearGradient id="fogfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d6e6" stop-opacity="0"/><stop offset="1" stop-color="#c9d6e6" stop-opacity="0.22"/></linearGradient></defs>'
+                f'<rect y="{road[1] - 200:.0f}" width="{W}" height="{H - road[1] + 200:.0f}" fill="url(#fogfade)"/>' + "".join(bands))
+    if event == "balao":
+        # de dia um balão de ar quente atravessa o céu devagar, balançando
+        return ('<defs><clipPath id="env"><ellipse cx="0" cy="0" rx="22" ry="26"/></clipPath></defs>'
+                f'<g opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.06;0.42;0.48;1" {loop}/>'
+                f'<animateTransform attributeName="transform" type="translate" values="-60 170;300 120;650 150;1020 110;1020 110" keyTimes="0;0.15;0.3;0.46;1" {loop}/>'
+                '<g><animateTransform attributeName="transform" type="translate" values="0 0;0 -6;0 0" dur="4s" repeatCount="indefinite"/>'
+                '<g clip-path="url(#env)"><rect x="-22" y="-26" width="44" height="52" fill="#ff7b72"/>'
+                '<rect x="-12" y="-26" width="8" height="52" fill="#ffd166"/><rect x="4" y="-26" width="8" height="52" fill="#58a6ff"/></g>'
+                '<ellipse cx="-7" cy="-10" rx="5" ry="9" fill="#ffffff" opacity="0.25"/>'
+                '<path d="M-14 20 L-6 36 M14 20 L6 36" stroke="#8b949e" stroke-width="1"/>'
+                '<rect x="-7" y="36" width="14" height="9" rx="1.5" fill="#8b5a2b"/></g></g>')
+    return ""
+
+
 def city_card(user, layout="day"):
     """Cidade isométrica: cada quarteirão é uma semana, cada lote um dia; prédio cresce com as contribuições.
 
@@ -142,7 +242,7 @@ def city_card(user, layout="day"):
         half = -(-len(days) // 2)
         cols, rows = half, 3
         street_r, street_c = [1], []
-        rx, ry, oy, hmax = 10.0, 20.0, 448.0, 270
+        rx, ry, oy, hmax = 14.0, 26.0, 430.0, 270
         for k, wk in enumerate(days):
             lots_xy[k % half, 0 if k < half else 2] = sum(wk)
         tagline = "cada prédio é uma semana"
@@ -210,6 +310,7 @@ def city_card(user, layout="day"):
         '<linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7fd1"/><stop offset="0.65" stop-color="#8cc4ee"/><stop offset="1" stop-color="#f6d7a7"/></linearGradient>',
         '<linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0.35" stop-color="#ff8c42" stop-opacity="0"/><stop offset="1" stop-color="#ff6b3d" stop-opacity="0.85"/></linearGradient>',
         '<radialGradient id="sunhalo"><stop offset="0.3" stop-color="#ffe29a" stop-opacity="0.7"/><stop offset="1" stop-color="#ffe29a" stop-opacity="0"/></radialGradient>',
+        '<radialGradient id="soft"><stop offset="0" stop-color="#fff6d8"/><stop offset="0.75" stop-color="#ffe7a3"/><stop offset="1" stop-color="#ffd166"/></radialGradient>',
         '<linearGradient id="retro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#ff7a45"/></linearGradient>',
         '<clipPath id="stripes"><rect x="-30" y="-30" width="60" height="31"/><rect x="-30" y="4" width="60" height="5"/><rect x="-30" y="12" width="60" height="4"/><rect x="-30" y="19" width="60" height="3"/><rect x="-30" y="25" width="60" height="5"/></clipPath>',
         '<radialGradient id="moonglow"><stop offset="0.4" stop-color="#dfe9ff" stop-opacity="0.4"/><stop offset="1" stop-color="#dfe9ff" stop-opacity="0"/></radialGradient>',
@@ -242,16 +343,17 @@ def city_card(user, layout="day"):
     lights = "".join(
         f'<circle cx="{cx}" cy="5.5" r="1.6"><animate attributeName="fill" values="{v}" dur="1.2s" repeatCount="indefinite"/></circle>'
         for cx, v in ((-14, "#7ee787;#d29922;#ff7b72;#7ee787"), (0, "#d29922;#ff7b72;#7ee787;#d29922"), (14, "#ff7b72;#7ee787;#d29922;#ff7b72")))
-    out.append(f'<g><animateTransform attributeName="transform" type="translate" values="1030 110;1030 110;500 120;480 113;460 120;-60 80;-60 80" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" {loop}/>'
-               f'<polygon points="-7,6 7,6 40,190 -40,190" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" {loop}/></polygon>'
-               '<ellipse cx="0" cy="-1" rx="9" ry="8" fill="#9ecbff" opacity="0.75"/><ellipse cx="0" cy="4" rx="24" ry="6" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="24" ry="3" fill="#c9d1d9"/>'
-               f'{lights}</g>')
+    if EVENT != "abducao":  # na abdução o óvni do evento substitui o de passagem
+        out.append(f'<g><animateTransform attributeName="transform" type="translate" values="1030 110;1030 110;500 120;480 113;460 120;-60 80;-60 80" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" {loop}/>'
+                   f'<polygon points="-7,6 7,6 40,190 -40,190" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" {loop}/></polygon>'
+                   '<ellipse cx="0" cy="-1" rx="9" ry="8" fill="#9ecbff" opacity="0.75"/><ellipse cx="0" cy="4" rx="24" ry="6" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="24" ry="3" fill="#c9d1d9"/>'
+                   f'{lights}</g>')
     out.append("</g>")
 
     # dia: sol retrô, nuvens, avião com rastro
     out.append(f'<g><animateTransform attributeName="transform" type="translate" {arc_motion(0)}/>'
-               '<circle r="58" fill="url(#sunhalo)" opacity="0.8"/>'
-               '<circle r="30" fill="url(#retro)" clip-path="url(#stripes)"/></g>')
+               '<circle r="56" fill="url(#sunhalo)"><animate attributeName="r" values="50;60;50" dur="5s" repeatCount="indefinite"/></circle>'
+               '<circle r="24" fill="url(#soft)"/></g>')
     out.append(f'<g opacity="0"><animate attributeName="opacity" {day_on}/>')
     for cx, cy, k, dur, begin in ((180, 100, 1.0, 150, 0), (520, 150, 0.8, 190, 40), (780, 90, 1.1, 170, 90), (380, 190, 0.6, 210, 120), (900, 170, 0.7, 230, 60)):
         out.append(cloud(cx, cy, k, dur, begin))
@@ -309,7 +411,7 @@ def city_card(user, layout="day"):
             out.append(trees.get((c, r), ""))
             continue
         h = 8 + hmax * (n / peak) ** 0.55
-        i = 0.09
+        i = 0.16  # vão entre prédios vizinhos
         n_, e_, s_, w_ = P(c + i, r + i), P(c + 1 - i, r + i), P(c + 1 - i, r + 1 - i), P(c + i, r + 1 - i)
         up = lambda p, z=h: (p[0], p[1] - z)
         delay = 0.4 + c * 0.03
@@ -321,6 +423,11 @@ def city_card(user, layout="day"):
         body = poly([w_, s_, up(s_), up(w_)], front)
         body += poly([s_, e_, up(e_), up(s_)], side)
         body += poly([up(n_), up(e_), up(s_), up(w_)], top, f' stroke="{rim}" stroke-opacity="0.8" stroke-width="0.7"')
+        # contorno neon nas quinas: brilho largo e fraco por baixo, traço fino por cima
+        edges = [(w_, up(w_)), (s_, up(s_)), (e_, up(e_)), (up(w_), up(s_)), (up(s_), up(e_)), (up(e_), up(n_)), (up(n_), up(w_))]
+        path = "".join(f"M{a[0]:.1f} {a[1]:.1f}L{b[0]:.1f} {b[1]:.1f}" for a, b in edges)
+        body += (f'<path d="{path}" fill="none" stroke="{BLUE}" stroke-width="3" stroke-opacity="0.25" stroke-linecap="round"/>'
+                 f'<path d="{path}" fill="none" stroke="#9ecbff" stroke-width="0.9" stroke-opacity="0.9" stroke-linecap="round"/>')
         mid = up(P(c + 0.5, r + 0.5))
         if n == peak:
             body += (f'<line x1="{mid[0]:.1f}" y1="{mid[1]:.1f}" x2="{mid[0]:.1f}" y2="{mid[1] - 14:.1f}" stroke="#8b949e" stroke-width="1"/>'
@@ -350,6 +457,9 @@ def city_card(user, layout="day"):
         tx, ty = P(c + 0.5, 0.5, 8 + hmax * (v / peak) ** 0.55)
         out.append(f'<text x="{fx:.1f}" y="{fy + slab + 16:.1f}" text-anchor="middle" font-family="{FONT}" font-size="13" font-weight="700" fill="{INK}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.8" stroke-width="3">{name}</text>')
         out.append(f'<text x="{tx:.1f}" y="{ty - 22:.1f}" text-anchor="middle" font-family="{FONT}" font-size="12" font-weight="700" fill="{INK}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.8" stroke-width="3">{v}</text>')
+
+    road = ((roads[0][0][0] + roads[0][1][0]) / 2, roads[0][0][1]) if roads else (W / 2, H - 80)
+    out.append(event_layer(EVENT, W, H, loop, rnd, road))
 
     halo = 'paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4"'
     out += [
