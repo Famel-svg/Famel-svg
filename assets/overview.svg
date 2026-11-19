@@ -13,7 +13,7 @@
   <line x1="28" y1="48" x2="442" y2="48" stroke="url(#stats-line)" stroke-opacity="0.7"/>
   <text x="28" y="78" fill="#58a6ff" font-family="Consolas,monospace" font-size="15">$ git stats --author rafael</text>
   <text x="28" y="112" fill="#9ecbff" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15">Contribuições no último ano</text>
-  <text x="440" y="112" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">859</text>
+  <text x="440" y="112" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">860</text>
   <text x="28" y="140" fill="#9ecbff" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15">Commits no último ano</text>
   <text x="440" y="140" fill="#e6f1ff" font-family="Consolas,monospace" font-size="15" font-weight="700" text-anchor="end">695</text>
   <text x="28" y="168" fill="#9ecbff" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15">Repositórios públicos</text>
@@ -39,7 +39,7 @@
   <text x="28" y="78" fill="#58a6ff" font-family="Consolas,monospace" font-size="15">$ linguist --top 6</text>
   <rect x="28.0" y="94" width="225.3" height="10" fill="#A97BFF"/>
   <rect x="253.3" y="94" width="103.5" height="10" fill="#b07219"/>
-  <rect x="356.9" y="94" width="51.8" height="10" fill="#3572A5"/>
+  <rect x="356.8" y="94" width="51.9" height="10" fill="#3572A5"/>
   <rect x="408.7" y="94" width="12.2" height="10" fill="#f1e05a"/>
   <rect x="420.9" y="94" width="11.3" height="10" fill="#dea584"/>
   <rect x="432.3" y="94" width="9.7" height="10" fill="#3178c6"/>
