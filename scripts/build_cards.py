@@ -115,10 +115,10 @@ def langs_card(user, top=6):
 
 
 def city_card(user):
-    """Cidade noturna animada: um prédio por semana, altura pelas contribuições."""
+    """Cidade animada: um prédio por semana, altura pelas contribuições, ciclo de dia e noite de 60s."""
     cal = user["contributionsCollection"]["contributionCalendar"]
     weeks = [sum(d["contributionCount"] for d in w["contributionDays"]) for w in cal["weeks"]]
-    W, H, ground = 960, 340, 300
+    W, H, ground = 960, 340, 262
     peak = max(weeks) or 1
     bw, gap = 14, 3.6
     x0 = (W - len(weeks) * (bw + gap)) / 2
@@ -129,68 +129,157 @@ def city_card(user):
         seed = (seed * 1103515245 + 12345) % 2**31
         return seed / 2**31
 
+    loop = 'dur="60s" repeatCount="indefinite"'
+    # metade dia (0-0.5), metade noite (0.5-1); transições de 0.08
+    day_on = f'values="0;1;1;0;0" keyTimes="0;0.08;0.42;0.5;1" {loop}'
+    night_on = f'values="0;0;1;1;0" keyTimes="0;0.5;0.58;0.92;1" {loop}'
+    dusk = f'values="0.8;0;0;0.8;0;0;0.8" keyTimes="0;0.08;0.42;0.5;0.58;0.92;1" {loop}'
+    arc = "-70 230;90 150;260 108;480 92;700 108;870 150;1030 230"
+
+    def arc_motion(start):
+        # mesma trajetória para o sol (start=0) e para a lua (start=0.5)
+        kt = ";".join(f"{start + k * 0.5 / 6:.3f}" for k in range(7))
+        if start:
+            return f'values="-70 230;{arc}" keyTimes="0;{kt}" {loop}'
+        return f'values="{arc};1030 230" keyTimes="{kt};1" {loop}'
+
+    def cloud(cx, cy, k, dur, begin):
+        puffs = [(0, 0, 38, 13), (-20, -8, 18, 14), (6, -15, 22, 17), (26, -6, 16, 11)]
+        body = "".join(f'<ellipse cx="{x}" cy="{y}" rx="{rx}" ry="{ry}"/>' for x, y, rx, ry in puffs)
+        return (f'<g transform="translate({cx} {cy}) scale({k})"><g>'
+                f'<animateTransform attributeName="transform" type="translate" values="{(W - cx + 80) / k:.0f} 0;{(-cx - 120) / k:.0f} 0" dur="{dur}s" begin="-{begin}s" repeatCount="indefinite"/>'
+                f'<g fill="#b9c7da" transform="translate(4 6)" opacity="0.6">{body}</g><g fill="url(#cloud)">{body}</g></g></g>')
+
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="Cidade de contribuições: {cal["totalContributions"]} no último ano">',
-        '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.7" stop-color="#0d1530"/><stop offset="1" stop-color="#1b1f4a"/></linearGradient>',
-        '<radialGradient id="moonglow"><stop offset="0.45" stop-color="#f0f6fc" stop-opacity="0.35"/><stop offset="1" stop-color="#f0f6fc" stop-opacity="0"/></radialGradient><radialGradient id="glow" cx="0.5" cy="1" r="0.6"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.25"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient>',
-        '<clipPath id="frame"><rect x="1" y="1" width="958" height="338" rx="18"/></clipPath></defs>',
+        "<defs>",
+        '<linearGradient id="night" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="0.55" stop-color="#0d1a33"/><stop offset="1" stop-color="#05070d"/></linearGradient><radialGradient id="o1"><stop offset="0" stop-color="#58a6ff" stop-opacity="0.45"/><stop offset="0.6" stop-color="#58a6ff" stop-opacity="0.1"/><stop offset="1" stop-color="#58a6ff" stop-opacity="0"/></radialGradient><radialGradient id="o2"><stop offset="0" stop-color="#3fb950" stop-opacity="0.35"/><stop offset="0.6" stop-color="#3fb950" stop-opacity="0.08"/><stop offset="1" stop-color="#3fb950" stop-opacity="0"/></radialGradient><linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#3fb950"/></linearGradient>',
+        '<linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7fd1"/><stop offset="0.65" stop-color="#8cc4ee"/><stop offset="1" stop-color="#f6d7a7"/></linearGradient>',
+        '<linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0.35" stop-color="#ff8c42" stop-opacity="0"/><stop offset="1" stop-color="#ff6b3d" stop-opacity="0.85"/></linearGradient>',
+        '<radialGradient id="sunhalo"><stop offset="0.3" stop-color="#ffe29a" stop-opacity="0.7"/><stop offset="1" stop-color="#ffe29a" stop-opacity="0"/></radialGradient>',
+        '<radialGradient id="sun" cx="0.4" cy="0.4"><stop offset="0" stop-color="#fffbe6"/><stop offset="0.6" stop-color="#ffd166"/><stop offset="1" stop-color="#f4a62a"/></radialGradient>',
+        '<radialGradient id="moonglow"><stop offset="0.4" stop-color="#dfe9ff" stop-opacity="0.4"/><stop offset="1" stop-color="#dfe9ff" stop-opacity="0"/></radialGradient>',
+        '<radialGradient id="moon" cx="0.35" cy="0.35"><stop offset="0" stop-color="#fbfaf2"/><stop offset="1" stop-color="#cfcab6"/></radialGradient>',
+        '<linearGradient id="cloud" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3ebf5"/></linearGradient>',
+        '<linearGradient id="bld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34466f"/><stop offset="1" stop-color="#141b30"/></linearGradient>',
+        '<linearGradient id="bldhot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f5a92"/><stop offset="1" stop-color="#18213d"/></linearGradient>',
+        '<linearGradient id="far" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3557"/><stop offset="1" stop-color="#1a2240"/></linearGradient>',
+        '<linearGradient id="trail" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0.8"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>',
+        '<radialGradient id="lamp"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.8"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>',
+        '<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ee787" stop-opacity="0.5"/><stop offset="1" stop-color="#7ee787" stop-opacity="0"/></linearGradient>',
+        f'<clipPath id="frame"><rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="18"/></clipPath>',
+        "</defs>",
         '<g clip-path="url(#frame)">',
-        f'<rect width="{W}" height="{H}" fill="url(#sky)"/>',
-        f'<rect y="{ground - 160}" width="{W}" height="200" fill="url(#glow)"/>',
-        # ciclo dia/noite de 30s: céu claro aparece, sol cruza, noite volta
-        '<linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82c4"/><stop offset="1" stop-color="#f2b880"/></linearGradient>',
-        f'<rect width="{W}" height="{H}" fill="url(#day)" opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/></rect>',
-        '<circle r="22" fill="#ffd166"><animateTransform attributeName="transform" type="translate" values="-60 220;120 80;840 80;1020 220;1020 220" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/></circle>',
-        '<g fill="#ffffff" opacity="0"><animate attributeName="opacity" values="0;0.9;0.9;0;0" keyTimes="0;0.08;0.42;0.5;1" dur="60s" repeatCount="indefinite"/>',
-        '<g transform="translate(240 70) scale(1)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-260 0;0 0" dur="90s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
-        '<g transform="translate(520 120) scale(0.8)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-325 0;0 0" dur="120s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
-        '<g transform="translate(760 60) scale(1.2)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-216 0;0 0" dur="100s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
-        '<g transform="translate(900 140) scale(0.7)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-371 0;0 0" dur="140s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
-        '<g transform="translate(120 150) scale(0.9)"><g><animateTransform attributeName="transform" type="translate" values="0 0;-288 0;0 0" dur="110s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="34" ry="12"/><ellipse cx="-14" cy="-8" rx="16" ry="12"/><ellipse cx="10" cy="-12" rx="20" ry="15"/></g></g>',
-        '</g>',
+        f'<rect width="{W}" height="{H}" fill="url(#night)"/>',
+        f'<circle cx="100" cy="20" r="300" fill="url(#o1)"/><circle cx="{W - 70}" cy="{H - 10}" r="270" fill="url(#o2)"/>',
+        f'<rect width="{W}" height="{H}" fill="url(#day)" opacity="0"><animate attributeName="opacity" {day_on}/></rect>',
+        f'<rect width="{W}" height="{H}" fill="url(#dusk)" opacity="0"><animate attributeName="opacity" {dusk}/></rect>',
     ]
-    # avião com luzes piscando
-    out.append('<g><animateTransform attributeName="transform" type="translate" values="1000 70;1000 70;-80 50;-80 50" keyTimes="0;0.1;0.36;1" dur="60s" repeatCount="indefinite"/>'
-               '<path d="M0 0 L22 0 L26 -2 L22 -4 L4 -4 Z M10 -3 L16 -11 L19 -11 L15 -3 Z M10 -1 L16 5 L19 5 L15 -1 Z" fill="#8b949e"/>'
-               '<circle cx="0" cy="-2" r="1.6" fill="#ff7b72"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></circle>'
-               '<circle cx="26" cy="-2" r="1.6" fill="#f0f6fc"><animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite"/></circle></g>')
-    out.append('<g opacity="1"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.5;0.58;0.92;1" dur="60s" repeatCount="indefinite"/>')  # grupo noturno
-    for _ in range(70):  # estrelas piscando
-        x, y, r, d = rnd() * W, rnd() * 170, 0.5 + rnd() * 1.1, 2 + rnd() * 4
+
+    # noite: estrelas, estrela cadente, lua, óvni
+    out.append(f'<g opacity="0"><animate attributeName="opacity" {night_on}/>')
+    for _ in range(90):
+        x, y, r, d = rnd() * W, 62 + rnd() * 140, 0.4 + rnd() * 1.2, 2 + rnd() * 4
         out.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="#f0f6fc"><animate attributeName="opacity" values="0.2;1;0.2" dur="{d:.1f}s" begin="{rnd() * 3:.1f}s" repeatCount="indefinite"/></circle>')
-    out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 220;-60 220;120 80;840 80;1020 220" keyTimes="0;0.5;0.58;0.92;1" dur="60s" repeatCount="indefinite"/><circle r="44" fill="url(#moonglow)"/><circle r="22" fill="#e8e4d4"/><circle cx="-7" cy="-6" r="5" fill="#cfc9b4"/><circle cx="8" cy="4" r="3.5" fill="#cfc9b4"/><circle cx="-3" cy="10" r="2.5" fill="#cfc9b4"/><circle cx="10" cy="-9" r="2" fill="#cfc9b4"/></g>')
-    # óvni: entra, para sobre a cidade com feixe de luz e sai
-    out.append('<g><animateTransform attributeName="transform" type="translate" values="-60 110;-60 110;420 110;440 104;460 110;1020 90;1020 90" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" dur="60s" repeatCount="indefinite"/>'
-               '<polygon points="-6,6 6,6 22,90 -22,90" fill="#7ee787" opacity="0"><animate attributeName="opacity" values="0;0;0.25;0.25;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" dur="60s" repeatCount="indefinite"/></polygon>'
-               '<ellipse cx="0" cy="0" rx="9" ry="7" fill="#58a6ff" opacity="0.7"/><ellipse cx="0" cy="4" rx="22" ry="5" fill="#8b949e"/>'
-               '<circle cx="-12" cy="5" r="1.5" fill="#7ee787"><animate attributeName="fill" values="#7ee787;#d29922;#ff7b72;#7ee787" dur="1.2s" repeatCount="indefinite"/></circle>'
-               '<circle cx="0" cy="6" r="1.5" fill="#d29922"><animate attributeName="fill" values="#d29922;#ff7b72;#7ee787;#d29922" dur="1.2s" repeatCount="indefinite"/></circle>'
-               '<circle cx="12" cy="5" r="1.5" fill="#ff7b72"><animate attributeName="fill" values="#ff7b72;#7ee787;#d29922;#ff7b72" dur="1.2s" repeatCount="indefinite"/></circle></g>')
-    out.append('</g>')
+    out.append(f'<line x1="0" y1="0" x2="70" y2="22" stroke="url(#trail)" stroke-width="1.6" stroke-linecap="round" opacity="0">'
+               f'<animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.7;0.71;0.73;1" {loop}/>'
+               f'<animateTransform attributeName="transform" type="translate" values="700 75;700 75;520 135;520 135" keyTimes="0;0.7;0.73;1" {loop}/></line>')
+    out.append(f'<g><animateTransform attributeName="transform" type="translate" {arc_motion(0.5)}/>'
+               '<circle r="52" fill="url(#moonglow)"/><circle r="21" fill="url(#moon)"/>'
+               '<circle cx="-7" cy="-5" r="4.5" fill="#c4bea8" opacity="0.7"/><circle cx="7" cy="5" r="3.2" fill="#c4bea8" opacity="0.7"/>'
+               '<circle cx="-3" cy="10" r="2.2" fill="#c4bea8" opacity="0.7"/><circle cx="10" cy="-8" r="1.8" fill="#c4bea8" opacity="0.7"/></g>')
+    lights = "".join(
+        f'<circle cx="{cx}" cy="5.5" r="1.6"><animate attributeName="fill" values="{v}" dur="1.2s" repeatCount="indefinite"/></circle>'
+        for cx, v in ((-14, "#7ee787;#d29922;#ff7b72;#7ee787"), (0, "#d29922;#ff7b72;#7ee787;#d29922"), (14, "#ff7b72;#7ee787;#d29922;#ff7b72")))
+    out.append(f'<g><animateTransform attributeName="transform" type="translate" values="-60 105;-60 105;400 105;420 98;440 105;1030 85;1030 85" keyTimes="0;0.6;0.68;0.74;0.8;0.88;1" {loop}/>'
+               f'<polygon points="-7,6 7,6 30,150 -30,150" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.7;0.78;0.8;1" {loop}/></polygon>'
+               '<ellipse cx="0" cy="-1" rx="9" ry="8" fill="#9ecbff" opacity="0.75"/><ellipse cx="0" cy="4" rx="24" ry="6" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="24" ry="3" fill="#c9d1d9"/>'
+               f'{lights}</g>')
+    out.append("</g>")
+
+    # dia: sol com raios girando, nuvens, avião com rastro
+    rays = "".join(f'<line x1="0" y1="-30" x2="0" y2="-38" transform="rotate({a})"/>' for a in range(0, 360, 30))
+    out.append(f'<g><animateTransform attributeName="transform" type="translate" {arc_motion(0)}/>'
+               '<circle r="60" fill="url(#sunhalo)"/>'
+               '<g stroke="#ffd166" stroke-width="2.4" stroke-linecap="round" opacity="0.8">'
+               f'<animateTransform attributeName="transform" type="rotate" values="0;360" dur="40s" repeatCount="indefinite"/>{rays}</g>'
+               '<circle r="22" fill="url(#sun)"/></g>')
+    out.append(f'<g opacity="0"><animate attributeName="opacity" {day_on}/>')
+    for cx, cy, k, dur, begin in ((200, 100, 1.1, 150, 0), (520, 140, 0.8, 190, 40), (760, 95, 1.2, 170, 90), (380, 170, 0.6, 210, 120), (880, 150, 0.7, 230, 60)):
+        out.append(cloud(cx, cy, k, dur, begin))
+    out.append(f'<g><animateTransform attributeName="transform" type="translate" values="1040 84;1040 84;-120 70;-120 70" keyTimes="0;0.1;0.38;1" {loop}/>'
+               '<rect x="30" y="-2.2" width="110" height="2.4" rx="1.2" fill="url(#trail)"/>'
+               '<path d="M0 0 Q2 -4 8 -4 L30 -4 Q34 -4 34 -1 Q34 2 30 2 L8 2 Q2 2 0 0 Z" fill="#eef2f7"/>'
+               '<path d="M26 -4 L32 -12 L35 -12 L33 -4 Z" fill="#c9d1d9"/>'
+               '<path d="M13 -1 L22 -10 L26 -10 L20 -1 Z M13 1 L22 9 L26 9 L20 1 Z" fill="#aab4c2"/>'
+               '<rect x="5" y="-2.6" width="16" height="1.2" fill="#58a6ff" opacity="0.7"/>'
+               '<circle cx="34" cy="-11" r="1.4" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1s" repeatCount="indefinite"/></circle></g>')
+    out.append("</g>")
+
+    # silhueta distante para dar profundidade
+    x, far = 0.0, []
+    while x < W:
+        w, h = 18 + rnd() * 30, 30 + rnd() * 70
+        far.append(f'<rect x="{x:.0f}" y="{ground - h:.0f}" width="{w:.0f}" height="{h:.0f}"/>')
+        x += w + 2
+    # quase some de dia para não pesar contra o céu claro
+    out.append(f'<g fill="url(#far)" opacity="0.7"><animate attributeName="opacity" values="0.7;0.12;0.12;0.7;0.7" keyTimes="0;0.08;0.42;0.5;1" {loop}/>{"".join(far)}</g>')
+
+    # prédios: um por semana, com sombra, borda iluminada e detalhes no topo
+    windows = []
     for i, total in enumerate(weeks):
-        h = 8 + (ground - 90) * (total / peak) ** 0.6
+        h = 10 + (ground - 92) * (total / peak) ** 0.6
         x, y = x0 + i * (bw + gap), ground - h
         delay = i * 0.03
-        tone = "#161b22" if total == 0 else ("#1f2a44" if total < peak * 0.4 else "#22305a")
-        out.append(f'<g><rect x="{x:.1f}" y="{y:.1f}" width="{bw}" height="{h:.1f}" fill="{tone}" stroke="#30363d" stroke-width="0.6">'
-                   f'<animate attributeName="height" from="0" to="{h:.1f}" dur="1.2s" begin="{delay:.2f}s" fill="freeze"/>'
-                   f'<animate attributeName="y" from="{ground}" to="{y:.1f}" dur="1.2s" begin="{delay:.2f}s" fill="freeze"/></rect>')
-        out.append(f'<polygon points="{x + bw:.1f},{y:.1f} {x + bw + gap:.1f},{y + 3:.1f} {x + bw + gap:.1f},{ground} {x + bw:.1f},{ground}" fill="#0b0f1c" opacity="0"><animate attributeName="opacity" to="1" dur="0.3s" begin="{delay + 1.1:.2f}s" fill="freeze"/></polygon>')
-        for wy in range(int(y) + 6, ground - 6, 9):  # janelas
-            for wx in (x + 3, x + 8.5):
-                if rnd() < 0.45 * (total > 0):
-                    color = "#d29922" if rnd() < 0.8 else "#58a6ff"
-                    out.append(f'<rect x="{wx:.1f}" y="{wy}" width="2.6" height="3.4" fill="{color}" opacity="0"><animate attributeName="opacity" values="0;1;1;0.35;1" keyTimes="0;0.1;0.6;0.7;1" dur="{4 + rnd() * 6:.1f}s" begin="{delay + 1.2:.2f}s" repeatCount="indefinite"/></rect>')
+        grow = (f'<animate attributeName="height" from="0" to="{h:.1f}" dur="1.2s" begin="{delay:.2f}s" fill="freeze"/>'
+                f'<animate attributeName="y" from="{ground}" to="{y:.1f}" dur="1.2s" begin="{delay:.2f}s" fill="freeze"/>')
+        fill = "url(#bldhot)" if total >= peak * 0.4 else "url(#bld)"
+        out.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw}" height="{h:.1f}" fill="{fill}">{grow}</rect>')
+        out.append(f'<rect x="{x + bw - 3:.1f}" y="{y:.1f}" width="3" height="{h:.1f}" fill="#000" opacity="0.28">{grow}</rect>')
+        out.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="1.4" height="{h:.1f}" fill="#9ecbff" opacity="0.25">{grow}</rect>')
+        top = f'opacity="0"><animate attributeName="opacity" to="1" dur="0.4s" begin="{delay + 1.1:.2f}s" fill="freeze"/>'
+        mid = x + bw / 2
         if total == peak:
-            out.append(f'<circle cx="{x + bw / 2:.1f}" cy="{y - 6:.1f}" r="2.5" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1.4s" repeatCount="indefinite"/></circle>')
-        out.append("</g>")
+            out.append(f'<g {top}<line x1="{mid:.1f}" y1="{y:.1f}" x2="{mid:.1f}" y2="{y - 16:.1f}" stroke="#8b949e" stroke-width="1.2"/>'
+                       f'<circle cx="{mid:.1f}" cy="{y - 17:.1f}" r="2.4" fill="#ff7b72"><animate attributeName="opacity" values="1;0.1;1" dur="1.4s" repeatCount="indefinite"/></circle></g>')
+        elif total >= peak * 0.55:
+            out.append(f'<g {top}<rect x="{x - 1:.1f}" y="{y - 3:.1f}" width="{bw + 2}" height="3" fill="#2a3a60"/>'
+                       f'<line x1="{x + 4:.1f}" y1="{y - 3:.1f}" x2="{x + 4:.1f}" y2="{y - 10:.1f}" stroke="#8b949e"/></g>')
+        elif total >= peak * 0.25:
+            out.append(f'<g {top}<rect x="{x + 4:.1f}" y="{y - 6:.1f}" width="6" height="6" rx="1" fill="#3a4a72"/></g>')
+        for wy in range(int(y) + 6, ground - 8, 9):
+            for wx in (x + 3, x + 8.5):
+                if total and rnd() < 0.5:
+                    color = "#ffcf6e" if rnd() < 0.82 else "#9ecbff"
+                    flick = ""
+                    if rnd() < 0.15:
+                        flick = f'<animate attributeName="opacity" values="1;1;0.25;1" keyTimes="0;0.6;0.7;1" dur="{4 + rnd() * 6:.1f}s" repeatCount="indefinite"/>'
+                    windows.append(f'<rect x="{wx:.1f}" y="{wy}" width="2.6" height="3.4" fill="{color}">{flick}</rect>')
+    # janelas: reflexo fraco de dia, acesas à noite
+    out.append(f'<g opacity="0.15"><animate attributeName="opacity" values="0.15;0.15;1;1;0.15" keyTimes="0;0.5;0.58;0.92;1" {loop}/>{"".join(windows)}</g>')
+
+    # rua com postes que acendem à noite
+    out.append(f'<rect y="{ground}" width="{W}" height="{H - ground}" fill="#05070d"/>')
+    floor = H - 34  # a grade termina antes do rodapé
+    grid = [f'<line x1="0" y1="{ground + (floor - ground) * (k / 7) ** 1.8:.1f}" x2="{W}" y2="{ground + (floor - ground) * (k / 7) ** 1.8:.1f}"/>' for k in range(1, 8)]
+    grid += [f'<line x1="{W / 2 + dx * 0.12:.0f}" y1="{ground}" x2="{W / 2 + dx:.0f}" y2="{floor}"/>' for dx in range(-1600, 1601, 80)]
+    out.append(f'<g stroke="{BLUE}" stroke-opacity="0.28" stroke-width="0.8">{"".join(grid)}</g>')
+    out.append(f'<rect y="{floor}" width="{W}" height="{H - floor}" fill="#05070d"/>')
+    out.append(f'<line x1="0" y1="{ground}" x2="{W}" y2="{ground}" stroke="{BLUE}" stroke-width="3" stroke-opacity="0.25"/>')
+    out.append(f'<line x1="0" y1="{ground}" x2="{W}" y2="{ground}" stroke="url(#line)" stroke-width="1.2"/>')
+    posts = range(40, W, 120)
+    out.append("".join(f'<path d="M{lx} {ground} V{ground - 18} H{lx + 6}" fill="none" stroke="#4a5570" stroke-width="1.5"/>' for lx in posts))
+    out.append(f'<g opacity="0"><animate attributeName="opacity" {night_on}/>'
+               + "".join(f'<circle cx="{lx + 6}" cy="{ground - 16}" r="16" fill="url(#lamp)"/><circle cx="{lx + 6}" cy="{ground - 17}" r="1.8" fill="#ffd27a"/>' for lx in posts)
+               + "</g>")
+
     out += [
-        f'<rect y="{ground}" width="{W}" height="{H - ground}" fill="#0a0d16"/>',
-        f'<line x1="0" y1="{ground}" x2="{W}" y2="{ground}" stroke="#58a6ff" stroke-opacity="0.5"/>',
-        f'<text x="28" y="40" fill="{GREEN}" font-family="{FONT}" font-size="16">$ ./cidade --ano</text>',
-        f'<text x="28" y="{ground + 28}" fill="{MUTED}" font-family="{FONT}" font-size="13">cada prédio é uma semana · {cal["totalContributions"]} contribuições no último ano</text>',
+        f'<text x="32" y="42" font-family="{FONT}" font-size="15" font-weight="700" letter-spacing="2" fill="{BLUE}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4">CONTRIBUTION.CITY'
+        f'<tspan dx="14" font-weight="400" letter-spacing="0" font-size="13" fill="{SOFT}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4">&gt; cada prédio é uma semana</tspan></text>',
+        f'<text x="{W - 32}" y="42" text-anchor="end" font-family="{FONT}" font-size="14" font-weight="700" fill="{INK}" paint-order="stroke" stroke="#05070d" stroke-opacity="0.85" stroke-width="4">{cal["totalContributions"]} contribuições no último ano</text>',
+        f'<text x="32" y="{H - 14}" font-family="{FONT}" font-size="12" fill="{SOFT}" fill-opacity="0.8">dados do GitHub, atualizados todo dia por um GitHub Action</text>',
         "</g>",
-        f'<rect x="1" y="1" width="958" height="338" rx="18" fill="none" stroke="{BORDER}" stroke-width="2"/>',
+        f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="18" fill="none" stroke="{BLUE}" stroke-opacity="0.5" stroke-width="1.5"/>',
         "</svg>",
     ]
     return "\n".join(out)
