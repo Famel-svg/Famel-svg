@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<!-- Fonte das imagens do README. Cada [data-shot] vira assets/readme/src/<nome>.png (fundo transparente);
+     scripts/build_readme.py embrulha cada PNG num SVG com o fundo animado.
+     Geometria: faixa de 860 px, cartão de 812 px (margem 24), 16 px de respiro embaixo.
+     Mesma geometria de scripts/panel.py, para tudo encaixar num fundo contínuo. -->
+<style>
+  :root { --panel: #05070d; --card: #0d1117; --line: #30363d; --blue: #58a6ff; --green: #3fb950; --ink: #e6f1ff; --text: #c9d1d9; --muted: #8b949e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 20px; background: transparent; font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: var(--text); }
+  [data-shot] { position: relative; background: transparent; overflow: hidden; margin-bottom: 30px; }
+  .slice { width: 860px; padding: 0 24px 16px; }
+  .half { width: 430px; padding-bottom: 16px; display: flex; }
+  .half.pp { padding-bottom: 8px; }
+  .half.l { padding-left: 24px; padding-right: 8px; justify-content: flex-start; }
+  .half.r { padding-left: 8px; padding-right: 24px; justify-content: flex-end; }
+  .half.c-l { justify-content: flex-end; padding-right: 8px; }
+  .half.c-r { justify-content: flex-start; padding-left: 8px; }
+  .third { padding-bottom: 16px; display: flex; }
+  .third.t1 { width: 287px; padding-left: 24px; padding-right: 5px; }
+  .third.t2 { width: 286px; padding-left: 3px; padding-right: 3px; }
+  .third.t3 { width: 287px; padding-left: 5px; padding-right: 24px; }
+  .third .card { flex: 1; padding: 18px 16px; border-radius: 14px; }
+  .third .tag { font-size: 10px; padding: 1px 8px; margin-bottom: 8px; }
+  .third .title { font-size: 15px; }
+  .third .sub { font-size: 10.5px; margin-bottom: 10px; }
+  .third p { font-size: 12.5px; line-height: 1.5; margin-bottom: 7px; }
+  .top { padding-top: 24px; }
+  .top.l { border-top-left-radius: 20px; } .top.r { border-top-right-radius: 20px; }
+  .end { padding-bottom: 24px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+  .card { background: linear-gradient(135deg, rgba(5,7,13,.9) 0%, rgba(13,26,51,.9) 55%, rgba(5,7,13,.9) 100%); border: 1.5px solid rgba(88,166,255,.5); border-radius: 18px; padding: 28px 32px; }
+  .kicker { font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: var(--blue); letter-spacing: .08em; margin: 0 0 6px; }
+  h2 { font-size: 24px; font-weight: 700; margin: 0 0 16px; color: var(--ink); }
+  p { font-size: 15px; line-height: 1.6; margin: 0 0 12px; color: var(--text); }
+  p:last-child { margin-bottom: 0; }
+  b { color: var(--ink); }
+  .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); border: 1px solid #238636; border-radius: 999px; padding: 2px 10px; margin-bottom: 12px; }
+  .title { font-size: 19px; font-weight: 700; color: var(--blue); margin: 0 0 2px; }
+  .sub { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+  .case p { margin-bottom: 8px; }
+  ul { margin: 0; padding-left: 18px; }
+  li { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 6px; }
+  li:last-child { margin-bottom: 0; }
+  .pbtn { width: 398px; height: 50px; display: flex; flex-direction: column; justify-content: center; padding: 0 14px; background: linear-gradient(135deg, rgba(5,7,13,.92) 0%, rgba(13,26,51,.92) 70%); border: 1.5px solid rgba(88,166,255,.5); border-left: 4px solid var(--blue); border-radius: 10px; }
+  .pbtn.ghost { visibility: hidden; }
+  .pn { font-size: 14px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+  .pa { display: inline; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--green); margin-left: 8px; font-weight: 400; }
+  .pd { font-size: 11.5px; color: var(--muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; width: 200px; border-radius: 10px; font-size: 15px; font-weight: 700; color: #fff; }
+  .btn-li { background: #0a66c2; } .btn-mail { background: #ea4335; }
+  .pill { display: inline-flex; align-items: center; justify-content: center; height: 30px; width: 120px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+  .pill.on { background: #1f6feb; color: #fff; }
+  .pill.off { background: #0d1a33; color: var(--text); border: 1px solid rgba(88,166,255,.5); }
+  .chips { display: flex; justify-content: center; gap: 10px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(158,203,255,.6); background: rgba(88,166,255,.1); color: #9ecbff; }
+  .chip.ok { border-color: #238636; background: rgba(63,185,80,.12); color: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="half c-l top l" data-shot="top-pt"><div class="pill on">Português</div></div>
+<div class="half c-r top r" data-shot="top-en"><div class="pill off">English</div></div>
+
+<div class="slice" data-shot="chips"><div class="chips"><span class="chip ok">● aberto a oportunidades</span><span class="chip">São Paulo · remoto ou híbrido</span><span class="chip">inglês fluente</span></div></div>
+
+<div class="half c-l" data-shot="social-li"><div class="btn btn-li">in&nbsp; LinkedIn</div></div>
+<div class="half c-r" data-shot="social-mail"><div class="btn btn-mail">✉&nbsp; Email</div></div>
+
+<div class="slice" data-shot="about"><div class="card">
+  <div class="kicker">01 / SOBRE</div>
+  <h2>Quem sou</h2>
+  <p>Sou Rafael, de São Paulo, formado em Análise e Desenvolvimento de Sistemas pela FIAP e Assistente de TI na Núcleo Engenharia desde junho de 2026. Trabalho principalmente com <b>backend em Java e Spring Boot</b> e gosto dos problemas que aparecem quando o sistema sai do tutorial: requisições duplicadas, duas pessoas reservando o mesmo item ao mesmo tempo, saber quem alterou um registro e quando.</p>
+  <p>Também faço apps Android em Kotlin com Compose, quase sempre offline e sem exigir conta. Antes da FIAP estudei Design Digital na Anhembi Morumbi, então presto atenção em como as coisas são usadas, não só em como funcionam.</p>
+  <p>Procuro vaga <b>júnior em backend Java ou Android</b>, remota ou híbrida.</p>
+</div></div>
+
+<div class="slice" data-shot="cases-title"><div class="card" style="padding:20px 32px;">
+  <div class="kicker">02 / ESTUDOS DE CASO</div>
+  <h2 style="margin:0">Problemas reais, decisões explicadas</h2>
+</div></div>
+
+<div class="third t1" data-shot="case-1" data-group="cases"><div class="card case">
+  <div class="tag">CASO 1</div>
+  <div class="title">Pagamento que não duplica</div>
+  <div class="sub">SafePix Async · Spring Boot · RabbitMQ</div>
+  <p><b>Problema:</b> uma API de Pix não pode travar esperando o processamento, nem cobrar duas vezes quando o cliente repete a requisição.</p>
+  <p><b>Decisão:</b> responder na hora e processar em segundo plano pela fila, com chave de idempotência e fila de mensagens mortas para o que falhar.</p>
+  <p><b>Resultado:</b> requisição repetida não gera nova transação, e falhas ficam visíveis no Prometheus e no Grafana.</p>
+</div></div>
+
+<div class="third t2" data-shot="case-2" data-group="cases"><div class="card case">
+  <div class="tag">CASO 2</div>
+  <div class="title">Quem mexeu nisso?</div>
+  <div class="sub">Auditoria PIX · Hibernate Envers · AOP</div>
+  <p><b>Problema:</b> rastrear cada transação como pede a Resolução BCB nº 1/2020: quem fez, quando, o que mudou e de onde.</p>
+  <p><b>Decisão:</b> histórico de versões com Envers e captura de origem com AOP, sem espalhar código de auditoria pelas regras de negócio.</p>
+  <p><b>Resultado:</b> trilha completa por transação e cobertura de testes acima de 80% no JaCoCo.</p>
+</div></div>
+
+<div class="third t3" data-shot="case-3" data-group="cases"><div class="card case">
+  <div class="tag">CASO 3</div>
+  <div class="title">O último item do estoque</div>
+  <div class="sub">Estoque Reserva · Java 21 · PostgreSQL</div>
+  <p><b>Problema:</b> dois clientes tentando reservar a última unidade no mesmo instante.</p>
+  <p><b>Decisão:</b> lock otimista com <b>@Version</b>: cada baixa de estoque vira um UPDATE condicionado à versão lida, e quem chega depois recebe 409 Conflict.</p>
+  <p><b>Resultado:</b> teste com Testcontainers coloca 50 threads disputando 1 unidade, e exatamente uma vence.</p>
+</div></div>
+
+<div class="slice" data-shot="projects-title"><div class="card" style="padding:20px 32px;">
+  <div class="kicker">03 / PROJETOS</div>
+  <h2 style="margin:0">Todos os projetos</h2>
+</div></div>
+
+<div class="half l pp" data-shot="p-safepix"><div class="pbtn"><div class="pn">SafePix Async<span class="pa">BACKEND</span></div><div class="pd">Pix assíncrono com RabbitMQ, idempotência, DLQ e métricas</div></div></div>
+<div class="half r pp" data-shot="p-auditoria"><div class="pbtn"><div class="pn">Auditoria PIX<span class="pa">BACKEND</span></div><div class="pd">Rastreabilidade com Envers e AOP</div></div></div>
+<div class="half l pp" data-shot="p-estoque"><div class="pbtn"><div class="pn">Estoque Reserva<span class="pa">BACKEND</span></div><div class="pd">Reserva sem overbooking</div></div></div>
+<div class="half r pp" data-shot="p-salas"><div class="pbtn"><div class="pn">Reserva de Salas<span class="pa">BACKEND</span></div><div class="pd">Reservas sem sobreposição de horário</div></div></div>
+<div class="half l pp" data-shot="p-biblioteca"><div class="pbtn"><div class="pn">Biblioteca Empréstimos<span class="pa">BACKEND</span></div><div class="pd">Regras testadas com Testcontainers, Flyway e CI</div></div></div>
+<div class="half r pp" data-shot="p-auth"><div class="pbtn"><div class="pn">Auth RBAC Starter<span class="pa">BACKEND</span></div><div class="pd">Login JWT e permissões por papel</div></div></div>
+<div class="half l pp" data-shot="p-financeiro"><div class="pbtn"><div class="pn">Controle Financeiro<span class="pa">BACKEND</span></div><div class="pd">Receitas, gastos e resumo de saldo com Spring Security</div></div></div>
+<div class="half r pp" data-shot="p-store"><div class="pbtn"><div class="pn">Simple Store<span class="pa">BACKEND</span></div><div class="pd">Loja REST com JPA, Docker Compose e CI</div></div></div>
+<div class="half l pp" data-shot="p-wtc"><div class="pbtn"><div class="pn">WTC CRM Chat<span class="pa">FULL STACK</span></div><div class="pd">CRM e chat em tempo real, API e app Android</div></div></div>
+<div class="half r pp" data-shot="p-fluxo"><div class="pbtn"><div class="pn">Fluxo<span class="pa">ANDROID</span></div><div class="pd">Finanças offline a partir de notificações</div></div></div>
+<div class="half l pp" data-shot="p-repforge"><div class="pbtn"><div class="pn">RepForge<span class="pa">ANDROID</span></div><div class="pd">Treino offline-first</div></div></div>
+<div class="half r pp" data-shot="p-apk"><div class="pbtn"><div class="pn">APK Preview Desktop<span class="pa">DESKTOP</span></div><div class="pd">Emulador Android com ferramentas MCP</div></div></div>
+<div class="half l pp" data-shot="p-brave"><div class="pbtn"><div class="pn">Brave CLI<span class="pa">CLI</span></div><div class="pd">Controle do navegador via CDP, em Rust</div></div></div>
+<div class="half r pp" data-shot="p-combustiveis"><div class="pbtn"><div class="pn">Combustíveis SQL Analytics<span class="pa">DADOS</span></div><div class="pd">Preços da ANP no RJ em SQL e Python</div></div></div>
+<div class="half l pp" data-shot="p-powerbi"><div class="pbtn"><div class="pn">Painel Power BI<span class="pa">DADOS</span></div><div class="pd">Modelo estrela e painel sobre os mesmos dados</div></div></div>
+<div class="half r pp" data-shot="p-empty"><div class="pbtn ghost"></div></div>
+
+<div class="slice" data-shot="education"><div class="card">
+  <div class="kicker">05 / FORMAÇÃO</div>
+  <h2>Formação</h2>
+  <ul>
+    <li><b>Tecnólogo em Análise e Desenvolvimento de Sistemas</b> — FIAP, concluído em 2026</li>
+    <li><b>Design Digital</b> — Anhembi Morumbi, 2022–2023 (não concluído)</li>
+    <li><b>Qualificações profissionais FIAP:</b> Análise de Sistemas e Prototipação Web; Desenvolvimento e Design Web 2.0 (2024)</li>
+  </ul>
+</div></div>
+
+<div class="slice end" data-shot="contact"><div class="card">
+  <div class="kicker">06 / CONTATO</div>
+  <h2>Vamos conversar</h2>
+  <p>Se tiver uma vaga ou quiser conversar sobre algum projeto, me chame no LinkedIn ou mande um email.</p>
+</div></div>
+
+
+</body>
+</html>

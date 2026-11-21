@@ -6,6 +6,8 @@ from html import escape
 from pathlib import Path
 from xml.etree import ElementTree
 
+from panel import write_panel
+
 OUT = Path(__file__).resolve().parent.parent / "assets"
 SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,'SF Mono',Menlo,Consolas,monospace"
@@ -115,6 +117,8 @@ def main():
             ElementTree.fromstring(svg)  # self-check: SVG bem formado
             (OUT / name).write_text(svg, encoding="utf-8")
             print(f"wrote assets/{name}")
+            if write_panel(OUT / name):
+                print(f"wrote panel for {name}")
 
 
 if __name__ == "__main__":

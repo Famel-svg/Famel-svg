@@ -13,6 +13,8 @@ from xml.etree import ElementTree
 
 from festive import GROUND, LAYERS as FESTIVE, _falling, festive_event
 
+from panel import write_panel
+
 USER = os.environ.get("GH_USER", "Famel-svg")
 OUT = Path(__file__).resolve().parent.parent / "assets"
 FONT = "Consolas,monospace"
@@ -509,6 +511,8 @@ def main():
         ElementTree.fromstring(svg)  # self-check: SVG bem formado
         (OUT / name).write_text(svg, encoding="utf-8")
         print(f"wrote assets/{name}")
+        if name in ("overview.svg", "city.svg"):  # versões com painel para o README em imagens
+            print(f"wrote {write_panel(OUT / name).name}")
 
 
 if __name__ == "__main__":
