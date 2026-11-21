@@ -6,8 +6,10 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 const root = path.resolve(__dirname, '..');
-const src = path.join(__dirname, 'readme-sections.html');
-const out = path.join(root, 'assets', 'readme', 'src');
+// uso: node build_readme_images.js [en]  -> idioma padrão pt
+const lang = process.argv[2] || 'pt';
+const src = path.join(__dirname, lang === 'pt' ? 'readme-sections.html' : `readme-sections-${lang}.html`);
+const out = path.join(root, 'assets', 'readme', ...(lang === 'pt' ? [] : [lang]), 'src');
 
 (async () => {
   fs.rmSync(out, { recursive: true, force: true });
@@ -29,6 +31,6 @@ const out = path.join(root, 'assets', 'readme', 'src');
   for (const name of shots) {
     await (await page.$(`[data-shot="${name}"]`)).screenshot({ path: path.join(out, `${name}.png`), omitBackground: true });
   }
-  console.log(`wrote ${shots.length} images to assets/readme/src/`);
+  console.log(`wrote ${shots.length} images to ${out}`);
   await browser.close();
 })().catch(e => { console.error(e); process.exit(1); });

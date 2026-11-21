@@ -495,6 +495,25 @@ def city_card(user, layout="day"):
     return "\n".join(out)
 
 
+EN = {
+    "Contribuições no último ano": "Contributions in the last year", "Commits no último ano": "Commits in the last year",
+    "Repositórios públicos": "Public repositories", "Estrelas recebidas": "Stars received",
+    "Estatísticas e linguagens": "Stats and languages", "linguagens": "languages",
+    "Cidade animada das contribuições no GitHub": "Animated city of GitHub contributions", "no último ano": "in the last year",
+    "cada quarteirão é uma semana, cada lote um dia": "each block is a week, each lot a day",
+    "cada prédio é uma semana": "each building is a week", "cada prédio é um mês": "each building is a month",
+    "contribuições no último ano": "contributions in the last year",
+    "dados do GitHub, atualizados todo dia por um GitHub Action": "GitHub data, updated daily by a GitHub Action",
+}
+
+
+def to_en(svg):
+    # ordem importa: frases longas antes das curtas que elas contêm
+    for pt in sorted(EN, key=len, reverse=True):
+        svg = svg.replace(pt, EN[pt])
+    return svg
+
+
 def main():
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if not token:
@@ -507,12 +526,18 @@ def main():
         '<svg xmlns="http://www.w3.org/2000/svg" width="960" height="252" viewBox="0 0 960 252" role="img" aria-label="Estatísticas e linguagens">'
         + stats.replace("<svg ", '<svg x="0" ', 1) + langs.replace("<svg ", '<svg x="490" ', 1) + "</svg>"
     )
-    for name, svg in (("stats.svg", stats), ("languages.svg", langs), ("overview.svg", pair), ("city.svg", city_card(user, "week"))):
+    city = city_card(user, "week")
+    cards = [("stats.svg", stats), ("languages.svg", langs), ("overview.svg", pair), ("city.svg", city)]
+    # versões em inglês para versions/README-en.md: mesmos cartões, só com os textos trocados
+    cards += [("overview-en.svg", to_en(pair)), ("city-en.svg", to_en(city))]
+    for name, svg in cards:
         ElementTree.fromstring(svg)  # self-check: SVG bem formado
         (OUT / name).write_text(svg, encoding="utf-8")
         print(f"wrote assets/{name}")
-        if name in ("overview.svg", "city.svg"):  # versões com painel para o README em imagens
-            print(f"wrote {write_panel(OUT / name).name}")
+        if name in ("overview.svg", "city.svg", "overview-en.svg", "city-en.svg"):  # versões com painel para o README em imagens
+            panel = write_panel(OUT / name)
+            if panel:
+                print(f"wrote {panel.name}")
 
 
 if __name__ == "__main__":

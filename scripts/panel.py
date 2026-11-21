@@ -110,17 +110,19 @@ def ref_height(svg):
     return h * CARD / w + GAP
 
 
-def write_panel(path, y0=None):
-    """Grava <nome>-panel.svg se a peça faz parte do README em imagens."""
+def write_panel(path, y0=None, lang="pt"):
+    """Grava <nome>-panel.svg (pt) e <nome>-panel-en.svg (en) se a peça faz parte do README em imagens.
+
+    No layout, as posições do README em inglês ficam com o prefixo "en/".
+    """
     path = Path(path)
     if y0 is None:
-        y0 = layout().get(path.stem)
-        if y0 is None:
-            return None
-    out = path.with_name(path.stem + "-panel.svg")
+        lay = layout()
+        outs = [write_panel(path, lay[k], lg) for lg, k in (("pt", path.stem), ("en", "en/" + path.stem)) if k in lay]
+        return outs[0] if outs else None
+    out = path.with_name(path.stem + ("-panel.svg" if lang == "pt" else f"-panel-{lang}.svg"))
     out.write_text(wrap(path.read_text(encoding="utf-8"), path.stem, y0), encoding="utf-8")
     return out
-
 
 if __name__ == "__main__":
     for p in sys.argv[1:]:

@@ -9,7 +9,15 @@ from pathlib import Path
 
 from build_brand import TEXT
 
-SECTIONS = Path(__file__).resolve().parent / "readme-sections.html"
+HERE = Path(__file__).resolve().parent
+UI = {
+    "pt": {"title": "Rafael Tanimoto — Desenvolvedor Backend Java, Spring Boot e Android",
+           "line": "São Paulo, Brasil · remoto ou híbrido · inglês fluente · aberto a oportunidades",
+           "cols": "| Projeto | Área | Entrega |", "summary": "<b>Versão em texto</b> (mesmo conteúdo das imagens)"},
+    "en": {"title": "Rafael Tanimoto — Java Backend, Spring Boot and Android Developer",
+           "line": "São Paulo, Brazil · remote or hybrid · fluent English · open to opportunities",
+           "cols": "| Project | Area | What it does |", "summary": "<b>Text version</b> (same content as the images)"},
+}
 BLOCKS = {"kicker", "h2", "p", "li", "title", "sub", "pn", "pa", "pd", "tag"}
 
 
@@ -52,9 +60,9 @@ class Sections(HTMLParser):
             self.buf.append(data)
 
 
-def parse():
+def parse(lang="pt"):
     p = Sections()
-    p.feed(SECTIONS.read_text(encoding="utf-8"))
+    p.feed((HERE / ("readme-sections.html" if lang == "pt" else f"readme-sections-{lang}.html")).read_text(encoding="utf-8"))
     return p.shots
 
 
@@ -76,11 +84,11 @@ def all_of(shot, kind):
     return [t for k, t in shot if k == kind]
 
 
-def markdown(projects, case_links, li, mail):
+def markdown(projects, case_links, li, mail, lang="pt"):
     """projects: [(shot, url)], case_links: {shot: url}."""
-    s = parse()
-    out = ["## Rafael Tanimoto — Desenvolvedor Backend Java, Spring Boot e Android", ""]
-    out += ["São Paulo, Brasil · remoto ou híbrido · inglês fluente · aberto a oportunidades", ""]
+    s, ui = parse(lang), UI[lang]
+    out = [f"## {ui['title']}", ""]
+    out += [ui["line"], ""]
     out += [f"[LinkedIn]({li}) · [Email]({mail})", ""]
 
     about = s["about"]
@@ -91,13 +99,13 @@ def markdown(projects, case_links, li, mail):
         c = s[shot]
         out += [f"#### [{first(c, 'title')}]({url})", f"*{first(c, 'sub')}*", ""] + [p + "\n" for p in all_of(c, "p")]
 
-    out += [f"### {heading(first(s['projects-title'], 'kicker'))}", "", "| Projeto | Área | Entrega |", "|---|---|---|"]
+    out += [f"### {heading(first(s['projects-title'], 'kicker'))}", "", ui["cols"], "|---|---|---|"]
     for shot, url in projects:
         name, area = first(s[shot], "pn").split(" · ")
         out.append(f"| [{name}]({url}) | {area_name(area)} | {first(s[shot], 'pd')} |")
     out.append("")
 
-    out += ["### 04 / Stack", ""] + [f"- **{group}:** {', '.join(items)}" for group, items in TEXT["pt"]["stack"]] + [""]
+    out += ["### 04 / Stack", ""] + [f"- **{group}:** {', '.join(items)}" for group, items in TEXT[lang]["stack"]] + [""]
 
     edu = s["education"]
     out += [f"### {heading(first(edu, 'kicker'))}", ""] + [f"- {li_}" for li_ in all_of(edu, "li")] + [""]
@@ -107,5 +115,5 @@ def markdown(projects, case_links, li, mail):
         "LinkedIn", f"[LinkedIn]({li})", 1).replace("email", f"[email]({mail})", 1), ""]
 
     body = "\n".join(out).replace("\n\n\n", "\n\n").strip()
-    return ("\n<details>\n<summary><b>Versão em texto</b> (mesmo conteúdo das imagens)</summary>\n\n"
+    return (f"\n<details>\n<summary>{ui['summary']}</summary>\n\n"
             + body + "\n\n</details>\n")
