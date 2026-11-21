@@ -6,7 +6,7 @@ Ordem do que acontece:
    - calcula onde cada peça começa na página (data/readme-layout.json);
    - embrulha cada PNG num SVG com a sua fatia do fundo (assets/readme/<nome>.svg);
    - refaz os *-panel.svg dos cartões dinâmicos (hero, cidade, stats, stack);
-   - escreve o README.md.
+   - escreve o README.md, com a versão em texto (scripts/readme_text.py) no fim.
 
 O fundo é desenhado em coordenadas de referência (página de 860 de largura), então a grade
 fica alinhada e a varredura desce de uma imagem para a seguinte.
@@ -17,6 +17,7 @@ import struct
 from pathlib import Path
 
 from panel import LAYOUT, REF_W, background, ref_height, write_panel
+from readme_text import markdown
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
@@ -137,7 +138,11 @@ def main():
     (ROOT / "README.md").write_text(
         "<!-- README em imagens, gerado por scripts/build_readme.py (não edite à mão).\n"
         "     Cada peça traz sua fatia do fundo animado e fica empilhada sem espaço (align=\"top\"). -->\n"
-        "<p>" + "".join(html) + "</p>\n", encoding="utf-8")
+        "<p>" + "".join(html) + "</p>\n"
+        + markdown([(sh, GH + repo) for sh, repo, _ in PROJECTS],
+                   {"case-1": GH + "SafePix_Async", "case-2": GH + "Sistema_Auditoria_PIX", "case-3": GH + "estoque-reserva"},
+                   LI, MAIL),
+        encoding="utf-8")
     print(f"wrote README.md, {sum(len(r) for r in rows)} peças, altura {y:.0f}")
 
 
