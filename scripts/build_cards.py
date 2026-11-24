@@ -158,21 +158,7 @@ def event_layer(event, W, H, loop, rnd, road):
                          f'<polyline points="{line}" fill="none" stroke="#ffffff" stroke-width="1.8"/></g>')
         return rain + "".join(bolts)
     if event == "abducao":
-        # à noite o óvni chega, desce sobre a avenida, puxa um carro e vai embora
-        rx_, ry_ = road
-        hover = ry_ - 110
-        kt = 'keyTimes="0;0.6;0.64;0.68;0.8;0.84;0.88;1"'
-        ufo = (f'<g><animateTransform attributeName="transform" type="translate" values="-80 90;-80 90;{rx_:.0f} 90;{rx_:.0f} {hover:.0f};{rx_:.0f} {hover:.0f};{rx_:.0f} 70;1040 40;1040 40" {kt} {loop}/>'
-               f'<polygon points="-8,6 8,6 30,110 -30,110" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.69;0.79;0.8;1" {loop}/></polygon>'
-               '<ellipse cx="0" cy="-1" rx="10" ry="9" fill="#9ecbff" opacity="0.8"/><ellipse cx="0" cy="4" rx="28" ry="7" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="28" ry="3.5" fill="#c9d1d9"/>'
-               + "".join(f'<circle cx="{cx}" cy="6.5" r="1.8" fill="#7ee787"><animate attributeName="fill" values="#7ee787;#ff7b72;#d29922;#7ee787" dur="0.8s" begin="{k * 0.2}s" repeatCount="indefinite"/></circle>' for k, cx in enumerate((-16, 0, 16)))
-               + "</g>")
-        car = (f'<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.62;0.63;0.775;0.78;1" {loop}/>'
-               f'<animateTransform attributeName="transform" type="translate" values="-40 {ry_:.0f};-40 {ry_:.0f};{rx_:.0f} {ry_:.0f};{rx_:.0f} {ry_:.0f};{rx_:.0f} {hover + 8:.0f};{rx_:.0f} {hover + 8:.0f}" keyTimes="0;0.62;0.69;0.7;0.78;1" {loop}/>'
-               f'<g><animateTransform attributeName="transform" type="rotate" values="0;0;-25;20;-15;0" keyTimes="0;0.7;0.72;0.74;0.76;1" {loop}/>'
-               '<rect x="-9" y="-5" width="18" height="6" rx="2" fill="#ff7b72"/><rect x="-5" y="-8" width="10" height="4" rx="1.5" fill="#ffa198"/>'
-               '<circle cx="-5" cy="1.5" r="1.8" fill="#161b22"/><circle cx="5" cy="1.5" r="1.8" fill="#161b22"/></g></g>')
-        return car + ufo
+        return ""  # desenhada na camada da rua (abduction), para os prédios da frente cobrirem
     if event == "fogos":
         # à noite foguetes sobem e explodem em cores sobre os prédios
         import math
@@ -231,6 +217,76 @@ def event_layer(event, W, H, loop, rnd, road):
                 '<path d="M-14 20 L-6 36 M14 20 L6 36" stroke="#8b949e" stroke-width="1"/>'
                 '<rect x="-7" y="36" width="14" height="9" rx="1.5" fill="#8b5a2b"/></g></g>')
     return ""
+
+
+# carros vistos de lado, apontando para a direita; origem no chão, no meio do carro.
+# o corpo não tem fill: herda a cor do <use fill="...">.
+WHEELS = ('<circle cx="{a}" cy="-1.6" r="2.1" fill="#0d1117"/><circle cx="{a}" cy="-1.6" r="0.8" fill="#8b949e"/>'
+          '<circle cx="{b}" cy="-1.6" r="2.1" fill="#0d1117"/><circle cx="{b}" cy="-1.6" r="0.8" fill="#8b949e"/>')
+CARS = {
+    "sedan": (11, '<path d="M-10,-2 L-10,-5.2 Q-10,-6.4 -8.8,-6.4 L-5.2,-6.4 L-2.6,-9.6 Q-2.1,-10.2 -1.2,-10.2 L3.8,-10.2 Q4.8,-10.2 5.4,-9.6 L7.9,-6.6 L9.1,-6.3 Q10,-6 10,-5 L10,-2 Z"/>'
+              '<path d="M-4.4,-6.6 L-2.2,-9.4 L0.9,-9.4 L0.9,-6.6 Z M1.9,-6.6 L1.9,-9.4 L4.3,-9.4 L6.6,-6.6 Z" fill="#9ecbff" opacity="0.85"/>'
+              + WHEELS.format(a=-6, b=6)),
+    "taxi": (11, '<path d="M-10,-2 L-10,-5.2 Q-10,-6.4 -8.8,-6.4 L-5.2,-6.4 L-2.6,-9.6 Q-2.1,-10.2 -1.2,-10.2 L3.8,-10.2 Q4.8,-10.2 5.4,-9.6 L7.9,-6.6 L9.1,-6.3 Q10,-6 10,-5 L10,-2 Z"/>'
+             '<rect x="-0.6" y="-12" width="3.4" height="1.8" rx="0.6" fill="#f0f6fc"/>'
+             '<path d="M-4.4,-6.6 L-2.2,-9.4 L0.9,-9.4 L0.9,-6.6 Z M1.9,-6.6 L1.9,-9.4 L4.3,-9.4 L6.6,-6.6 Z" fill="#9ecbff" opacity="0.85"/>'
+             '<rect x="-9" y="-4.8" width="18" height="0.9" fill="#0d1117" opacity="0.5"/>' + WHEELS.format(a=-6, b=6)),
+    "van": (12, '<path d="M-11,-2 L-11,-11 Q-11,-12 -10,-12 L5,-12 Q6,-12 6.8,-11.2 L10.4,-6.8 Q11,-6.2 11,-5 L11,-2 Z"/>'
+            '<path d="M-9.5,-10.6 L-3,-10.6 L-3,-7.4 L-9.5,-7.4 Z M-2,-10.6 L3.8,-10.6 L3.8,-7.4 L-2,-7.4 Z M4.8,-10.6 L6.2,-10.6 L9,-7.4 L4.8,-7.4 Z" fill="#9ecbff" opacity="0.85"/>'
+            + WHEELS.format(a=-7, b=7)),
+    "bus": (18, '<rect x="-18" y="-15" width="36" height="13" rx="2"/>'
+            '<rect x="-16.5" y="-13.2" width="31" height="4.6" rx="0.8" fill="#9ecbff" opacity="0.85"/>'
+            '<rect x="-18" y="-7.4" width="36" height="1.1" fill="#f0f6fc" opacity="0.5"/>'
+            + WHEELS.format(a=-11, b=11)),
+}
+
+
+def car_defs(night_on):
+    """<defs> dos carros: corpo, rodas, farol/lanterna e facho do farol que só aparece à noite."""
+    out = ['<linearGradient id="headbeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe8a3" stop-opacity="0.55"/>'
+           '<stop offset="1" stop-color="#ffe8a3" stop-opacity="0"/></linearGradient>']
+    for name, (half, body) in CARS.items():
+        out.append(f'<g id="car-{name}">'
+                   f'<ellipse cy="0" rx="{half + 1}" ry="1.6" fill="#000" opacity="0.35"/>{body}'
+                   f'<rect x="{half - 0.9}" y="-5.4" width="1.3" height="1.6" rx="0.4" fill="#ffe8a3"/>'
+                   f'<rect x="{-half - 0.4}" y="-5.4" width="1.3" height="1.6" rx="0.4" fill="#ff7b72"/>'
+                   f'<g opacity="0"><animate attributeName="opacity" {night_on}/>'
+                   f'<polygon points="{half + 0.4},-4.6 {half + 30},-8.5 {half + 30},0.5" fill="url(#headbeam)"/>'
+                   f'<circle cx="{-half}" cy="-4.6" r="2.4" fill="#ff7b72" opacity="0.35"/></g></g>')
+    return "".join(out)
+
+
+def traffic(W, lanes, rnd):
+    """Faixas de carros: [(y, escala, sentido_inverso, quantidade)]. Escala menor = mais longe."""
+    palette = ["#58a6ff", "#ff7b72", "#d2a8ff", "#7ee787", "#c9d1d9", "#f0883e"]
+    out = []
+    for y, k, rev, n in lanes:
+        for i in range(n):
+            kind = "bus" if i == 2 and not rev and k >= 0.9 else "taxi" if rnd() < 0.2 else "van" if rnd() < 0.25 else "sedan"
+            fill = "#e3b341" if kind == "taxi" else palette[int(rnd() * len(palette))]
+            dur = (34 if kind == "bus" else 18 + rnd() * 10) / k
+            a, b = (W + 50, -50) if rev else (-50, W + 50)
+            flip = f"scale({-k} {k})" if rev else f"scale({k})"
+            out.append(f'<g><animateTransform attributeName="transform" type="translate" values="{a} {y:.1f};{b} {y:.1f}" '
+                       f'dur="{dur:.1f}s" begin="-{(i / n + rnd() * 0.12) * dur:.1f}s" repeatCount="indefinite"/>'
+                       f'<use href="#car-{kind}" fill="{fill}" transform="{flip}"/></g>')
+    return "".join(out)
+
+
+def abduction(x, y, loop):
+    """À noite o óvni chega, desce sobre a rua da frente, puxa um carro e vai embora."""
+    hover = y - 110
+    kt = 'keyTimes="0;0.6;0.64;0.68;0.8;0.84;0.88;1"'
+    ufo = (f'<g><animateTransform attributeName="transform" type="translate" values="-80 90;-80 90;{x:.0f} 90;{x:.0f} {hover:.0f};{x:.0f} {hover:.0f};{x:.0f} 70;1040 40;1040 40" {kt} {loop}/>'
+           f'<polygon points="-8,6 8,6 30,110 -30,110" fill="url(#beam)" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.69;0.79;0.8;1" {loop}/></polygon>'
+           '<ellipse cx="0" cy="-1" rx="10" ry="9" fill="#9ecbff" opacity="0.8"/><ellipse cx="0" cy="4" rx="28" ry="7" fill="#8b949e"/><ellipse cx="0" cy="2.5" rx="28" ry="3.5" fill="#c9d1d9"/>'
+           + "".join(f'<circle cx="{cx}" cy="6.5" r="1.8" fill="#7ee787"><animate attributeName="fill" values="#7ee787;#ff7b72;#d29922;#7ee787" dur="0.8s" begin="{k * 0.2}s" repeatCount="indefinite"/></circle>' for k, cx in enumerate((-16, 0, 16)))
+           + "</g>")
+    car = (f'<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.62;0.63;0.775;0.78;1" {loop}/>'
+           f'<animateTransform attributeName="transform" type="translate" values="-40 {y:.0f};-40 {y:.0f};{x:.0f} {y:.0f};{x:.0f} {y:.0f};{x:.0f} {hover + 14:.0f};{x:.0f} {hover + 14:.0f}" keyTimes="0;0.62;0.69;0.7;0.78;1" {loop}/>'
+           f'<g><animateTransform attributeName="transform" type="rotate" values="0;0;-25;20;-15;0" keyTimes="0;0.7;0.72;0.74;0.76;1" {loop}/>'
+           '<use href="#car-sedan" fill="#ff7b72"/></g></g>')
+    return car + ufo
 
 
 def city_card(user, layout="day"):
@@ -339,6 +395,7 @@ def city_card(user, layout="day"):
         '<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ee787" stop-opacity="0.5"/><stop offset="1" stop-color="#7ee787" stop-opacity="0"/></linearGradient>',
         '<linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#58a6ff"/><stop offset="1" stop-color="#3fb950"/></linearGradient>',
         f'<clipPath id="frame"><rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="18"/></clipPath>',
+        car_defs(night_on),
         "</defs>",
         '<g clip-path="url(#frame)">',
         f'<rect width="{W}" height="{H}" fill="url(#night)"/>',
@@ -412,20 +469,23 @@ def city_card(user, layout="day"):
                              f'<circle cx="{tx:.1f}" cy="{ty - 5:.1f}" r="{2.6 + rnd():.1f}" fill="#2ea043"/><circle cx="{tx - 0.8:.1f}" cy="{ty - 5.8:.1f}" r="1.1" fill="#56d364" opacity="0.7"/>')
     out.append("".join(lots))
 
-    # carros andando nas ruas, com farol de dia e de noite
+    # ruas: carros (e a abdução) desenhados entre a fileira de trás e a da frente,
+    # para os prédios da frente passarem por cima e a cena ganhar profundidade
     roads = [(P(-0.5, k + 0.5), P(cols - 0.5, k + 0.5)) for k in street_r] + [(P(k + 0.5, -0.5), P(k + 0.5, rows - 0.5)) for k in street_c]
-    for j, (a, b) in enumerate(roads):
-        rev, dur, begin = j % 2 == 1, 14 + (j * 3) % 9, (j * 5) % 13
-        if rev:
-            a, b = b, a
-        color = "#ffd27a" if not rev else "#ff7b72"
-        out.append(f'<circle r="1.8" fill="{color}"><animateMotion path="M{a[0]:.1f},{a[1]:.1f} L{b[0]:.1f},{b[1]:.1f}" dur="{dur}s" begin="-{begin}s" repeatCount="indefinite"/></circle>')
+    street_layers = {}  # fileira -> camada desenhada logo antes dos prédios dessa fileira
+    for k in street_r:  # avenidas entre fileiras: carros pequenos (longe), aparecem nas frestas
+        street_layers[k + 1] = traffic(W, [(P(0, k + 0.38)[1], 0.55, True, 4), (P(0, k + 0.68)[1], 0.62, False, 4)], rnd)
+    for a, b in [(P(k + 0.5, -0.5), P(k + 0.5, rows - 0.5)) for k in street_c]:  # ruas verticais (layout por dia)
+        out.append(f'<circle r="1.8" fill="#ffd27a"><animateMotion path="M{a[0]:.1f},{a[1]:.1f} L{b[0]:.1f},{b[1]:.1f}" dur="16s" repeatCount="indefinite"/></circle>')
+    pending = sorted(street_layers.items())
 
     # prédios: de trás para frente para a sobreposição ficar certa; janelas dentro de cada prédio
     TONES = [("#3a5aa0", "#24376a", "#16213f", "#6f95e6"), ("#3b4f86", "#22305c", "#141c38", "#6a84c8"), ("#2f5f8f", "#1f3d63", "#13253d", "#5fa0d6")]
     dim = f'<animate attributeName="opacity" values="0.12;0.12;1;1;0.12" keyTimes="0;0.5;0.58;0.92;1" {loop}/>'
     cells = sorted(((c, r, n) for (c, r), n in lots_xy.items()), key=lambda t: (t[1], t[0]))
     for c, r, n in cells:
+        while pending and pending[0][0] <= r:
+            out.append(pending.pop(0)[1])
         if not n:
             out.append(trees.get((c, r), ""))
             continue
@@ -469,6 +529,14 @@ def city_card(user, layout="day"):
         if wins:
             body += f'<g opacity="0.12">{dim}{"".join(wins)}</g>'
         out.append(f'<g opacity="0"><animate attributeName="opacity" to="1" dur="0.5s" begin="{delay:.2f}s" fill="freeze"/>{body}</g>')
+
+    out += [layer for _, layer in pending]
+
+    # rua da frente, entre a plataforma e o rodapé: carros grandes (perto), na frente de tudo
+    front_y = (S[1] + slab + H - 36) / 2
+    out.append(traffic(W, [(front_y - 3, 0.85, True, 4), (front_y + 5, 1.0, False, 5)], rnd))
+    if EVENT == "abducao":
+        out.append(abduction(W * 0.55, front_y + 5, loop))
 
     # rótulos do layout por mês: nome na frente da plataforma e total acima do prédio
     for c, (name, v) in labels.items():
